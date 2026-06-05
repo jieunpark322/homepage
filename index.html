@@ -365,6 +365,20 @@
   .skin-tags{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:38px}
   .skin-tags span{font-size:13.5px;font-weight:700;color:var(--primary-dark);background:#fff;border:1px solid var(--line);padding:8px 15px;border-radius:999px;display:flex;align-items:center;gap:7px}
   .skin-tags span svg{width:15px;height:15px;color:var(--primary-dark)}
+  /* QR card gallery */
+  .qrcard-block{margin-top:74px}
+  .qcb-title{font-size:clamp(23px,3vw,32px);font-weight:800;color:var(--ink);letter-spacing:-.02em;line-height:1.32;margin-top:12px}
+  .qrgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:18px;margin-top:42px}
+  .qrcard{aspect-ratio:3/4;border-radius:18px;padding:16px 14px 18px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;background:var(--cc);color:var(--ct);box-shadow:0 14px 30px rgba(14,22,38,.16);transition:transform .2s,box-shadow .2s}
+  .qrcard:hover{transform:translateY(-6px);box-shadow:0 22px 46px rgba(14,22,38,.26)}
+  .qc-brand{font-size:9.5px;font-weight:800;letter-spacing:.22em}
+  .qc-code{width:60%;aspect-ratio:1;background:#fff url('qr-card.svg') center/72% no-repeat;border:1px solid rgba(0,0,0,.06);border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.16)}
+  .qc-foot{text-align:center}
+  .qc-tbl{font-size:16px;font-weight:800;letter-spacing:-.01em;display:block}
+  .qc-store{font-size:11px;font-weight:600;opacity:.82;margin-top:2px;display:block}
+  .qrcard-note{text-align:center;margin-top:30px;font-size:12.5px;color:var(--muted)}
+  @media(max-width:920px){.qrgrid{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:520px){.qrgrid{grid-template-columns:repeat(2,1fr)}}
   /* interactive skin picker */
   .skin-picker{position:relative;display:grid;grid-template-columns:330px 1fr;gap:40px;margin-top:46px;align-items:center}
   .skin-picker .sk-radio{position:absolute;top:0;left:0;opacity:0;width:1px;height:1px;pointer-events:none}
@@ -903,7 +917,7 @@
   <div class="wrap">
     <div class="center">
       <span class="eyebrow">QR 주문 스킨</span>
-      <h2 class="title">손님에게 보여줄 화면,<br class="dbr">매장이 직접 디자인합니다.</h2>
+      <h2 class="title">손님에게 보여줄 화면도,<br class="dbr">테이블에 놓을 QR 카드도 매장이 고릅니다.</h2>
       <p class="lead">같은 메뉴라도 매장 분위기에 맞춰 색·레이아웃·배너·카테고리를 골라 적용. 손님이 보는 주문 페이지를 우리 가게만의 스킨으로 바꿀 수 있어요.</p>
     </div>
     <div class="skin-picker">
@@ -946,6 +960,40 @@
       <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg> 리스트·그리드 레이아웃</span>
       <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg> 배너·프로모션 구성</span>
       <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg> 카테고리 순서 편집</span>
+    </div>
+
+    <div class="qrcard-block">
+      <div class="center">
+        <span class="eyebrow">테이블 QR 카드</span>
+        <h3 class="qcb-title">테이블에 놓을 QR 카드도,<br class="dbr">매장에 어울리게 고르세요.</h3>
+        <p class="lead">손님 화면뿐 아니라 테이블 위에 두는 QR 카드 디자인까지 골라요. 매장 로고와 테이블 번호가 새겨진 카드를 인쇄해 보내드려요.</p>
+      </div>
+      <div class="qrgrid">
+        <div class="qrcard" style="--cc:linear-gradient(160deg,#1b3a78,#0c1a3d);--ct:#fff">
+          <span class="qc-brand">QR ORDER</span><span class="qc-code"></span>
+          <span class="qc-foot"><span class="qc-tbl">테이블 7</span><span class="qc-store">딥네이비</span></span>
+        </div>
+        <div class="qrcard" style="--cc:#6C76F0;--ct:#fff">
+          <span class="qc-brand">QR ORDER</span><span class="qc-code"></span>
+          <span class="qc-foot"><span class="qc-tbl">테이블 A1</span><span class="qc-store">소프트 퍼플</span></span>
+        </div>
+        <div class="qrcard" style="--cc:#F2A613;--ct:#1b1300">
+          <span class="qc-brand">QR ORDER</span><span class="qc-code"></span>
+          <span class="qc-foot"><span class="qc-tbl">테이블 03</span><span class="qc-store">비비드 옐로</span></span>
+        </div>
+        <div class="qrcard" style="--cc:linear-gradient(160deg,#1BA85F,#15823f);--ct:#fff">
+          <span class="qc-brand">QR ORDER</span><span class="qc-code"></span>
+          <span class="qc-foot"><span class="qc-tbl">테이블 12</span><span class="qc-store">프레시 그린</span></span>
+        </div>
+        <div class="qrcard" style="--cc:#F4F6F9;--ct:#101C38">
+          <span class="qc-brand">QR ORDER</span><span class="qc-code"></span>
+          <span class="qc-foot"><span class="qc-tbl">테이블 05</span><span class="qc-store">클린 화이트</span></span>
+        </div>
+        <div class="qrcard" style="--cc:#E0504D;--ct:#fff">
+          <span class="qc-brand">QR ORDER</span><span class="qc-code"></span>
+          <span class="qc-foot"><span class="qc-tbl">테이블 8</span><span class="qc-store">웜 레드</span></span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
