@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QR오더 | 기기 부담 없는 스마트 QR 주문·결제</title>
+<meta name="description" content="비싼 태블릿 오더 대신 테이블 위 스티커 하나로. 월 정액 요금(테이블 무제한), 1개월 무료, 1:1 설치·사용 교육. 사장님의 일손을 덜어주는 QR오더.">
+<style>
+  :root{
+    --primary:#5C8CDA;
+    --primary-strong:#2F62E6;
+    --primary-dark:#2F62C8;
+    --primary-darker:#101C38;
+    --primary-soft:#E9F1FF;
+    --primary-soft2:#F4F6F9;
+    --grad:linear-gradient(120deg,#5C8CDA 0%,#2F62E6 100%);
+    --grad-dark:linear-gradient(125deg,#101C38 0%,#2F62E6 135%);
+    --ink:#0E1626;
+    --ink-2:#36415A;
+    --muted:#6A788F;
+    --line:#E6E9EF;
+    --white:#FFFFFF;
+    --warn-bg:#FFF6E8;
+    --warn-ink:#9A6B14;
+    --ok:#2E9E6B;
+    --radius:14px;
+    --radius-sm:10px;
+    --shadow:0 8px 30px rgba(27,42,69,.08);
+    --shadow-sm:0 2px 12px rgba(27,42,69,.06);
+    --maxw:1140px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',system-ui,-apple-system,sans-serif;
+    color:var(--ink);
+    background:var(--white);
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    word-break:keep-all;
+    overflow-wrap:break-word;
+  }
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  section{padding:96px 0}
+  .eyebrow{
+    display:inline-block;font-size:14px;font-weight:700;letter-spacing:.04em;
+    color:var(--primary-dark);background:var(--primary-soft);
+    padding:7px 16px;border-radius:999px;margin-bottom:18px;
+  }
+  h2.title{font-size:clamp(26px,3.4vw,38px);font-weight:800;line-height:1.3;letter-spacing:-.02em;color:var(--ink)}
+  .lead{font-size:18px;color:var(--ink-2);margin-top:16px;max-width:680px}
+  .center{text-align:center}
+  .center .lead{margin-left:auto;margin-right:auto}
+
+  /* ---------- Top banner ---------- */
+  .topbar{background:var(--primary-dark);color:#fff;text-align:center;font-size:13.5px;font-weight:600;padding:10px 16px;line-height:1.5}
+  .topbar b{background:#fff;color:var(--primary-dark);padding:2px 8px;border-radius:5px;font-weight:800;margin-right:7px}
+  .topbar a{color:#fff;font-weight:700;border-bottom:1px solid rgba(255,255,255,.55);padding-bottom:1px;white-space:nowrap}
+  .topbar a:hover{border-color:#fff}
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);
+    backdrop-filter:saturate(180%) blur(10px);border-bottom:1px solid var(--line);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:72px}
+  .logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:21px;letter-spacing:-.02em;color:var(--ink)}
+  .logo .mark{
+    width:34px;height:34px;border-radius:9px;background:var(--grad);color:#fff;
+    display:grid;place-items:center;font-size:18px;
+  }
+  .logo .mark svg{width:20px;height:20px}
+  .menu{display:flex;gap:34px;list-style:none;font-size:15.5px;font-weight:600;color:var(--ink-2)}
+  .menu a:hover{color:var(--primary-dark)}
+  .nav-cta{display:flex;align-items:center;gap:14px}
+  .tel{font-weight:800;font-size:16px;color:var(--ink);display:flex;align-items:center;gap:7px}
+  .tel svg{width:17px;height:17px;color:var(--primary)}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    font-weight:700;font-size:15.5px;border-radius:999px;padding:12px 22px;
+    border:0;cursor:pointer;transition:.18s;white-space:nowrap;
+  }
+  .btn-primary{background:var(--grad);color:#fff;box-shadow:0 10px 24px rgba(47,98,230,.4);font-weight:800}
+  .btn-primary:hover{filter:brightness(1.07);transform:translateY(-2px);box-shadow:0 14px 30px rgba(47,98,230,.5)}
+  .btn-ghost{background:#fff;color:var(--primary-strong);border:1.5px solid var(--primary)}
+  .btn-ghost:hover{background:var(--primary-soft);border-color:var(--primary-strong)}
+  .btn-lg{padding:16px 30px;font-size:17px}
+  .burger{display:none;background:none;border:0;cursor:pointer;color:var(--ink)}
+  .burger svg{width:26px;height:26px}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    background:linear-gradient(180deg,var(--primary-soft2) 0%,#fff 100%);
+    padding:84px 0 92px;overflow:hidden;
+  }
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+  .hero-head{margin-bottom:38px}
+  .hero h1{font-size:clamp(30px,4.4vw,50px);font-weight:800;line-height:1.25;letter-spacing:-.03em}
+  .hero h1 .hl{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--primary-strong)}
+  .hero h1 .hline{display:block;white-space:nowrap;opacity:0;animation:heroFade .7s ease forwards}
+  .hero h1 .hline:nth-child(1){animation-delay:.2s}
+  .hero h1 .hline:nth-child(2){animation-delay:.95s}
+  .hero h1 .hline:nth-child(3){animation-delay:1.7s}
+  @keyframes heroFade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+  @media(prefers-reduced-motion:reduce){.hero h1 .hline{opacity:1;animation:none}}
+  .hero p.sub{font-size:19px;color:var(--ink-2);margin-top:24px;line-height:1.7}
+  .hero .cta-row{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap}
+  .hero .trust{display:flex;gap:26px;margin-top:34px;flex-wrap:wrap;font-size:14.5px;color:var(--muted);font-weight:600}
+  .hero .trust span{display:flex;align-items:center;gap:7px}
+  .hero .trust svg{width:17px;height:17px;color:var(--ok)}
+
+  /* hero visual */
+  .hero-visual{position:relative;display:flex;align-items:center;justify-content:center;min-height:430px}
+  .hero-app{position:relative;z-index:3;width:280px;max-width:84%;height:auto;border-radius:22px;box-shadow:0 24px 55px rgba(27,42,69,.28);display:block}
+  .hero-photo{position:relative;width:440px;max-width:100%;height:450px;border-radius:26px;overflow:hidden;box-shadow:0 26px 58px rgba(14,22,38,.24);z-index:1}
+  .hero-photo img{width:100%;height:100%;object-fit:cover;display:block}
+  .hero-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,22,38,0) 45%,rgba(14,22,38,.3) 100%)}
+  .hero-illust::after{display:none}
+  .hero-illust-img{display:flex;justify-content:center;align-items:center}
+  .hero-3d{width:100%;max-width:480px;height:auto;display:block}
+  .hero-photo svg.hero-scan{width:100%;height:100%;display:block}
+  .hero-scan .scanline{animation:scanmove 2.4s ease-in-out infinite}
+  @keyframes scanmove{0%,100%{transform:translateY(0)}50%{transform:translateY(70px)}}
+  @media(prefers-reduced-motion:reduce){.hero-scan .scanline{animation:none}}
+  .phone{
+    width:248px;background:#fff;border-radius:30px;padding:14px;
+    box-shadow:var(--shadow);border:1px solid var(--line);position:relative;z-index:3;transform:rotate(2deg);
+  }
+  .phone .screen{background:var(--primary-soft2);border-radius:20px;padding:18px 16px;min-height:380px}
+  .phone .pbar{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-weight:700;margin-bottom:14px}
+  .phone .store{font-weight:800;font-size:16px;color:var(--ink)}
+  .phone .store small{display:block;font-size:11.5px;color:var(--muted);font-weight:600;margin-top:2px}
+  .menu-item{background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 12px;margin-top:10px;display:flex;justify-content:space-between;align-items:center}
+  .menu-item .nm{font-size:13.5px;font-weight:700;color:var(--ink)}
+  .menu-item .pr{font-size:13px;font-weight:700;color:var(--primary-dark)}
+  .menu-item .add{width:24px;height:24px;border-radius:7px;background:var(--primary);color:#fff;display:grid;place-items:center;font-size:15px;font-weight:700}
+  .phone .paybtn{margin-top:14px;background:var(--primary);color:#fff;text-align:center;border-radius:12px;padding:12px;font-weight:800;font-size:14px}
+  .sticker{
+    position:absolute;z-index:4;background:#fff;border:1px solid var(--line);border-radius:16px;
+    box-shadow:var(--shadow-sm);padding:13px 15px;display:flex;align-items:center;gap:10px;font-weight:700;font-size:13.5px;color:var(--ink);
+  }
+  .sticker svg{width:30px;height:30px;color:var(--primary)}
+  .sticker.s1{top:18px;left:-18px}
+  .sticker.s2{bottom:42px;right:-22px}
+  .sticker small{display:block;color:var(--muted);font-weight:600;font-size:11.5px}
+
+  /* ---------- Why Us ---------- */
+  .why{background:#fff}
+  .why .keycopy{
+    text-align:center;max-width:860px;margin:0 auto 56px;
+    font-size:clamp(22px,2.8vw,30px);font-weight:800;line-height:1.5;letter-spacing:-.02em;color:var(--ink);
+  }
+  .why .keycopy .hl{color:var(--primary-dark)}
+  .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .card{
+    background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:34px 28px;
+    transition:.2s;box-shadow:var(--shadow-sm);
+  }
+  .card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:#cdd9ee}
+  .card .ico{
+    width:56px;height:56px;border-radius:14px;background:var(--primary-soft);color:var(--primary-dark);
+    display:grid;place-items:center;margin-bottom:20px;
+  }
+  .card .ico svg{width:28px;height:28px}
+  .card h3{font-size:20px;font-weight:800;letter-spacing:-.01em;margin-bottom:11px}
+  .card p{font-size:15.5px;color:var(--ink-2);line-height:1.7}
+
+  /* ---------- Benefit (owner / guest) ---------- */
+  .benefit{background:var(--primary-soft2)}
+  .seg-head{display:flex;align-items:center;gap:12px;margin-bottom:30px}
+  .seg-head .tag{font-size:14px;font-weight:800;color:#fff;background:var(--grad);padding:6px 16px;border-radius:999px}
+  .seg-head h2{font-size:clamp(24px,3vw,32px);font-weight:800;letter-spacing:-.02em}
+  .blist{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:64px}
+  .blist:last-child{margin-bottom:0}
+  .bitem{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px 24px;box-shadow:var(--shadow-sm)}
+  .bitem .ico{width:48px;height:48px;border-radius:12px;background:var(--primary-soft);color:var(--primary-dark);display:grid;place-items:center;margin-bottom:16px}
+  .bitem .ico svg{width:25px;height:25px}
+  .bitem h4{font-size:18px;font-weight:800;margin-bottom:9px;letter-spacing:-.01em}
+  .bitem p{font-size:15px;color:var(--ink-2);line-height:1.65}
+  .badge-lang{display:inline-block;margin-top:10px;font-size:12.5px;font-weight:700;color:var(--primary-dark);background:var(--primary-soft);padding:4px 11px;border-radius:999px}
+
+  /* ---------- Process timeline ---------- */
+  .process{background:#fff}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:54px;position:relative}
+  .step{padding:0 14px;position:relative;text-align:center}
+  .step .dot{
+    width:54px;height:54px;border-radius:50%;background:var(--grad);color:#fff;
+    display:grid;place-items:center;font-weight:800;font-size:20px;margin:0 auto 22px;position:relative;z-index:2;
+  }
+  .step .line{position:absolute;top:27px;left:50%;width:100%;height:3px;background:var(--line);z-index:1}
+  .step:last-child .line{display:none}
+  .step .dur{font-size:13px;font-weight:800;color:var(--primary-dark);background:var(--primary-soft);display:inline-block;padding:4px 12px;border-radius:999px;margin-bottom:10px}
+  .step h4{font-size:18px;font-weight:800;margin-bottom:9px;letter-spacing:-.01em}
+  .step p{font-size:14.5px;color:var(--ink-2);line-height:1.6}
+
+  /* ---------- References ---------- */
+  .refs{background:var(--primary-darker);color:#fff}
+  .refs .eyebrow{background:rgba(255,255,255,.14);color:#dbe6fa}
+  .refs h2.title{color:#fff}
+  .refs .lead{color:#c7d6f0}
+  .refgrid{display:flex;flex-wrap:wrap;justify-content:center;gap:20px;margin-top:48px}
+  .ref{flex:1 1 200px;max-width:248px}
+  .ref{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:var(--radius);padding:0;overflow:hidden}
+  .ref-img{position:relative;height:168px;background:#2a4675}
+  .ref-img img{width:100%;height:100%;object-fit:cover;display:block}
+  .ref-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(39,80,143,0) 40%,rgba(23,45,82,.7) 100%)}
+  .ref-body{padding:24px 26px}
+  .ref .cat{font-size:13px;font-weight:800;color:#9dbcf0;letter-spacing:.03em;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .ref .cat svg{width:18px;height:18px}
+  .ref h4{font-size:21px;font-weight:800;margin-bottom:12px}
+  .ref p{font-size:15px;color:#cdd9f0;line-height:1.65}
+
+  /* ---------- Pricing ---------- */
+  .pricing{background:#fff}
+  .price-wrap{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start;margin-top:48px}
+  .price-card{background:var(--primary-soft2);border:1px solid var(--line);border-radius:var(--radius);padding:36px 32px}
+  .price-card h3{font-size:20px;font-weight:800;margin-bottom:8px}
+  .price-card .ptable{list-style:none;margin-top:18px}
+  .price-card .ptable li{display:flex;justify-content:space-between;align-items:center;padding:15px 0;border-bottom:1px dashed var(--line);font-size:16px}
+  .price-card .ptable li:last-child{border-bottom:0}
+  .price-card .ptable .label{font-weight:700;color:var(--ink-2)}
+  .price-card .ptable .val{font-weight:800;color:var(--primary-dark);font-size:18px}
+  .price-card .ptable .val.zero{color:var(--ok)}
+  .price-note{margin-top:22px;font-size:14px;color:var(--muted);display:flex;gap:8px;align-items:flex-start}
+  .price-note svg{width:17px;height:17px;color:var(--primary);flex-shrink:0;margin-top:3px}
+
+  /* accordion */
+  .faq{margin-top:4px}
+  .acc{border:1px solid var(--line);border-radius:var(--radius-sm);margin-bottom:14px;overflow:hidden;background:#fff}
+  .acc.open{border-color:var(--primary)}
+  .acc-q{width:100%;text-align:left;background:#fff;border:0;cursor:pointer;padding:22px 24px;display:flex;justify-content:space-between;align-items:center;gap:16px;font-size:17px;font-weight:800;color:var(--ink)}
+  .acc-q .qm{color:var(--primary);font-weight:900;margin-right:4px}
+  .acc-q .chev{width:22px;height:22px;color:var(--primary-dark);transition:.25s;flex-shrink:0}
+  .acc.open .chev{transform:rotate(180deg)}
+  .acc-a{max-height:0;overflow:hidden;transition:max-height .3s ease}
+  .acc-a .inner{padding:0 24px 24px;font-size:15.5px;color:var(--ink-2);line-height:1.75}
+  .acc-a .inner strong{color:var(--primary-dark)}
+  .compare{margin-top:16px;background:var(--primary-soft);border-radius:10px;padding:16px 18px;font-size:14.5px;color:var(--ink-2)}
+  .compare b{color:var(--ink)}
+
+  /* ---------- Pricing plans (월정액) ---------- */
+  .price-callout{background:var(--primary-soft);border:1px solid #CFDDF3;border-radius:var(--radius);padding:26px 30px;max-width:880px;margin:38px auto 14px;display:flex;align-items:center;justify-content:center;gap:26px;flex-wrap:wrap;text-align:center}
+  .price-callout .big{font-size:40px;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1;display:flex;align-items:baseline;gap:6px}
+  .price-callout .big small{font-size:15px;color:var(--primary-dark);font-weight:700}
+  .price-callout .pc-divider{width:1px;height:46px;background:#CFDDF3}
+  .price-callout .pc-text{font-size:15px;color:var(--ink-2);max-width:380px;text-align:left}
+  .price-callout .pc-text b{color:var(--ink)}
+  .price-callout .modes{display:inline-flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+  .price-callout .modes span{font-size:12.5px;font-weight:700;padding:5px 12px;background:#fff;border:1px solid #CFDDF3;border-radius:999px;color:var(--primary-dark)}
+  .unlimited{max-width:880px;margin:0 auto 30px;text-align:center;background:#EAF6F0;border:1px solid #C5E7D5;border-radius:12px;padding:14px 22px;font-size:15px;font-weight:700;color:var(--ink)}
+  .unlimited b{color:var(--ok)}
+  .plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .plan{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:30px 26px;position:relative;transition:.2s}
+  .plan:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+  .plan.lite{background:var(--primary-soft2)}
+  .plan.featured{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft),var(--shadow)}
+  .plan .pbadge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--grad);color:#fff;font-size:12px;font-weight:800;padding:6px 15px;border-radius:999px;white-space:nowrap}
+  .plan h3{font-size:19px;font-weight:800}
+  .plan .who{font-size:13px;color:var(--muted);margin-top:5px}
+  .plan .pprice{margin-top:16px;font-size:32px;font-weight:800;letter-spacing:-.02em;line-height:1;color:var(--ink)}
+  .plan .pprice small{font-size:14px;font-weight:600;color:var(--muted);margin-left:2px}
+  .plan ul{list-style:none;margin:18px 0 0;padding:0;font-size:13.5px}
+  .plan ul li{padding:9px 0;border-bottom:1px dashed var(--line);display:flex;justify-content:space-between;gap:8px;color:var(--ink-2)}
+  .plan ul li b{color:var(--primary-dark);font-weight:700;text-align:right}
+  .ent{margin-top:20px;background:var(--primary-darker);color:#fff;border-radius:var(--radius);padding:32px 34px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:22px}
+  .ent h3{color:#fff;font-size:21px;font-weight:800}
+  .ent p{color:#cdd9f0;font-size:14.5px;margin-top:8px;max-width:560px}
+  .ent .etags{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .ent .etags span{font-size:12px;font-weight:600;padding:5px 12px;background:rgba(255,255,255,.12);border-radius:999px;color:#dbe6fa}
+  /* TCO */
+  .tco-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:34px}
+  .tco-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px 26px}
+  .tco-card.best{background:var(--primary-soft2);border:2px solid var(--primary);position:relative}
+  .tco-card .pbadge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--grad);color:#fff;font-size:12px;font-weight:800;padding:6px 15px;border-radius:999px;white-space:nowrap}
+  .tco-card h4{font-size:17px;font-weight:800}
+  .tco-card .tnum{font-size:32px;font-weight:800;margin-top:12px;letter-spacing:-.02em;line-height:1}
+  .tco-card .tnum small{font-size:13px;font-weight:600;color:var(--muted)}
+  .tco-card.c-bad .tnum{color:#D8553F}
+  .tco-card.c-warn .tnum{color:#C68A1E}
+  .tco-card.best .tnum{color:var(--primary-dark)}
+  .tco-card ul{list-style:none;margin:16px 0 0;padding:0;font-size:13px;color:var(--ink-2)}
+  .tco-card ul li{padding:7px 0;border-bottom:1px dashed var(--line)}
+  .tco-card ul li.hl{color:var(--ok);font-weight:700;border-bottom:0}
+  .tco-card ul li.hl.bad{color:#D8553F}
+  .tco-save{margin-top:26px;text-align:center;background:var(--ink);color:#fff;border-radius:var(--radius);padding:22px;font-size:18px;font-weight:700}
+  .tco-save b{color:#7FE3B6}
+  .tco-note{text-align:center;margin-top:12px;font-size:12px;color:var(--muted)}
+
+  /* ---------- USP band (continuity / POS) ---------- */
+  .usp-band{background:var(--primary-darker);color:#fff}
+  .usp-band .eyebrow{background:rgba(255,255,255,.14);color:#dbe6fa}
+  .usp-band h2.title{color:#fff}
+  .usp-band .lead{color:#c7d6f0}
+  .usp-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:44px}
+  .usp-col{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:var(--radius);padding:32px 30px}
+  .usp-col .ico{width:54px;height:54px;border-radius:14px;background:rgba(255,255,255,.12);color:#fff;display:grid;place-items:center;margin-bottom:18px}
+  .usp-col .ico svg{width:27px;height:27px}
+  .usp-col h3{font-size:20px;font-weight:800;color:#fff;margin-bottom:10px}
+  .usp-col p{font-size:15px;color:#cdd9f0;line-height:1.7}
+  .usp-col .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+  .usp-col .tags span{font-size:12.5px;font-weight:700;padding:6px 12px;background:rgba(255,255,255,.1);border-radius:999px;color:#dbe6fa}
+
+  /* ---------- Data / AI ---------- */
+  .dataai{background:var(--grad-dark);color:#fff;position:relative;overflow:hidden}
+  .dataai::before{content:'';position:absolute;inset:0;background:url('dataai-bg.svg') center/cover no-repeat;opacity:.9;pointer-events:none}
+  .dataai .wrap{position:relative;z-index:1}
+  .dataai .eyebrow{background:rgba(255,255,255,.14);color:#cfe0ff}
+  .dataai h2.title{color:#fff}
+  .dataai .lead{color:#c7d6f0}
+  .flow3{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:0;align-items:center;margin-top:46px}
+  .flow3 .arrow{text-align:center;font-size:24px;color:#7fa6f5;padding:0 6px}
+  .flow-box{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:var(--radius);padding:24px 22px;backdrop-filter:blur(6px)}
+  .flow-box .ttl{font-size:12px;font-weight:800;color:#9dbcf0;letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px}
+  .flow-box .row{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.08);border-radius:10px;padding:11px 12px;margin-top:9px;font-size:13.5px;font-weight:700;color:#eaf1ff}
+  .flow-box .row svg{width:18px;height:18px;color:#9dc0ff;flex-shrink:0}
+  .flow-box.hub{background:linear-gradient(135deg,#2F62E6,#5C8CDA);border-color:transparent;text-align:center;box-shadow:0 0 34px rgba(47,98,230,.55)}
+  .flow-box.hub .ttl{color:#dbe9ff}
+  .flow-box.hub .hubname{font-size:17px;font-weight:800;color:#fff;margin-top:8px}
+  .flow-box.hub p{font-size:13px;color:#e6eefb;margin-top:4px}
+  .flow-box.ai .row{background:rgba(124,166,245,.16)}
+  .dataai .summary{margin-top:28px;text-align:center;font-size:15px;font-weight:700;color:#dbe9ff}
+  .dataai .summary b{color:#fff}
+
+  /* ---------- Comparison tables ---------- */
+  .cmp-wrap{max-width:960px;margin:46px auto 0}
+  .cmp-wrap + .cmp-wrap{margin-top:64px}
+  .cmp-cap{font-size:18px;font-weight:800;color:var(--ink);margin-bottom:16px;display:flex;align-items:center;gap:9px}
+  .cmp-cap svg{width:20px;height:20px;color:var(--primary-dark)}
+  .cmp{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff;box-shadow:var(--shadow-sm)}
+  .cmp-row{display:grid;grid-template-columns:1.05fr 1fr 1fr;border-bottom:1px solid var(--line)}
+  .cmp-row:last-child{border-bottom:0}
+  .cmp-k{padding:15px 18px;font-weight:700;font-size:14px;color:var(--ink);background:var(--primary-soft2);display:flex;align-items:center}
+  .cmp-v{padding:15px 16px;font-size:13.5px;color:var(--ink-2);display:flex;align-items:flex-start;gap:7px;border-left:1px solid var(--line);line-height:1.5}
+  .cmp-v svg{width:16px;height:16px;flex-shrink:0;margin-top:2px}
+  .cmp-v.other{color:var(--muted)}
+  .cmp-v.other svg{color:#C0560F}
+  .cmp-v.ours{background:var(--primary-soft);color:var(--ink);font-weight:600}
+  .cmp-v.ours svg{color:var(--primary-dark)}
+  .cmp-head .cmp-k{background:var(--primary-soft2)}
+  .cmp-head .cmp-h{padding:16px;font-weight:800;font-size:15px;text-align:center;justify-content:center;display:flex;align-items:center;gap:7px;border-left:1px solid var(--line)}
+  .cmp-head .cmp-h.other{background:#EDF0F5;color:var(--ink-2)}
+  .cmp-head .cmp-h.ours{background:var(--grad);color:#fff;border-left-color:var(--primary-strong)}
+
+  /* ---------- Skin customization ---------- */
+  .skin-section{background:var(--primary-soft2)}
+  .skins{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:46px;justify-items:center}
+  .skin{margin:0;text-align:center}
+  .skin figcaption{margin-top:16px;font-size:15px;font-weight:800;color:var(--ink)}
+  .skin .cap-sub{font-size:12.5px;color:var(--muted);font-weight:500;margin-top:3px}
+  .skin-phone{width:218px;background:#fff;border:1px solid var(--line);border-radius:26px;padding:13px;box-shadow:var(--shadow);text-align:left;transition:transform .2s}
+  .skin-phone:hover{transform:translateY(-5px)}
+  .skin-phone .sp-store{font-size:14px;font-weight:800;color:var(--ink)}
+  .skin-phone .sp-tbl{font-size:10.5px;color:var(--muted);font-weight:600;margin-top:1px}
+  .skin-phone .sp-banner{margin-top:11px;border-radius:10px;padding:9px 12px;font-size:10.5px;font-weight:700;color:#fff;background:var(--sk)}
+  .skin-phone .sp-chips{display:flex;gap:5px;margin-top:11px}
+  .skin-phone .sp-chips span{font-size:9.5px;font-weight:700;padding:5px 9px;border-radius:999px;background:#EEF1F5;color:var(--muted);white-space:nowrap}
+  .skin-phone .sp-chips span.on{background:var(--sk);color:#fff}
+  .skin-phone .sp-item{display:flex;align-items:center;gap:9px;margin-top:11px}
+  .skin-phone .sp-thumb{width:42px;height:42px;border-radius:8px;background:var(--skbg);flex-shrink:0}
+  .skin-phone .sp-nm{font-size:11px;font-weight:700;color:var(--ink)}
+  .skin-phone .sp-pr{font-size:11px;font-weight:800;color:var(--sk);margin-top:3px}
+  .skin-phone .sp-add{margin-left:auto;width:22px;height:22px;border-radius:50%;background:var(--sk);color:#fff;display:grid;place-items:center;font-size:14px;font-weight:700;flex-shrink:0}
+  .skin-tags{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:38px}
+  .skin-tags span{font-size:13.5px;font-weight:700;color:var(--primary-dark);background:#fff;border:1px solid var(--line);padding:8px 15px;border-radius:999px;display:flex;align-items:center;gap:7px}
+  .skin-tags span svg{width:15px;height:15px;color:var(--primary-dark)}
+  /* interactive skin picker */
+  .skin-picker{position:relative;display:grid;grid-template-columns:330px 1fr;gap:40px;margin-top:46px;align-items:center}
+  .skin-picker .sk-radio{position:absolute;top:0;left:0;opacity:0;width:1px;height:1px;pointer-events:none}
+  .skin-opts{display:flex;flex-direction:column;gap:14px}
+  .sk-opt{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1.5px solid var(--line);border-radius:14px;background:#fff;cursor:pointer;transition:.18s;box-shadow:var(--shadow-sm)}
+  .sk-opt:hover{border-color:var(--primary)}
+  .sk-radio-dot{width:20px;height:20px;border-radius:50%;border:2px solid #C7CDD8;flex-shrink:0;position:relative;transition:.18s}
+  .sk-radio-dot::after{content:'';position:absolute;inset:3px;border-radius:50%;background:var(--primary-strong);transform:scale(0);transition:.18s}
+  .sk-opt .sk-thumb{width:44px;height:64px;object-fit:cover;object-position:top;flex-shrink:0;filter:drop-shadow(0 2px 4px rgba(14,22,38,.18))}
+  .sk-meta b{font-size:15px;font-weight:800;color:var(--ink);display:block}
+  .sk-meta small{font-size:12.5px;color:var(--muted)}
+  .skin-stage{display:flex;justify-content:center}
+  .skin-stage .prev{display:none;width:300px;max-width:88%;height:auto;filter:drop-shadow(0 26px 44px rgba(14,22,38,.34))}
+  #skA:checked ~ .skin-stage .prev[data-k="A"],
+  #skB:checked ~ .skin-stage .prev[data-k="B"],
+  #skC:checked ~ .skin-stage .prev[data-k="C"],
+  #skD:checked ~ .skin-stage .prev[data-k="D"]{display:block}
+  #skA:checked ~ .skin-opts label[for="skA"],
+  #skB:checked ~ .skin-opts label[for="skB"],
+  #skC:checked ~ .skin-opts label[for="skC"],
+  #skD:checked ~ .skin-opts label[for="skD"]{border-color:var(--primary-strong);background:var(--primary-soft)}
+  #skA:checked ~ .skin-opts label[for="skA"] .sk-radio-dot,
+  #skB:checked ~ .skin-opts label[for="skB"] .sk-radio-dot,
+  #skC:checked ~ .skin-opts label[for="skC"] .sk-radio-dot,
+  #skD:checked ~ .skin-opts label[for="skD"] .sk-radio-dot{border-color:var(--primary-strong)}
+  #skA:checked ~ .skin-opts label[for="skA"] .sk-radio-dot::after,
+  #skB:checked ~ .skin-opts label[for="skB"] .sk-radio-dot::after,
+  #skC:checked ~ .skin-opts label[for="skC"] .sk-radio-dot::after,
+  #skD:checked ~ .skin-opts label[for="skD"] .sk-radio-dot::after{transform:scale(1)}
+
+  /* ---------- Pricing matrix ---------- */
+  .pmatrix{max-width:1000px;margin:40px auto 0;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff;box-shadow:var(--shadow-sm)}
+  .pmrow{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;border-bottom:1px solid var(--line)}
+  .pmrow:last-child{border-bottom:0}
+  .pm-cell{padding:13px 14px;font-size:13.5px;display:flex;align-items:center;justify-content:center;text-align:center;border-left:1px solid var(--line);color:var(--ink-2);gap:6px}
+  .pm-cell svg{width:18px;height:18px;color:var(--primary-strong)}
+  .pm-cell .dash{color:#B7C0CF;font-weight:700}
+  .pm-lbl{justify-content:flex-start;text-align:left;font-weight:700;color:var(--ink);background:var(--primary-soft2);border-left:0;font-size:13px}
+  .pm-feat{background:var(--primary-soft)}
+  .pm-head .pm-cell{display:block;padding:24px 14px}
+  .pm-head .pm-lbl{background:#fff}
+  .pm-name{font-size:18px;font-weight:800;color:var(--ink)}
+  .pm-badge{display:inline-block;font-size:11px;font-weight:800;color:#fff;background:var(--grad);padding:3px 9px;border-radius:999px;margin-left:5px;vertical-align:middle}
+  .pm-desc{font-size:12px;color:var(--muted);margin-top:6px;font-weight:500;line-height:1.45}
+  .pm-price{font-size:19px;font-weight:800;color:var(--ink);margin-top:12px;letter-spacing:-.02em}
+  .pm-price small{font-size:12px;color:var(--muted);font-weight:600}
+  .pm-btn{display:inline-block;margin-top:14px;font-size:13px;font-weight:800;padding:9px 18px;border-radius:999px;background:var(--grad);color:#fff}
+  @media(max-width:700px){.pmrow{grid-template-columns:1.3fr 1fr 1fr 1fr}.pm-cell{padding:9px 5px;font-size:11px}.pm-lbl{font-size:11px}.pm-name{font-size:13px}.pm-desc{display:none}.pm-price{font-size:13px;margin-top:8px}.pm-btn{margin-top:9px;padding:7px 9px;font-size:11px}.pm-cell svg{width:15px;height:15px}}
+
+  /* ---------- Advantage cards (vs 태블릿·키오스크) ---------- */
+  .adv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:48px}
+  .adv{background:#fff;border:1px solid var(--line);border-radius:14px;padding:28px 24px;box-shadow:var(--shadow-sm);transition:.2s}
+  .adv:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:#cdd9ee}
+  .adv .ico{width:52px;height:52px;border-radius:13px;background:var(--grad);color:#fff;display:grid;place-items:center;margin-bottom:16px}
+  .adv .ico svg{width:26px;height:26px}
+  .adv h3{font-size:18px;font-weight:800;letter-spacing:-.01em;margin-bottom:8px}
+  .adv p{font-size:14.5px;color:var(--ink-2);line-height:1.6}
+  .adv .vs-note{margin-top:14px;font-size:12.5px;color:var(--muted);background:var(--primary-soft2);border-radius:8px;padding:8px 11px;display:flex;align-items:flex-start;gap:6px}
+  .adv .vs-note svg{width:14px;height:14px;color:#C0560F;flex-shrink:0;margin-top:2px}
+  @media(max-width:900px){.adv-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.adv-grid{grid-template-columns:1fr}}
+
+  /* ---------- Impact (도입 후 효과) ---------- */
+  .impact{background:var(--primary-soft)}
+  .impact .quote{background:#fff;border:1px solid var(--line);box-shadow:var(--shadow-sm)}
+  .impact .quote .big{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--primary-strong)}
+  .impact .quote .biglb{color:var(--muted)}
+  .impact .quote p{color:var(--ink-2)}
+
+  /* ---------- 고객 지원 ---------- */
+  .support-grid{display:grid;grid-template-columns:1.3fr .9fr;gap:28px;margin-top:44px;align-items:start}
+  .support-contact{background:var(--primary-soft2);border:1px solid var(--line);border-radius:14px;padding:28px 26px}
+  .support-contact h3{font-size:18px;font-weight:800;color:var(--ink);margin-bottom:14px}
+  .support-contact .sc-row{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;color:var(--ink-2);padding:10px 0;border-bottom:1px solid var(--line);line-height:1.5}
+  .support-contact .sc-row:last-of-type{border-bottom:0}
+  .support-contact .sc-row svg{width:18px;height:18px;color:var(--primary-dark);flex-shrink:0;margin-top:2px}
+  .support-contact .sc-row b{color:var(--ink);font-weight:800;font-size:16px}
+  .support-contact .sc-manual{display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:13.5px;font-weight:700;color:var(--primary-dark)}
+  @media(max-width:760px){.support-grid{grid-template-columns:1fr}}
+
+  /* ---------- Security ---------- */
+  .security{background:var(--primary-soft2)}
+  .sec-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:44px}
+  .sec-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:34px 30px;box-shadow:var(--shadow-sm)}
+  .sec-card .ico{width:54px;height:54px;border-radius:14px;background:var(--primary-soft);color:var(--primary-dark);display:grid;place-items:center;margin-bottom:20px}
+  .sec-card .ico svg{width:27px;height:27px}
+  .sec-card h4{font-size:20px;font-weight:800;margin-bottom:11px;letter-spacing:-.01em}
+  .sec-card p{font-size:15.5px;color:var(--ink-2);line-height:1.7}
+  .sec-card ul{margin:14px 0 0;padding-left:0;list-style:none}
+  .sec-card ul li{position:relative;padding-left:26px;font-size:14.5px;color:var(--ink-2);margin-bottom:8px}
+  .sec-card ul li svg{position:absolute;left:0;top:3px;width:17px;height:17px;color:var(--ok)}
+
+  /* ---------- Final CTA ---------- */
+  .finalcta{background:var(--grad-dark);color:#fff;text-align:center}
+  .finalcta h2{font-size:clamp(26px,3.6vw,40px);font-weight:800;letter-spacing:-.02em;line-height:1.3}
+  .finalcta p{font-size:19px;color:#e6eefb;margin-top:18px}
+  .finalcta .cta-row{display:flex;gap:14px;justify-content:center;margin-top:36px;flex-wrap:wrap}
+  .finalcta .btn-primary{background:#fff;color:var(--primary-dark);box-shadow:0 8px 24px rgba(0,0,0,.18)}
+  .finalcta .btn-primary:hover{background:#f3f7fd}
+  .finalcta .btn-white-ghost{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.7)}
+  .finalcta .btn-white-ghost:hover{background:rgba(255,255,255,.12)}
+  .finalcta .tel-big{margin-top:28px;font-size:26px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:10px}
+  .finalcta .tel-big svg{width:26px;height:26px}
+
+  /* ---------- Footer ---------- */
+  footer{background:#16223A;color:#9fb0cc;padding:54px 0 40px;font-size:14px}
+  .foot-top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:28px;padding-bottom:30px;border-bottom:1px solid rgba(255,255,255,.1)}
+  .foot-logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:19px;color:#fff;margin-bottom:14px}
+  .foot-logo .mark{width:30px;height:30px;border-radius:8px;background:var(--grad);display:grid;place-items:center}
+  .foot-logo .mark svg{width:17px;height:17px;color:#fff}
+  .foot-links{display:flex;gap:38px;flex-wrap:wrap}
+  .foot-col h5{color:#fff;font-size:14px;font-weight:700;margin-bottom:13px}
+  .foot-col a{display:block;color:#9fb0cc;margin-bottom:9px}
+  .foot-col a:hover{color:#fff}
+  .foot-bottom{padding-top:24px;color:#7488a8;font-size:13px;line-height:1.8}
+
+  /* ---------- Stats band ---------- */
+  .stats{background:var(--grad-dark);color:#fff;padding:0}
+  .stats .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+  .stat{padding:42px 20px;text-align:center;border-left:1px solid rgba(255,255,255,.13)}
+  .stat:first-child{border-left:0}
+  .stat .num{font-size:clamp(30px,4vw,42px);font-weight:800;letter-spacing:-.02em;line-height:1;color:#fff}
+  .stat .num small{font-size:.5em;font-weight:800;margin-left:2px}
+  .stat .lb{font-size:14.5px;color:#c7d6f0;margin-top:11px;font-weight:600}
+
+  /* ---------- Fee comparison bars ---------- */
+  .compare-bars{margin-top:8px;display:grid;gap:14px}
+  .cbar{display:grid;grid-template-columns:160px 1fr 80px;align-items:center;gap:14px}
+  .cbar .cname{font-size:14.5px;font-weight:700;color:var(--ink-2)}
+  .cbar .ctrack{background:var(--primary-soft);border-radius:999px;height:30px;overflow:hidden}
+  .cbar .cfill{height:100%;border-radius:999px;background:#C3D2EC}
+  .cbar.best .cfill{background:var(--primary)}
+  .cbar .cval{font-size:16px;font-weight:800;text-align:right;color:var(--ink-2)}
+  .cbar.best .cname,.cbar.best .cval{color:var(--primary-dark)}
+  .cbar.best .cname::after{content:' 최저';font-size:11.5px;color:#fff;background:var(--primary);padding:2px 8px;border-radius:999px;margin-left:7px;vertical-align:middle}
+  .efa-badge{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:800;color:var(--primary-dark);background:var(--primary-soft);padding:8px 16px;border-radius:999px;margin-bottom:18px}
+  .efa-badge svg{width:16px;height:16px}
+  .badge-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+  .badge-row .b{font-size:13.5px;font-weight:700;color:var(--primary-dark);background:#fff;border:1px solid var(--line);padding:8px 14px;border-radius:999px;display:flex;align-items:center;gap:7px}
+  .badge-row .b svg{width:15px;height:15px;color:var(--ok)}
+
+  /* ---------- Testimonials ---------- */
+  .quotes{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:44px}
+  .quote{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:var(--radius);padding:26px 22px;display:flex;flex-direction:column}
+  .quote .big{font-size:30px;font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1}
+  .quote .biglb{font-size:13px;color:#9dbcf0;font-weight:700;margin-top:6px;margin-bottom:16px}
+  .quote p{font-size:14px;color:#dbe6fa;line-height:1.6;flex:1}
+  .quote .who{font-size:13px;color:#9dbcf0;margin-top:16px;font-weight:600;border-top:1px solid rgba(255,255,255,.12);padding-top:14px}
+  .quote .who b{color:#fff;font-weight:700}
+
+  /* ---------- Hybrid mini ---------- */
+  .hybrid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:26px}
+  .hcard{border:1.5px solid var(--line);border-radius:var(--radius-sm);padding:20px 22px;background:#fff;transition:border-color .4s,background .4s,box-shadow .4s,opacity .4s}
+  .hcard.dim{opacity:.5}
+  .hcard.on{border-color:var(--primary);background:var(--primary-soft);box-shadow:0 10px 26px rgba(92,140,218,.2);opacity:1}
+  .hcard .mode{font-size:13px;font-weight:800;color:var(--primary-dark);background:var(--primary-soft);display:inline-block;padding:4px 12px;border-radius:999px;margin-bottom:10px;transition:background .4s}
+  .hcard.on .mode{background:#fff}
+  .hcard .time{font-size:13.5px;color:var(--muted);font-weight:600}
+  .hcard .res{font-size:22px;font-weight:800;color:var(--ink);margin-top:8px;letter-spacing:-.01em}
+  .hcard .res span{color:var(--primary-dark)}
+
+  /* ---------- Settings panel + animated toggle ---------- */
+  .setpanel{margin-top:24px;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-sm);max-width:560px}
+  .setbar{display:flex;align-items:center;gap:10px;padding:0 0 0 18px;background:#F2F6FC;border-bottom:1px solid var(--line)}
+  .setbar .wctrls{display:flex;margin-left:auto;align-self:stretch}
+  .setbar .wctrls .wc{width:42px;display:grid;place-items:center;color:var(--muted)}
+  .setbar .wctrls .wc svg{width:12px;height:12px;stroke:currentColor;stroke-width:1.2;fill:none}
+  .setbar .wctrls .wc rect{fill:none}
+  .setbar .settitle{font-size:13px;font-weight:700;color:var(--muted);display:flex;align-items:center;gap:7px;padding:13px 0}
+  .setbar .settitle svg{width:15px;height:15px;color:var(--primary)}
+  .setbody{padding:22px 24px}
+  .setrow{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+  .setlabel{font-size:16px;font-weight:800;color:var(--ink)}
+  .setsub{font-size:13.5px;color:var(--muted);font-weight:600;margin-top:3px}
+  .setsub b{color:var(--primary-dark);font-weight:800}
+  .pay-toggle{position:relative;display:inline-grid;grid-template-columns:1fr 1fr;background:#E7EEF8;border-radius:999px;padding:5px;width:300px;max-width:100%;cursor:pointer;user-select:none;transition:box-shadow .3s,transform .2s}
+  .pay-toggle.hint{animation:ptAttention 2s ease infinite}
+  .pay-toggle:hover{transform:translateY(-1px);animation:none;box-shadow:0 6px 18px rgba(92,140,218,.28)}
+  @keyframes ptAttention{0%,100%{box-shadow:0 0 0 0 rgba(92,140,218,0)}50%{box-shadow:0 0 0 6px rgba(92,140,218,.16)}}
+  .pt-thumb{position:absolute;top:5px;left:5px;width:calc(50% - 5px);height:calc(100% - 10px);background:#fff;border-radius:999px;box-shadow:0 2px 9px rgba(27,42,69,.16);transition:transform .5s cubic-bezier(.34,1.4,.5,1)}
+  .pay-toggle.post .pt-thumb{transform:translateX(100%)}
+  .pt-thumb.tap{animation:tapPulse .5s ease}
+  @keyframes tapPulse{0%{box-shadow:0 2px 9px rgba(27,42,69,.16)}45%{box-shadow:0 0 0 7px rgba(92,140,218,.22)}100%{box-shadow:0 2px 9px rgba(27,42,69,.16)}}
+  .pt-opt{position:relative;z-index:1;background:none;border:0;cursor:pointer;padding:12px 0;font-size:14.5px;font-weight:700;color:var(--muted);transition:color .35s;font-family:inherit}
+  .pt-opt.active{color:var(--primary-dark)}
+  .pt-hint{position:absolute;top:-32px;left:50%;transform:translateX(-50%) translateY(5px);background:var(--ink);color:#fff;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:8px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .35s,transform .35s;z-index:3}
+  .pt-hint::after{content:"";position:absolute;left:50%;bottom:-4px;width:8px;height:8px;margin-left:-4px;background:var(--ink);transform:rotate(45deg)}
+  .pay-toggle.hint .pt-hint{opacity:1;transform:translateX(-50%) translateY(0);animation:hintBob 1.4s ease-in-out infinite}
+  @keyframes hintBob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-3px)}}
+  .finger{position:absolute;right:18%;bottom:-6px;width:30px;height:30px;pointer-events:none;opacity:0;transition:right .5s cubic-bezier(.34,1.4,.5,1);filter:drop-shadow(0 0 4px rgba(47,98,230,.85))}
+  .pay-toggle.post .finger{right:-6%}
+  .finger.show{opacity:1;animation:fingerBob 1.4s ease-in-out infinite,fingerGlow 1.4s ease-in-out infinite}
+  @keyframes fingerBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+  @keyframes fingerGlow{0%,100%{filter:drop-shadow(0 0 3px rgba(47,98,230,.55))}50%{filter:drop-shadow(0 0 9px rgba(47,98,230,1))}}
+  .finger.press{animation:fingerPress .5s ease}
+  @keyframes fingerPress{0%,100%{transform:translateY(0)}40%{transform:translateY(-7px)}}
+
+  /* ---------- 3D isometric scene ---------- */
+  .hybrid-3d{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:24px;align-items:center}
+  .hyb-right{display:flex;flex-direction:column;gap:16px;justify-content:center}
+  .hyb-right .hybrid{grid-template-columns:1fr;margin-top:0;gap:14px}
+  .scene3d{position:relative;background:linear-gradient(160deg,#E9F1FC 0%,#F6F9FD 100%);border:1px solid var(--line);border-radius:14px;padding:8px 10px;overflow:hidden;transition:background .7s}
+  .scene3d.post{background:linear-gradient(160deg,#E4E8F4 0%,#EDEFF8 100%)}
+  .scene3d svg{width:100%;height:auto;display:block}
+  .scene3d .floaty{animation:isoFloat 5.5s ease-in-out infinite;transform-origin:center}
+  @keyframes isoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+  .scene3d .lbl-pre,.scene3d .lbl-post,.scene3d .food-full,.scene3d .food-empty,.scene3d .person-sit,.scene3d .person-stand{transition:opacity .55s}
+  .scene3d .lbl-post,.scene3d .food-empty,.scene3d .person-stand{opacity:0}
+  .scene3d.post .lbl-pre,.scene3d.post .food-full,.scene3d.post .person-sit{opacity:0}
+  .scene3d.post .lbl-post,.scene3d.post .food-empty,.scene3d.post .person-stand{opacity:1}
+  .scene3d .coin-g{transition:transform .75s cubic-bezier(.34,1.25,.5,1)}
+  .scene3d.post .coin-g{transform:translate(188px,-18px)}
+  .scene3d{padding:0;overflow:hidden;background:transparent;border:0}
+  .scene3d svg{display:none}
+  .scene3d .hyb-img{width:100%;display:block}
+  .scene3d .hyb-post{display:none}
+  .scene3d.post .hyb-pre{display:none}
+  .scene3d.post .hyb-post{display:block}
+
+  /* ---------- Responsive ---------- */
+  @media(max-width:900px){
+    .stats .wrap{grid-template-columns:repeat(2,1fr)}
+    .stat{border-left:0;border-top:1px solid rgba(255,255,255,.13)}
+    .stat:first-child,.stat:nth-child(2){border-top:0}
+    .quotes{grid-template-columns:1fr 1fr}
+    .cbar{grid-template-columns:120px 1fr 62px;gap:10px}
+    .hybrid{grid-template-columns:1fr}
+    .hybrid-3d{grid-template-columns:1fr}
+    .usp-cols{grid-template-columns:1fr}
+    .plan-grid{grid-template-columns:1fr}
+    .tco-grid{grid-template-columns:1fr}
+    .ent{flex-direction:column;align-items:flex-start}
+    .price-callout{flex-direction:column;gap:14px}
+    .price-callout .pc-divider{display:none}
+    .price-callout .pc-text{text-align:center}
+    .flow3{grid-template-columns:1fr;gap:14px}
+    .flow3 .arrow{transform:rotate(90deg);padding:4px 0}
+    section{padding:68px 0}
+    .menu,.nav-cta .tel{display:none}
+    .menu.open{display:flex;flex-direction:column;gap:0;position:absolute;top:72px;left:0;right:0;background:#fff;border-bottom:1px solid var(--line);box-shadow:var(--shadow);padding:6px 0;z-index:49}
+    .menu.open li{padding:12px 24px}
+    .burger{display:block}
+    .hero-grid{grid-template-columns:1fr;gap:44px}
+    .hero-visual{order:-1}
+    .cards3,.blist,.sec-grid,.price-wrap{grid-template-columns:1fr}
+    .refgrid{grid-template-columns:repeat(2,1fr)}
+    .steps{grid-template-columns:1fr;gap:30px}
+    .step{padding:0 0 0 0}
+    .step .line{display:none}
+    .step{display:grid;grid-template-columns:54px 1fr;gap:18px;align-items:start;text-align:left}
+    .step .dot{margin:0}
+    .step .dur,.step h4,.step p{grid-column:2}
+  }
+  @media(max-width:560px){
+    .wrap{padding:0 18px}
+    .hero .trust{gap:14px}
+    br.dbr{display:none}
+    .cmp-k,.cmp-v{padding:10px 9px;font-size:11.5px}
+    .cmp-head .cmp-h{padding:11px 6px;font-size:12.5px}
+    .refgrid{grid-template-columns:1fr}
+    .skins{grid-template-columns:1fr}
+    .skin-picker{grid-template-columns:1fr;gap:28px}
+  }
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+  /* ---------- Floating CTA (회원가입) ---------- */
+  .float-cta{position:fixed;right:22px;bottom:22px;z-index:60;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+  .float-cta .fpill{background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 15px;box-shadow:var(--shadow);font-size:12.5px;font-weight:700;color:var(--ink-2)}
+  .float-cta .fpill b{color:var(--primary-dark)}
+  .float-cta .fbtn{display:inline-flex;align-items:center;gap:9px;background:var(--grad);color:#fff;font-weight:800;font-size:15.5px;padding:15px 26px;border-radius:999px;box-shadow:0 12px 30px rgba(47,98,230,.5);border:0;cursor:pointer;transition:filter .18s;animation:fpulse 2.8s ease-in-out infinite}
+  .float-cta .fbtn svg{width:18px;height:18px}
+  .float-cta .fbtn:hover{filter:brightness(1.08)}
+  @keyframes fpulse{0%,100%{box-shadow:0 10px 28px rgba(92,140,218,.45),0 0 0 0 rgba(92,140,218,.5)}50%{box-shadow:0 10px 28px rgba(92,140,218,.45),0 0 0 15px rgba(92,140,218,0)}}
+  @media(max-width:560px){.float-cta{right:14px;bottom:14px}.float-cta .fpill{display:none}.float-cta .fbtn{padding:14px 22px;font-size:14.5px}}
+  @media(prefers-reduced-motion:reduce){.float-cta .fbtn{animation:none}}
+
+  /* ---------- Signup modal ---------- */
+  .signup-modal{position:fixed;inset:0;z-index:100;background:rgba(14,22,38,.55);display:flex;align-items:center;justify-content:center;padding:20px}
+  .signup-modal[hidden]{display:none}
+  .sm-card{background:#fff;border-radius:18px;padding:32px 30px;max-width:420px;width:100%;position:relative;box-shadow:0 30px 70px rgba(0,0,0,.3)}
+  .sm-close{position:absolute;top:12px;right:16px;background:none;border:0;font-size:26px;line-height:1;color:var(--muted);cursor:pointer}
+  .sm-eyebrow{display:inline-block;font-size:12.5px;font-weight:800;color:var(--primary-dark);background:var(--primary-soft);padding:5px 12px;border-radius:999px}
+  .sm-title{font-size:22px;font-weight:800;color:var(--ink);margin-top:12px}
+  .sm-sub{font-size:14px;color:var(--ink-2);margin-top:8px;line-height:1.6}
+  .sm-form{margin-top:18px;display:flex;flex-direction:column;gap:12px}
+  .sm-form label{font-size:13px;font-weight:700;color:var(--ink);display:flex;flex-direction:column;gap:5px}
+  .sm-form input[type=text],.sm-form input[type=tel],.sm-form input[type=email],.sm-form input[type=password],.sm-form select{height:44px;padding:0 13px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;font-family:inherit;background:#fff;width:100%;box-sizing:border-box}
+  .sm-form input:focus,.sm-form select:focus{outline:none;border-color:var(--primary)}
+  .sm-form input.err{border-color:#E0504D;background:#FEF5F5}
+  .sm-agree{flex-direction:row;align-items:center;gap:8px;font-weight:500;font-size:12.5px;color:var(--ink-2)}
+  .sm-submit{flex:1;height:50px;border:0;border-radius:999px;background:var(--grad);color:#fff;font-size:16px;font-weight:800;cursor:pointer;box-shadow:0 10px 24px rgba(47,98,230,.4)}
+  .sm-submit:hover{filter:brightness(1.07)}
+  .sm-foot{margin-top:14px;text-align:center;font-size:12.5px;color:var(--muted)}
+  /* stepper */
+  .sm-steps{display:flex;gap:6px;margin-top:16px}
+  .sm-step{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--muted);text-align:center;line-height:1.2}
+  .sm-step i{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#E7EEF8;color:var(--muted);font-style:normal;font-size:12px;font-weight:800;transition:.3s}
+  .sm-step.active i{background:var(--grad);color:#fff;box-shadow:0 4px 12px rgba(47,98,230,.35)}
+  .sm-step.done i{background:var(--primary-soft);color:var(--primary-dark)}
+  .sm-step.active{color:var(--primary-dark)}
+  .sm-pane{display:flex;flex-direction:column;gap:12px}
+  .sm-pane[hidden]{display:none}
+  .sm-inline{display:flex;gap:8px;align-items:stretch}
+  .sm-inline input{flex:1}
+  .sm-ghost{white-space:nowrap;padding:0 14px;height:44px;border:1.5px solid var(--primary);background:#fff;color:var(--primary-dark);border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit}
+  .sm-ghost:disabled{border-color:var(--line);color:var(--muted);cursor:default}
+  .sm-hint{font-size:12px;font-weight:600;color:var(--ink-2)}
+  .sm-hint.ok{color:#1F9D6B}
+  .sm-hint.bad{color:#E0504D}
+  .sm-terms{display:flex;flex-direction:column;gap:9px;border:1px solid var(--line);border-radius:12px;padding:13px 14px}
+  .sm-all{font-size:14px;color:var(--ink);padding:2px 0}
+  .sm-nav{display:flex;gap:10px;margin-top:6px}
+  .sm-back{height:50px;padding:0 22px;border:1.5px solid var(--line);background:#fff;color:var(--ink-2);border-radius:999px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit}
+</style>
+</head>
+<body>
+
+<!-- ===== Top banner ===== -->
+<div class="topbar"><b>한정 혜택</b> 신규 가입 시 첫 달 무료 + 커스텀 QR 디자인 제공</div>
+
+<!-- ===== Header ===== -->
+<header>
+  <div class="wrap nav">
+    <a href="#" class="logo">
+      <span class="mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="15" y="15" width="3" height="3"/><rect x="19" y="19" width="2" height="2"/></svg>
+      </span>
+      QR오더
+    </a>
+    <nav>
+      <ul class="menu">
+        <li><a href="#why">서비스 소개</a></li>
+        <li><a href="#refs">도입 사례</a></li>
+        <li><a href="#pricing">도입 안내 및 요금</a></li>
+        <li><a href="#support">고객 지원</a></li>
+      </ul>
+    </nav>
+    <div class="nav-cta">
+      <span class="tel" aria-label="대표번호">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        1833-8540
+      </span>
+      <a href="#contact" class="btn btn-primary">5분 안에 시작해보기</a>
+    </div>
+    <button class="burger" aria-label="메뉴 열기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+  </div>
+</header>
+
+<!-- ===== Section 1. Hero ===== -->
+<section class="hero" id="top">
+  <div class="wrap">
+    <div class="hero-head">
+      <span class="eyebrow">기기 부담 없는 스마트 QR오더</span>
+      <h1 style="font-size:clamp(15px,4.6vw,44px);line-height:1.45">
+        <span class="hline">도입하면 마냥 편해질 줄 알았던 태블릿 오더</span>
+        <span class="hline">매일 충전하고 닦고, 잦은 잔고장까지 겹쳐</span>
+        <span class="hline"><span class="hl">오히려 일이 더 늘어나진</span> 않으셨나요?</span>
+      </h1>
+    </div>
+    <div class="hero-grid">
+    <div>
+      <p class="sub">화려한 기능보다 중요한 건,<br><b>사장님의 일거리는 덜어내고 손님의 주문은 더 쾌적해지는 것.</b></p>
+      <p class="sub">기기 도입의 부담은 없애고,<br>주문과 결제는 완벽하게 덜어드리는 스마트 QR오더</p>
+      <div class="cta-row">
+        <a href="#skin" class="btn btn-primary btn-lg" style="background:#6DC6AC;box-shadow:0 10px 24px rgba(109,198,172,.45)">가상 체험하기</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-illust-img">
+        <img class="hero-3d" src="hero-3d.png" alt="QR오더 스마트 주문·결제 일러스트">
+      </div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Stats band ===== -->
+<section class="stats" aria-label="주요 지표">
+  <div class="wrap">
+    <div class="stat"><div class="num">000<small>억</small></div><div class="lb">누적 거래액</div></div>
+    <div class="stat"><div class="num">000<small>만원↓</small></div><div class="lb">36개월 총비용 절감</div></div>
+    <div class="stat"><div class="num">13<small>개국</small></div><div class="lb">메뉴 자동 번역</div></div>
+    <div class="stat"><div class="num">D+3</div><div class="lb">영업일 기준 자동 정산</div></div>
+  </div>
+</section>
+
+<!-- ===== Section 2. Why Us ===== -->
+<section class="why" id="why">
+  <div class="wrap">
+    <div class="center"><span class="eyebrow">왜 QR오더인가</span></div>
+    <p class="keycopy">보기 좋은 시스템보다<br class="dbr"><span class="hl">일하기 좋은 시스템</span>을 만듭니다.</p>
+    <div class="cards3">
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><line x1="5" y1="20" x2="19" y2="6"/></svg></div>
+        <h3>거추장스러운 기기 완전 대체</h3>
+        <p>먼지 쌓이고 고장 나는 태블릿, 복잡한 배선 공사 없이 테이블 위 깔끔한 스티커 하나로 끝. 매장의 군더더기를 덜어내요.</p>
+      </div>
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5"/><path d="M8 21H3v-5"/><path d="M21 3l-7.5 7.5"/><path d="M3 21l7.5-7.5"/><circle cx="12" cy="12" r="1.6"/></svg></div>
+        <h3>완벽한 하이브리드 운영</h3>
+        <p>충돌 없이 선불·후불 방식 모두 원버튼으로 완벽하게 통제할 수 있어요.</p>
+      </div>
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h3>1:1 설치·사용 교육</h3>
+        <p>기계를 잘 몰라도 걱정 마세요. 도입부터 정착까지 현장 맞춤형으로 끝까지 돕는 전담팀과 누구나 이해하는 가이드·매뉴얼을 제공해요.</p>
+      </div>
+    </div>
+
+    <div style="margin-top:48px;background:var(--primary-soft2);border:1px solid var(--line);border-radius:var(--radius);padding:34px 32px">
+      <div style="font-size:clamp(22px,2.8vw,28px);font-weight:800;color:var(--ink);letter-spacing:-.01em">하이브리드 결제 · 점심엔 빠르게, 저녁엔 길게</div>
+      <p style="font-size:16px;color:var(--ink-2);margin-top:8px">시간대에 맞춰 버튼 하나만 누르면 결제 방식이 바뀌어요.<br>바쁜 점심엔 '선불'로 테이블을 빠르게 돌리고, 저녁엔 '후불'로 바꿔 여유롭게 추가 주문을 늘려보세요.</p>
+
+      <div class="hybrid-3d">
+      <div class="scene3d" id="scene3d" role="img" aria-label="선불은 자리에서 바로 결제, 후불은 식사 후 카운터에서 결제하는 모습">
+        <img class="hyb-img hyb-pre" src="hybrid-pre.png" alt="선불 · 자리에서 바로 주문·결제">
+        <img class="hyb-img hyb-post" src="hybrid-post.png" alt="후불 · 식사 후 카운터에서 결제">
+      </div>
+      <div class="hyb-right">
+      <div class="setpanel">
+        <div class="setbar">
+          <span class="settitle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> QR오더 관리자 사이트 · 주문 방식 설정</span>
+          <span class="wctrls" aria-hidden="true">
+            <i class="wc"><svg viewBox="0 0 12 12"><line x1="2" y1="6" x2="10" y2="6"/></svg></i>
+            <i class="wc"><svg viewBox="0 0 12 12"><rect x="2.5" y="2.5" width="7" height="7"/></svg></i>
+            <i class="wc wc-close"><svg viewBox="0 0 12 12"><line x1="3" y1="3" x2="9" y2="9"/><line x1="9" y1="3" x2="3" y2="9"/></svg></i>
+          </span>
+        </div>
+        <div class="setbody">
+          <div class="setrow">
+            <div>
+              <div class="setlabel">결제 방식</div>
+              <div class="setsub" id="payStatus">현재 <b>주문 시 결제 (선불)</b></div>
+            </div>
+            <div class="pay-toggle" id="payToggle" role="group" aria-label="결제 방식 전환">
+              <span class="pt-hint" aria-hidden="true">눌러서 전환</span>
+              <span class="pt-thumb" aria-hidden="true"></span>
+              <button type="button" class="pt-opt active" data-mode="pre">선불</button>
+              <button type="button" class="pt-opt" data-mode="post">후불</button>
+              <svg class="finger" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V11h.5V8.5a1.5 1.5 0 0 1 3 0V11h.5V9.5a1.5 1.5 0 0 1 3 0v5.5a5 5 0 0 1-5 5h-1.6a4 4 0 0 1-2.83-1.17l-3.3-3.3a1.5 1.5 0 0 1 2.12-2.12L9 14.5z" fill="#fff" stroke="#2F62E6" stroke-width="1.1" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hybrid">
+        <div class="hcard on" id="cardPre">
+          <span class="mode">주문 시 결제 (선불)</span>
+          <div class="time">11:30 – 14:00 · 점심 피크</div>
+          <div class="res"><span>+000%</span> 테이블 회전 빨라짐 · 주문 누락 없음</div>
+        </div>
+        <div class="hcard dim" id="cardPost">
+          <span class="mode">나갈 때 결제 (후불)</span>
+          <div class="time">18:00 – 23:00 · 저녁·주류</div>
+          <div class="res"><span>+000%</span> 손님당 결제액 증가 · 추가 주문 자유</div>
+        </div>
+      </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== USP: 업무 연속성 & POS 유지 ===== -->
+<section class="usp-band">
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow">운영 효율</span>
+      <h2 class="title">손님이 몰리는 피크타임,<br class="dbr">직원이 갑자기 빠진 날에도 매장은 매끄럽게 돌아갑니다.</h2>
+      <p class="lead">손님이 직접 폰으로 주문하니까요. 번거로운 대기 줄도, 쉴 새 없는 호출 소리도, 아찔한 주문 누락도 눈에 띄게 줄어듭니다.</p>
+    </div>
+    <div class="usp-cols">
+      <div class="usp-col">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg></div>
+        <h3>피크타임에도 밀리지 않는 주문</h3>
+        <p>바쁜 시간엔 한 사람이 모든 주문을 받기 어려워요. 손님이 각자 폰으로 동시에 주문하니, 줄서기·호출·주문 누락 없이 매장이 매끄럽게 돌아가요.</p>
+        <div class="tags"><span>동시 주문 처리</span><span>주문 누락 감소</span><span>호출 응대 부담 감소</span></div>
+      </div>
+      <div class="usp-col">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <h3>기존 POS, 바꾸지 않아도 됩니다</h3>
+        <p>쓰던 POS 장비 그대로 두세요. QR오더 전용 주문접수 프로그램만 설치하면 끝. 새 장비 구매도, 매장 공사도, POS 교체도 필요 없어요.</p>
+        <div class="tags"><span>장비 구매 0</span><span>공사 0</span><span>프로그램만 설치</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Section 3 & 4. Benefits ===== -->
+<section class="benefit" id="benefit">
+  <div class="wrap">
+    <!-- 사장님 -->
+    <div class="seg-head"><span class="tag">사장님</span><h2>사장님에게 좋아지는 점</h2></div>
+    <div class="blist">
+      <div class="bitem">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <h4>고정 지출 다이어트</h4>
+        <p>비싼 태블릿 렌탈료·유지보수비·고장 수리비 대신, 군더더기 없는 월 정액 하나로. 테이블이 늘어도 비용은 그대로예요.</p>
+      </div>
+      <div class="bitem">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg></div>
+        <h4>우리 가게만의 QR메뉴판</h4>
+        <p>매장명·로고·디자인까지 100% 내 매장 자산. 다양한 디자인을 선택해 우리 가게만의 QR로 무료 교체해 보세요.</p>
+      </div>
+      <div class="bitem">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 5-3.5 7.5-8.5 9.5C7.5 19.5 4 17 4 12V5l8.5-3L21 5v7z"/></svg></div>
+        <h4>인건비 절감</h4>
+        <p>주문·결제를 손님이 직접 처리하니 주문 받는 일손이 줄어, 같은 인원으로도 매장을 여유롭게 운영할 수 있어요.</p>
+      </div>
+    </div>
+    <!-- 손님 -->
+    <div class="seg-head"><span class="tag">손님</span><h2>손님에게 좋아지는 점</h2></div>
+    <div class="blist">
+      <div class="bitem">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+        <h4>주문 실수 없는 정확한 주문</h4>
+        <p>손님이 직접 메뉴·옵션·수량을 선택해 주문하니, 잘못 듣거나 빠뜨리는 실수가 없어요. 주문은 그대로 주방에 전달돼요.</p>
+      </div>
+      <div class="bitem">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <h4>13개국 언어 자동 번역</h4>
+        <p>외국인 손님도 직원을 부를 필요 없이, 본인 휴대폰 설정에 맞춘 다국어 번역으로 편안하게 주문을 완료해요.</p>
+        <span class="badge-lang">한국어 · English · 中文 · 日本語 외 13개국</span>
+      </div>
+      <div class="bitem">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div>
+        <h4>추가 주문도 자리에서 바로</h4>
+        <p>음료 한 잔, 안주 하나 더 시킬 때도 직원을 부를 필요 없이 자리에서 폰으로 바로 추가 주문. 사진과 설명을 천천히 보고 내 속도로 고를 수 있어요.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 주문 화면 스킨 커스터마이즈 ===== -->
+<section class="skin-section" id="skin">
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow">QR 주문 스킨</span>
+      <h2 class="title">손님에게 보여줄 화면,<br class="dbr">매장이 직접 디자인합니다.</h2>
+      <p class="lead">같은 메뉴라도 매장 분위기에 맞춰 색·레이아웃·배너·카테고리를 골라 적용. 손님이 보는 주문 페이지를 우리 가게만의 스킨으로 바꿀 수 있어요.</p>
+    </div>
+    <div class="skin-picker">
+      <input class="sk-radio" type="radio" name="skinsel" id="skA" checked>
+      <input class="sk-radio" type="radio" name="skinsel" id="skB">
+      <input class="sk-radio" type="radio" name="skinsel" id="skC">
+      <input class="sk-radio" type="radio" name="skinsel" id="skD">
+      <div class="skin-opts">
+        <p style="font-size:13px;font-weight:700;color:var(--muted);margin-bottom:2px">샘플 스킨을 선택해 보세요</p>
+        <label class="sk-opt" for="skA">
+          <span class="sk-radio-dot" aria-hidden="true"></span>
+          <img class="sk-thumb" src="skin-pink.png" alt="">
+          <span class="sk-meta"><b>비비드 핑크</b><small>이미지 중심 추천 화면</small></span>
+        </label>
+        <label class="sk-opt" for="skB">
+          <span class="sk-radio-dot" aria-hidden="true"></span>
+          <img class="sk-thumb" src="skin-teal.png" alt="">
+          <span class="sk-meta"><b>내추럴 민트</b><small>리뷰·신뢰 강조 화면</small></span>
+        </label>
+        <label class="sk-opt" for="skC">
+          <span class="sk-radio-dot" aria-hidden="true"></span>
+          <img class="sk-thumb" src="skin-black.png" alt="">
+          <span class="sk-meta"><b>모던 블랙</b><small>리스트형 · 깔끔한 식음 매장</small></span>
+        </label>
+        <label class="sk-opt" for="skD">
+          <span class="sk-radio-dot" aria-hidden="true"></span>
+          <img class="sk-thumb" src="skin-grid.png" alt="">
+          <span class="sk-meta"><b>민트 그리드</b><small>카테고리 사이드바 + 격자 메뉴</small></span>
+        </label>
+      </div>
+      <div class="skin-stage">
+        <img class="prev" data-k="A" src="skin-pink.png" alt="QR오더 손님 주문 화면 ·비비드 핑크 스킨">
+        <img class="prev" data-k="B" src="skin-teal.png" alt="QR오더 손님 주문 화면 ·내추럴 민트 스킨">
+        <img class="prev" data-k="C" src="skin-black.png" alt="QR오더 손님 주문 화면 ·모던 블랙 스킨">
+        <img class="prev" data-k="D" src="skin-grid.png" alt="QR오더 손님 주문 화면 ·민트 그리드 스킨">
+      </div>
+    </div>
+    <div class="skin-tags">
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg> 색상 테마 선택</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg> 리스트·그리드 레이아웃</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg> 배너·프로모션 구성</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg> 카테고리 순서 편집</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 데이터 / AI 인사이트 ===== -->
+<section class="dataai">
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow">데이터 &amp; AI</span>
+      <h2 class="title">주문이 데이터로 남습니다.</h2>
+      <p class="lead">QR 한 번에 고객·메뉴·시간·결제가 자동으로 기록돼요. 원하면 배달앱 매출까지 한곳에 모아, 그 데이터를 근거로 AI가 매장 인사이트를 드려요.</p>
+    </div>
+    <div class="flow3">
+      <div class="flow-box">
+        <div class="ttl">데이터 소스</div>
+        <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg> QR 주문 매출</div>
+        <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="19" r="2"/><circle cx="17" cy="19" r="2"/><path d="M5 17V6h10v11M15 9h3l3 4v4h-2"/></svg> 배달앱 매출 <span style="font-weight:600;color:var(--muted);font-size:12px">(선택)</span></div>
+        <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg> POS 결제 데이터</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="flow-box hub">
+        <div class="ttl">통합 매출 허브</div>
+        <div class="hubname">한 화면 통합 매출</div>
+        <p>QR · 배달 · POS를<br>하나의 대시보드로</p>
+      </div>
+      <div class="arrow">→</div>
+      <div class="flow-box ai">
+        <div class="ttl">AI 매장 인사이트</div>
+        <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="20" x2="4" y2="14"/><line x1="10" y1="20" x2="10" y2="8"/><line x1="16" y1="20" x2="16" y2="11"/><line x1="22" y1="20" x2="2" y2="20"/></svg> 채널별 매출 비중</div>
+        <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg> 다음 주 매출 예측</div>
+        <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12c.5.5 1 1.5 1 3h6c0-1.5.5-2.5 1-3a7 7 0 0 0-4-12z"/></svg> 메뉴·시간대 추천</div>
+      </div>
+    </div>
+    <div class="summary">흩어진 매출을 하나로, 결정을 데이터로.</div>
+  </div>
+</section>
+
+<!-- ===== Section 5. Process ===== -->
+<section class="process" id="process">
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow">도입 프로세스</span>
+      <h2 class="title">익숙하지 않은 방식, 걱정 마세요.<br class="dbr">세팅부터 직원 교육까지 저희가 다 해드립니다.</h2>
+      <p class="lead">상담부터 영업 시작까지 평균 4~5일. 매장은 영업만 하시면 돼요.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="line"></div>
+        <div class="dot">1</div>
+        <span class="dur">1일</span>
+        <h4>도입 상담</h4>
+        <p>매장 환경(선불/후불)에 맞는 최적의 운영 방식을 컨설팅해요.</p>
+      </div>
+      <div class="step">
+        <div class="line"></div>
+        <div class="dot">2</div>
+        <span class="dur">2~3일</span>
+        <h4>메뉴 세팅 &amp; QR 제작</h4>
+        <p>매장 로고와 분위기를 담은 커스텀 QR 및 안내물을 제작해요.</p>
+      </div>
+      <div class="step">
+        <div class="line"></div>
+        <div class="dot">3</div>
+        <span class="dur">1일</span>
+        <h4>설치 &amp; 현장 교육</h4>
+        <p>쓰던 POS 기기 그대로, 배선 공사 없이 원격으로 전용 프로그램만 설치해 드려요. 기존 POS 업체와의 마찰이나 복잡한 세팅 걱정 없이, 설치 후엔 누구나 이해하는 쉬운 매뉴얼로 현장 교육까지 진행해요.</p>
+      </div>
+      <div class="step">
+        <div class="dot">4</div>
+        <span class="dur">상시</span>
+        <h4>영업 시작 &amp; 운영 지원</h4>
+        <p>실전 돌입! 운영 중 문제가 생기면 원격으로 지원해 드려요.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Section 6. References ===== -->
+<section class="refs" id="refs">
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow">도입 사례</span>
+      <h2 class="title">다양한 현장에서 이미 검증된 시스템</h2>
+      <p class="lead">복잡한 푸드코트부터 빠른 휴게소, 일반 음식점, 프리미엄 주거시설 컨시어지까지, 환경을 가리지 않고 안정적으로 운영되고 있어요.</p>
+    </div>
+    <div class="refgrid">
+      <div class="ref">
+        <div class="ref-img"><img src="img_foodcourt.png" alt="서울역 커넥트플레이스 푸드코트 전경" loading="lazy"></div>
+        <div class="ref-body">
+          <div class="cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg> 푸드코트</div>
+          <h4>서울역 커넥트플레이스</h4>
+          <p>대형 푸드코트 안정 운영</p>
+        </div>
+      </div>
+      <div class="ref">
+        <div class="ref-img"><img src="img_restarea.png" alt="보성 녹차휴게소 외관" loading="lazy"></div>
+        <div class="ref-body">
+          <div class="cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18"/><path d="M5 12V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v5"/><path d="M5 12v6"/><path d="M19 12v6"/><circle cx="8" cy="18" r="1.5"/><circle cx="16" cy="18" r="1.5"/></svg> 고속도로 휴게소</div>
+          <h4>보성 녹차휴게소</h4>
+          <p>대기 시간 감소</p>
+        </div>
+      </div>
+      <div class="ref">
+        <div class="ref-img"><img src="img_foodstore.png" alt="썬더버드 매장 내부" loading="lazy"></div>
+        <div class="ref-body">
+          <div class="cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 3v7a2 2 0 0 0 2 2v9M8 3v18M8 3v7M16 3c-2 0-3 2-3 5s1 4 3 4v9"/></svg> 일반 음식점</div>
+          <h4>썬더버드</h4>
+          <p>다국어 주문 자동화</p>
+        </div>
+      </div>
+      <div class="ref">
+        <div class="ref-img"><img src="img_cafe.png" alt="차이커피 음료" loading="lazy"></div>
+        <div class="ref-body">
+          <div class="cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg> 카페</div>
+          <h4>차이커피</h4>
+          <p>응대 부담 감소</p>
+        </div>
+      </div>
+      <div class="ref">
+        <div class="ref-img"><img src="https://storage.googleapis.com/cr-resource/image/84c710210c853ac3f09f01375ff86113/soyohannam/650/c660467dc321f68a93d0ae756bd42d49.png?_1780449178" alt="소요한남 하이엔드 레지던스" loading="lazy"></div>
+        <div class="ref-body">
+          <div class="cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/><path d="M9 7h2M9 11h2M9 15h2M13 7h2M13 11h2M13 15h2"/></svg> 컨시어지 서비스</div>
+          <h4>소요한남</h4>
+          <p>프리미엄 컨시어지 주문</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== 도입 후 효과 ===== -->
+<section class="impact">
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow">도입 후 효과</span>
+      <h2 class="title">도입한 매장은 이렇게 달라졌습니다.</h2>
+    </div>
+    <div class="quotes">
+      <div class="quote">
+        <div class="big">−000만</div><div class="biglb">월 인건비 절감</div>
+        <p>주문 접수가 자동으로 처리되어, 바쁜 시간에도 같은 인원으로 매장을 운영할 수 있어요.</p>
+      </div>
+      <div class="quote">
+        <div class="big">+000%</div><div class="biglb">평일 저녁 손님당 결제액</div>
+        <p>나갈 때 결제하는 후불 방식에서 손님이 자리에서 자유롭게 추가 주문하면서 결제액이 올라가요.</p>
+      </div>
+      <div class="quote">
+        <div class="big">+000%</div><div class="biglb">외국인 주문 증가</div>
+        <p>메뉴가 여러 나라 말로 자동 번역되어, 외국인 손님도 직원 도움 없이 바로 주문을 마쳐요.</p>
+      </div>
+      <div class="quote">
+        <div class="big">000개</div><div class="biglb">매장 통합 운영</div>
+        <p>여러 매장을 하나의 QR과 결제로 묶고 정산은 매장별로 자동 나눠, 운영 부담을 크게 줄여요.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 비교 (태블릿 vs QR / 타사 vs 우리) ===== -->
+<section class="why" id="compare">
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow">기기 없이, 가볍게</span>
+      <h2 class="title">비싼 태블릿도, 자리 차지하는 키오스크도<br class="dbr">필요 없습니다.</h2>
+      <p class="lead">도입비는 가볍게, 관리는 더 가볍게. 거품을 뺀 QR오더.</p>
+    </div>
+
+    <div class="adv-grid">
+      <div class="adv">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2.5"/><line x1="11" y1="18" x2="13" y2="18"/></svg></div>
+        <h3>기기 구매 0원</h3>
+        <p>손님 휴대폰으로 주문하니 비싼 주문 기기를 살 필요가 없어요.</p>
+        <div class="vs-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> 태블릿·키오스크: 대당 구매·렌탈 비용</div>
+      </div>
+      <div class="adv">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 5-3.5 7.5-8.5 9.5C7.5 19.5 4 17 4 12V5l8.5-3L21 5v7z"/></svg></div>
+        <h3>관리 부담 0</h3>
+        <p>충전·청소·고장 수리 없이 테이블 스티커 한 장이면 끝나요.</p>
+        <div class="vs-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> 태블릿·키오스크: 배터리·파손·노후화 관리</div>
+      </div>
+      <div class="adv">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18"/><path d="M3 6h18"/><path d="M3 18h18"/></svg></div>
+        <h3>무제한 확장</h3>
+        <p>좌석이 늘어도 추가 기기나 비용 없이 매월 그대로예요.</p>
+        <div class="vs-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> 태블릿·키오스크: 좌석마다 기기·비용 증가</div>
+      </div>
+      <div class="adv">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <h3>언어 장벽 없는 다국어 번역</h3>
+        <p>외국인 손님도 막힘없이 주문해요.</p>
+        <div class="vs-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> 태블릿·키오스크: 다국어 지원 제한</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Section 7. Pricing & PG ===== -->
+<section class="pricing" id="pricing">
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow">투명하고 간단한 가격</span>
+      <h2 class="title">매월 딱 정해진 요금. 그게 전부입니다.</h2>
+      <p class="lead">테이블이 늘어나도 복잡한 계산 없이 한 달 고정비용 하나면 충분해요. 1개월 무료, 카드 등록만으로 가볍게 시작하세요.</p>
+    </div>
+
+    <div class="pmatrix">
+      <div class="pmrow pm-head">
+        <div class="pm-cell pm-lbl"></div>
+        <div class="pm-cell">
+          <div class="pm-name">실속형</div>
+          <div class="pm-desc">기본 주문 처리 시간을 줄이고<br>홀 관리에 집중할 매장</div>
+          <div class="pm-price">19,000원<small> /월</small></div>
+          <a href="#contact" class="pm-btn">시작하기</a>
+        </div>
+        <div class="pm-cell pm-feat">
+          <div class="pm-name">프리미엄<span class="pm-badge">추천</span></div>
+          <div class="pm-desc">단순 주문 처리를 넘어, AI·데이터로<br>매장 운영을 고도화할 매장</div>
+          <div class="pm-price">39,000원<small> /월</small></div>
+          <a href="#contact" class="pm-btn">시작하기</a>
+        </div>
+        <div class="pm-cell">
+          <div class="pm-name">엔터프라이즈</div>
+          <div class="pm-desc">다점포 일괄 도입·본사 통합 관리가<br>필요한 기업 (10매장 이상 / 별도 협의)</div>
+          <div class="pm-price">협의</div>
+          <a href="#contact" class="pm-btn">문의하기</a>
+        </div>
+      </div>
+      <div class="pmrow">
+        <div class="pm-cell pm-lbl">QR 주문·결제 + 다국어 메뉴판</div>
+        <div class="pm-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="pm-cell pm-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="pm-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="20 6 9 17 4 12"/></svg></div>
+      </div>
+      <div class="pmrow">
+        <div class="pm-cell pm-lbl">메뉴 관리 + 메뉴관리 AI봇</div>
+        <div class="pm-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="pm-cell pm-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="pm-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="20 6 9 17 4 12"/></svg></div>
+      </div>
+      <div class="pmrow">
+        <div class="pm-cell pm-lbl">점주 자율 스킨·QR 카드 디자인</div>
+        <div class="pm-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="pm-cell pm-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="pm-cell">본사 통합</div>
+      </div>
+      <div class="pmrow">
+        <div class="pm-cell pm-lbl">쿠폰 발행 + 발행금 자동 충전</div>
+        <div class="pm-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="pm-cell pm-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="pm-cell">본사 협의</div>
+      </div>
+      <div class="pmrow">
+        <div class="pm-cell pm-lbl">쿠폰 예약 발송</div>
+        <div class="pm-cell"><span class="dash">–</span></div>
+        <div class="pm-cell pm-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="pm-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="20 6 9 17 4 12"/></svg></div>
+      </div>
+      <div class="pmrow">
+        <div class="pm-cell pm-lbl">스탬프·포인트 적립 (단골 관리)</div>
+        <div class="pm-cell"><span class="dash">–</span></div>
+        <div class="pm-cell pm-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="pm-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="20 6 9 17 4 12"/></svg></div>
+      </div>
+      <div class="pmrow">
+        <div class="pm-cell pm-lbl">매장비서 AI · AI 인사이트</div>
+        <div class="pm-cell"><span class="dash">–</span></div>
+        <div class="pm-cell pm-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="pm-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="20 6 9 17 4 12"/></svg></div>
+      </div>
+      <div class="pmrow">
+        <div class="pm-cell pm-lbl">분기 운영 리뷰 미팅</div>
+        <div class="pm-cell"><span class="dash">–</span></div>
+        <div class="pm-cell pm-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="pm-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="20 6 9 17 4 12"/></svg></div>
+      </div>
+      <div class="pmrow">
+        <div class="pm-cell pm-lbl">POS 표준 연동</div>
+        <div class="pm-cell"><span class="dash">–</span></div>
+        <div class="pm-cell pm-feat">유료 협의</div>
+        <div class="pm-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="20 6 9 17 4 12"/></svg></div>
+      </div>
+      <div class="pmrow">
+        <div class="pm-cell pm-lbl">다점포 통합 관리·본사 정산</div>
+        <div class="pm-cell"><span class="dash">–</span></div>
+        <div class="pm-cell pm-feat"><span class="dash">–</span></div>
+        <div class="pm-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="20 6 9 17 4 12"/></svg></div>
+      </div>
+      <div class="pmrow">
+        <div class="pm-cell pm-lbl">전담 매니저 · CS 외주</div>
+        <div class="pm-cell"><span class="dash">–</span></div>
+        <div class="pm-cell pm-feat"><span class="dash">–</span></div>
+        <div class="pm-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="20 6 9 17 4 12"/></svg></div>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:16px;font-size:12.5px;color:var(--muted)">월 구독료는 매장당·VAT 별도 기준이에요.</p>
+
+    <div class="center" style="margin-top:84px">
+      <span class="eyebrow">3년간 유지비 포함 총비용 비교</span>
+      <h2 class="title">키오스크 한 대 값이면,<br class="dbr">QR오더는 몇 년을 씁니다.</h2>
+      <p class="lead">진짜 비용은 도입가가 아니라, 3년간 쓰면서 드는 총비용이에요.<br>초기 장비비, 매달 내는 돈, 고장 손실까지 합쳐 비교해 보세요.</p>
+    </div>
+    <div class="tco-grid">
+      <div class="tco-card c-bad">
+        <h4>키오스크 2대</h4>
+        <div class="tnum">약 620만원<small> / 36개월</small></div>
+        <ul>
+          <li>일시불 구매 300~500만원</li>
+          <li>월 5~7만원 × 36개월</li>
+          <li>36개월 약정</li>
+          <li class="hl bad">고장 시 매출 손실·교체비</li>
+        </ul>
+      </div>
+      <div class="tco-card c-warn">
+        <h4>태블릿오더 (10테이블)</h4>
+        <div class="tnum">약 720만원<small> / 36개월</small></div>
+        <ul>
+          <li>대당 2~3만원 × 10대</li>
+          <li>월 납입 20만원 × 36개월</li>
+          <li>36개월 약정</li>
+          <li class="hl bad">테이블 늘면 비용 증가</li>
+        </ul>
+      </div>
+      <div class="tco-card best">
+        <span class="pbadge">가장 낮은 총비용</span>
+        <h4>QR오더 (테이블 무제한)</h4>
+        <div class="tnum">약 68만원<small> / 36개월</small></div>
+        <ul>
+          <li>월 19,000원 × 36개월</li>
+          <li>초기 장비비 0원</li>
+          <li>손님 폰으로 주문 (기기 0)</li>
+          <li class="hl">고장·다운 리스크 0</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tco-save">36개월 기준 <b>최대 000만원 절감</b>. 초기비용도, 고장 걱정도 없어요.</div>
+    <div class="tco-note">※ 경쟁 제품 금액은 업계 평균 기반 예시이며, 실제 비용은 매장 규모·계약 조건에 따라 달라요.</div>
+
+    <div class="faq" id="faq" style="margin:56px auto 0">
+      <div class="acc">
+        <button class="acc-q"><span><span class="qm">Q.</span> 선불·후불·메뉴판만이 정말 같은 가격인가요?</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="acc-a"><div class="inner">
+          <strong>네, 자유롭게 선택할 수 있어요.</strong> 다국어 메뉴판만 단독으로 쓸 수도 있고, 선불·후불 결제 방식은 자리에서 버튼 하나로 전환돼요. 모드를 바꿔도 추가 요금이 없어요.
+        </div></div>
+      </div>
+      <div class="acc">
+        <button class="acc-q"><span><span class="qm">Q.</span> 테이블이 많아도 추가 요금이 없나요?</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="acc-a"><div class="inner">
+          <strong>없어요. 테이블은 무제한이에요.</strong> 5석이든 100석이든 매월 같은 정액이라, 좌석이 늘어도 추가 비용이 없어요. 태블릿처럼 좌석마다 기기·비용이 따라 늘지 않아요.
+        </div></div>
+      </div>
+      <div class="acc">
+        <button class="acc-q"><span><span class="qm">Q.</span> 중간에 해지할 수 있나요?</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="acc-a"><div class="inner">
+          <strong>네, 언제든 해지할 수 있어요.</strong> 1개월 무료(카드 등록만, 결제 7일 전 자동 알림)로 시작하고, 정산은 D+3 영업일에 자동 입금돼요. 메뉴·고객·매출·QR 디자인 데이터는 모두 매장 자산이에요.
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Section 8. Security ===== -->
+<section class="security" id="security">
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow">정산 &amp; 보안</span>
+      <h2 class="title">투명한 정산과 든든한 보안 체계</h2>
+      <p class="lead">믿고 돈과 데이터를 맡길 수 있는 안전한 파트너가 되어 드릴게요.</p>
+    </div>
+    <div class="sec-grid">
+      <div class="sec-card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="13" y2="13"/></svg></div>
+        <h4>누락 없는 1원 단위 투명 정산</h4>
+        <p>매일 메신저로 발송되는 깔끔한 정산 리포트로 퇴근길 발걸음을 가볍게. 단 1원의 누락도 없이 매출을 확인하세요.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg> 자체 시스템으로 D+3 영업일에 자동 입금</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg> 월 정액 외 숨은 비용 없이 명세서로 투명하게</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg> 매출·정산 내역 매월 투명 확인</li>
+        </ul>
+      </div>
+      <div class="sec-card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <h4>철벽 보안 시스템</h4>
+        <p>검증된 클라우드 서버와 데이터 암호화로 매장 정보를 안전하게 지켜요.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg> 개인정보보호 규제(KISA 가이드라인) 준수 · 위치·결제 데이터 무단 수집 없음</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg> 관리자 권한 세분화로 내부 정보 통제</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg> 데이터 암호화 및 검증된 클라우드 서버</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 고객 지원 ===== -->
+<section class="why" id="support">
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow">고객 지원</span>
+      <h2 class="title">궁금한 점, 빠르게 도와드립니다.</h2>
+      <p class="lead">자주 묻는 질문을 먼저 확인하고, 더 궁금한 점은 고객센터로 편하게 문의하세요.</p>
+    </div>
+    <div class="support-grid">
+      <div class="faq">
+        <div class="acc">
+          <button class="acc-q"><span><span class="qm">Q.</span> 설치는 어떻게 진행되나요?</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <div class="acc-a"><div class="inner">쓰던 POS 기기 그대로, 원격으로 전용 프로그램만 설치해 드려요. 배선 공사 없이 평균 3~5일이면 시작할 수 있어요.</div></div>
+        </div>
+        <div class="acc">
+          <button class="acc-q"><span><span class="qm">Q.</span> 기계를 잘 몰라도 쓸 수 있나요?</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <div class="acc-a"><div class="inner">네. 도입부터 정착까지 전담팀이 1:1로 돕고, 사장님과 직원 누구나 이해할 수 있는 쉬운 매뉴얼을 함께 드려요.</div></div>
+        </div>
+        <div class="acc">
+          <button class="acc-q"><span><span class="qm">Q.</span> 무료 체험은 어떻게 시작하나요?</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <div class="acc-a"><div class="inner">카드 등록만으로 30일 무료 체험을 시작할 수 있어요. 동일 사업자당 1회 제공되며, 체험 종료 7일 전 알림을 드려요.</div></div>
+        </div>
+        <div class="acc">
+          <button class="acc-q"><span><span class="qm">Q.</span> 해지하면 데이터는 어떻게 되나요?</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <div class="acc-a"><div class="inner">마이페이지에서 언제든 해지할 수 있어요. 해지 후 데이터는 30일간 보존되며, 90일 내 재가입 시 그대로 복구돼요.</div></div>
+        </div>
+      </div>
+      <div class="support-contact">
+        <h3>고객센터</h3>
+        <div class="sc-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg> <span><b>1833-8540</b></span></div>
+        <div class="sc-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 6L2 7"/></svg> <span>qr.cs@softment.co.kr</span></div>
+        <div class="sc-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg> <span>평일 10:00 ~ 19:00<br>점심시간 13:00 ~ 14:00</span></div>
+        <div class="sc-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg> <span>주말·공휴일 휴무</span></div>
+        <a class="sc-manual" href="https://softment.gitbook.io/softment/" target="_blank" rel="noopener">이용 매뉴얼 바로가기 →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Final CTA ===== -->
+<section class="finalcta" id="contact">
+  <div class="wrap">
+    <h2>지금 5분이면,<br class="dbr">우리 가게도 시작할 수 있습니다.</h2>
+    <p>회원가입은 5분이면 끝나요. 더 궁금한 점은 무료 상담으로 편하게 물어보세요.</p>
+    <div class="cta-row">
+      <a href="#contact" class="btn btn-primary btn-lg">5분 안에 시작해보기</a>
+      <a href="tel:1833-8540" class="btn btn-white-ghost btn-lg">도입 상담</a>
+    </div>
+    <div class="tel-big">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      1833-8540
+    </div>
+  </div>
+</section>
+
+<!-- ===== Footer ===== -->
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div>
+        <div class="foot-logo">
+          <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg></span>
+          QR오더
+        </div>
+        <p style="max-width:340px;color:#8b9cba">기기 부담은 없애고 주문·결제는 완벽하게. 사장님의 일손을 덜어주는 스마트 QR 주문 솔루션.</p>
+      </div>
+      <div class="foot-links">
+        <div class="foot-col">
+          <h5>서비스</h5>
+          <a href="#why">서비스 소개</a>
+          <a href="#refs">도입 사례</a>
+          <a href="#pricing">도입 안내 및 요금</a>
+        </div>
+        <div class="foot-col">
+          <h5>고객 지원</h5>
+          <a href="https://softment.gitbook.io/softment/" target="_blank" rel="noopener">이용 매뉴얼</a>
+          <a href="#faq">자주 묻는 질문</a>
+          <a href="tel:1833-8540">도입 상담</a>
+        </div>
+        <div class="foot-col">
+          <h5>문의</h5>
+          <a href="tel:1833-8540">전화 · 1833-8540</a>
+          <a href="mailto:qr.cs@softment.co.kr">qr.cs@softment.co.kr</a>
+          <a href="https://softment.co.kr/">소프트먼트</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      (주)소프트먼트 &nbsp;|&nbsp; 대표: 장하일, 정재훈 &nbsp;|&nbsp; 사업자등록번호 704-87-01591 &nbsp;|&nbsp; 전자금융업자 등록 사업자<br>
+      서울시 금천구 가산디지털1로 145 에이스하이엔드타워3차 905호<br>
+      © 2026 Softment. All rights reserved. &nbsp;|&nbsp; 사진 © Unsplash (Tan Tony, Patrick Tomasso, Nikita Pishchugin, Jakub Kapusnak)
+    </div>
+  </div>
+</footer>
+
+<!-- ===== Floating CTA (회원가입) ===== -->
+<div class="float-cta">
+  <span class="fpill"><b>1개월 무료</b>로 시작</span>
+  <a href="#contact" class="fbtn" aria-label="5분 안에 회원가입하고 시작하기">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
+    5분 안에 시작해보기
+  </a>
+</div>
+
+<!-- ===== 회원가입 모달 ===== -->
+<div class="signup-modal" id="signupModal" hidden>
+  <div class="sm-card" role="dialog" aria-modal="true" aria-label="QR오더 무료 시작">
+    <button class="sm-close" type="button" aria-label="닫기">×</button>
+    <span class="sm-eyebrow">1개월 무료 시작</span>
+    <h3 class="sm-title" id="smTitle">본인인증</h3>
+    <p class="sm-sub" id="smSub">휴대폰 번호로 본인인증을 진행해 주세요.</p>
+
+    <div class="sm-steps">
+      <span class="sm-step active" data-s="1"><i>1</i>본인인증</span>
+      <span class="sm-step" data-s="2"><i>2</i>이메일</span>
+      <span class="sm-step" data-s="3"><i>3</i>비밀번호</span>
+      <span class="sm-step" data-s="4"><i>4</i>약관 동의</span>
+    </div>
+
+    <form class="sm-form" id="smForm" novalidate>
+      <div class="sm-pane" data-pane="1">
+        <label>이름<input type="text" id="suName" placeholder="이름" autocomplete="name"></label>
+        <label>휴대폰 번호
+          <span class="sm-inline">
+            <input type="tel" id="suPhone" placeholder="010-0000-0000" autocomplete="tel">
+            <button type="button" class="sm-ghost" id="suSend">인증번호 받기</button>
+          </span>
+        </label>
+        <label class="sm-codewrap" id="suCodeWrap" hidden>인증번호
+          <span class="sm-inline">
+            <input type="text" id="suCode" inputmode="numeric" maxlength="6" placeholder="6자리 숫자">
+            <button type="button" class="sm-ghost" id="suVerify">확인</button>
+          </span>
+        </label>
+        <span class="sm-hint" id="suCodeHint" hidden></span>
+      </div>
+
+      <div class="sm-pane" data-pane="2" hidden>
+        <label>이메일<input type="email" id="suEmail" placeholder="you@example.com" autocomplete="email"></label>
+        <span class="sm-hint" id="suEmailHint">로그인 아이디로 사용돼요.</span>
+      </div>
+
+      <div class="sm-pane" data-pane="3" hidden>
+        <label>비밀번호<input type="password" id="suPw" placeholder="영문·숫자 포함 8자 이상" autocomplete="new-password"></label>
+        <label>비밀번호 확인<input type="password" id="suPw2" placeholder="비밀번호 다시 입력" autocomplete="new-password"></label>
+        <span class="sm-hint" id="suPwHint">영문과 숫자를 포함해 8자 이상으로 설정해 주세요.</span>
+      </div>
+
+      <div class="sm-pane" data-pane="4" hidden>
+        <label class="sm-agree sm-all"><input type="checkbox" id="suAll"> <b>전체 동의</b></label>
+        <div class="sm-terms">
+          <label class="sm-agree"><input type="checkbox" class="suReq"> (필수) 서비스 이용약관 동의</label>
+          <label class="sm-agree"><input type="checkbox" class="suReq"> (필수) 개인정보 수집·이용 동의</label>
+          <label class="sm-agree"><input type="checkbox" class="suReq"> (필수) 만 14세 이상입니다</label>
+          <label class="sm-agree"><input type="checkbox" id="suMkt"> (선택) 혜택·소식 등 마케팅 정보 수신 동의</label>
+        </div>
+        <span class="sm-hint bad" id="suTermHint" hidden>필수 약관에 모두 동의해 주세요.</span>
+      </div>
+
+      <div class="sm-nav">
+        <button type="button" class="sm-back" id="suBack" hidden>이전</button>
+        <button type="button" class="sm-submit" id="suNext">다음</button>
+      </div>
+    </form>
+    <div class="sm-foot">전화 상담 1833-8540 · 카드 등록만으로 1개월 무료</div>
+  </div>
+</div>
+
+<script>
+  if('scrollRestoration' in history){history.scrollRestoration='manual';}
+  window.addEventListener('load',function(){ if(!location.hash){window.scrollTo(0,0);} });
+
+  /* ----- Signup modal ----- */
+  (function(){
+    var modal=document.getElementById('signupModal');
+    if(!modal)return;
+    var card=modal.querySelector('.sm-card');
+    var saved=card.innerHTML;
+    function close(){modal.setAttribute('hidden','');document.body.style.overflow='';}
+    function bind(){
+      var c=card.querySelector('.sm-close'); if(c)c.addEventListener('click',close);
+      var step=1, verified=false;
+      var titles={1:'본인인증',2:'이메일',3:'비밀번호',4:'약관 동의'};
+      var subs={1:'휴대폰 번호로 본인인증을 진행해 주세요.',2:'로그인에 사용할 이메일을 입력해 주세요.',3:'안전하게 사용할 비밀번호를 설정해 주세요.',4:'서비스 이용을 위한 약관에 동의해 주세요.'};
+      var $=function(id){return card.querySelector('#'+id);};
+      var smTitle=$('smTitle'), smSub=$('smSub'), next=$('suNext'), back=$('suBack');
+      var steps=card.querySelectorAll('.sm-step'), panes=card.querySelectorAll('.sm-pane');
+
+      function show(n){
+        step=n;
+        smTitle.textContent=titles[n]; smSub.textContent=subs[n];
+        panes.forEach(function(p){p.hidden=(+p.dataset.pane!==n);});
+        steps.forEach(function(s){var i=+s.dataset.s; s.classList.toggle('active',i===n); s.classList.toggle('done',i<n);});
+        back.hidden=(n===1);
+        next.textContent=(n===4)?'가입 완료':'다음';
+      }
+      function mark(el,bad){if(el)el.classList.toggle('err',!!bad);}
+
+      // STEP 1 본인인증
+      var send=$('suSend'), verify=$('suVerify'), codeWrap=$('suCodeWrap'), codeHint=$('suCodeHint');
+      send.addEventListener('click',function(){
+        var ph=($('suPhone').value||'').replace(/[^0-9]/g,'');
+        if(ph.length<10){mark($('suPhone'),true);codeHint.hidden=false;codeHint.className='sm-hint bad';codeHint.textContent='휴대폰 번호를 정확히 입력해 주세요.';return;}
+        mark($('suPhone'
