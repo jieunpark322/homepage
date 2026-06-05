@@ -1512,6 +1512,26 @@
   if('scrollRestoration' in history){history.scrollRestoration='manual';}
   window.addEventListener('load',function(){ if(!location.hash){window.scrollTo(0,0);} });
 
+  /* ----- 선불/후불 토글 ----- */
+  (function(){
+    var toggle=document.getElementById('payToggle');
+    var scene=document.getElementById('scene3d');
+    var status=document.getElementById('payStatus');
+    if(!toggle)return;
+    toggle.addEventListener('click',function(e){
+      var btn=e.target.closest('.pt-opt');
+      if(!btn)return;
+      var mode=btn.dataset.mode;
+      var isPost=(mode==='post');
+      toggle.classList.toggle('post',isPost);
+      if(scene)scene.classList.toggle('post',isPost);
+      if(status)status.innerHTML=isPost?'현재 <b>나갈 때 결제 (후불)</b>':'현재 <b>주문 시 결제 (선불)</b>';
+      toggle.querySelectorAll('.pt-opt').forEach(function(b){
+        b.classList.toggle('active',b.dataset.mode===mode);
+      });
+    });
+  })();
+
   /* ----- Signup modal ----- */
   (function(){
     var modal=document.getElementById('signupModal');
@@ -1531,16 +1551,4 @@
       function show(n){
         step=n;
         smTitle.textContent=titles[n]; smSub.textContent=subs[n];
-        panes.forEach(function(p){p.hidden=(+p.dataset.pane!==n);});
-        steps.forEach(function(s){var i=+s.dataset.s; s.classList.toggle('active',i===n); s.classList.toggle('done',i<n);});
-        back.hidden=(n===1);
-        next.textContent=(n===4)?'가입 완료':'다음';
-      }
-      function mark(el,bad){if(el)el.classList.toggle('err',!!bad);}
-
-      // STEP 1 본인인증
-      var send=$('suSend'), verify=$('suVerify'), codeWrap=$('suCodeWrap'), codeHint=$('suCodeHint');
-      send.addEventListener('click',function(){
-        var ph=($('suPhone').value||'').replace(/[^0-9]/g,'');
-        if(ph.length<10){mark($('suPhone'),true);codeHint.hidden=false;codeHint.className='sm-hint bad';codeHint.textContent='휴대폰 번호를 정확히 입력해 주세요.';return;}
-        mark($('suPhone'
+        panes.forEach
