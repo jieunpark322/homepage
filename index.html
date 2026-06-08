@@ -1541,32 +1541,6 @@
   if('scrollRestoration' in history){history.scrollRestoration='manual';}
   window.addEventListener('load',function(){ if(!location.hash){window.scrollTo(0,0);} });
 
-  /* ----- 선불/후불 토글 ----- */
-  (function(){
-    var toggle=document.getElementById('payToggle');
-    var scene=document.getElementById('scene3d');
-    var status=document.getElementById('payStatus');
-    var cardPre=document.getElementById('cardPre');
-    var cardPost=document.getElementById('cardPost');
-    if(!toggle)return;
-    function setMode(isPost){
-      toggle.classList.toggle('post',isPost);
-      if(scene)scene.classList.toggle('post',isPost);
-      if(status)status.innerHTML=isPost?'현재 <b>나갈 때 결제 (후불)</b>':'현재 <b>주문 시 결제 (선불)</b>';
-      if(cardPre){cardPre.classList.toggle('on',!isPost);cardPre.classList.toggle('dim',isPost);}
-      if(cardPost){cardPost.classList.toggle('on',isPost);cardPost.classList.toggle('dim',!isPost);}
-      toggle.querySelectorAll('.pt-opt').forEach(function(b){
-        b.classList.toggle('active',b.dataset.mode===(isPost?'post':'pre'));
-      });
-    }
-    toggle.querySelectorAll('.pt-opt').forEach(function(btn){
-      btn.addEventListener('click',function(e){
-        e.stopPropagation();
-        setMode(btn.dataset.mode==='post');
-      });
-    });
-  })();
-
   /* ----- Signup modal ----- */
   (function(){
     var modal=document.getElementById('signupModal');
@@ -1575,4 +1549,164 @@
     var saved=card.innerHTML;
     function close(){modal.setAttribute('hidden','');document.body.style.overflow='';}
     function bind(){
-      var c=c
+      var c=card.querySelector('.sm-close'); if(c)c.addEventListener('click',close);
+      var step=1, verified=false;
+      var titles={1:'본인인증',2:'이메일',3:'비밀번호',4:'약관 동의'};
+      var subs={1:'휴대폰 번호로 본인인증을 진행해 주세요.',2:'로그인에 사용할 이메일을 입력해 주세요.',3:'안전하게 사용할 비밀번호를 설정해 주세요.',4:'서비스 이용을 위한 약관에 동의해 주세요.'};
+      var $=function(id){return card.querySelector('#'+id);};
+      var smTitle=$('smTitle'), smSub=$('smSub'), next=$('suNext'), back=$('suBack');
+      var steps=card.querySelectorAll('.sm-step'), panes=card.querySelectorAll('.sm-pane');
+
+      function show(n){
+        step=n;
+        smTitle.textContent=titles[n]; smSub.textContent=subs[n];
+        panes.forEach(function(p){p.hidden=(+p.dataset.pane!==n);});
+        steps.forEach(function(s){var i=+s.dataset.s; s.classList.toggle('active',i===n); s.classList.toggle('done',i<n);});
+        back.hidden=(n===1);
+        next.textContent=(n===4)?'가입 완료':'다음';
+      }
+      function mark(el,bad){if(el)el.classList.toggle('err',!!bad);}
+
+      // STEP 1 본인인증
+      var send=$('suSend'), verify=$('suVerify'), codeWrap=$('suCodeWrap'), codeHint=$('suCodeHint');
+      send.addEventListener('click',function(){
+        var ph=($('suPhone').value||'').replace(/[^0-9]/g,'');
+        if(ph.length<10){mark($('suPhone'),true);codeHint.hidden=false;codeHint.className='sm-hint bad';codeHint.textContent='휴대폰 번호를 정확히 입력해 주세요.';return;}
+        mark($('suPhone'),false);
+        codeWrap.hidden=false; send.textContent='재전송'; verified=false;
+        codeHint.hidden=false; codeHint.className='sm-hint'; codeHint.textContent='인증번호를 발송했어요. (체험용 코드: 000000)';
+        $('suCode').focus();
+      });
+      verify.addEventListener('click',function(){
+        var code=($('suCode').value||'').replace(/[^0-9]/g,'');
+        if(code.length===6){verified=true; mark($('suCode'),false); codeHint.className='sm-hint ok'; codeHint.textContent='✓ 본인인증이 완료됐어요.';}
+        else{verified=false; mark($('suCode'),true); codeHint.className='sm-hint bad'; codeHint.textContent='6자리 인증번호를 입력해 주세요.';}
+        codeHint.hidden=false;
+      });
+
+      // STEP 4 약관 동의
+      var all=$('suAll'), reqs=card.querySelectorAll('.suReq'), mkt=$('suMkt');
+      all.addEventListener('change',function(){reqs.forEach(function(r){r.checked=all.checked;}); if(mkt)mkt.checked=all.checked;});
+      function syncAll(){var on=true; reqs.forEach(function(r){if(!r.checked)on=false;}); if(mkt&&!mkt.checked)on=false; all.checked=on;}
+      reqs.forEach(function(r){r.addEventListener('change',syncAll);}); if(mkt)mkt.addEventListener('change',syncAll);
+
+      function validate(n){
+        if(n===1){
+          var nameOk=($('suName').value||'').trim().length>0; mark($('suName'),!nameOk);
+          if(!nameOk){return false;}
+          if(!verified){codeHint.hidden=false;codeHint.className='sm-hint bad';codeHint.textContent='휴대폰 본인인증을 완료해 주세요.';if(codeWrap.hidden)mark($('suPhone'),true);else mark($('suCode'),true);return false;}
+          return true;
+        }
+        if(n===2){
+          var em=($('suEmail').value||'').trim(); var ok=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em); mark($('suEmail'),!ok);
+          var h=$('suEmailHint'); h.className=ok?'sm-hint':'sm-hint bad'; h.textContent=ok?'로그인 아이디로 사용돼요.':'이메일 형식을 확인해 주세요.';
+          return ok;
+        }
+        if(n===3){
+          var pw=$('suPw').value||'', pw2=$('suPw2').value||''; var h=$('suPwHint');
+          var strong=pw.length>=8&&/[A-Za-z]/.test(pw)&&/[0-9]/.test(pw);
+          if(!strong){mark($('suPw'),true);h.className='sm-hint bad';h.textContent='영문과 숫자를 포함해 8자 이상으로 설정해 주세요.';return false;}
+          mark($('suPw'),false);
+          if(pw!==pw2){mark($('suPw2'),true);h.className='sm-hint bad';h.textContent='비밀번호가 일치하지 않아요.';return false;}
+          mark($('suPw2'),false); h.className='sm-hint ok'; h.textContent='✓ 사용할 수 있는 비밀번호예요.';
+          return true;
+        }
+        if(n===4){
+          var on=true; reqs.forEach(function(r){if(!r.checked)on=false;}); $('suTermHint').hidden=on; return on;
+        }
+        return true;
+      }
+
+      next.addEventListener('click',function(){
+        if(!validate(step))return;
+        if(step<4){show(step+1);return;}
+        done();
+      });
+      back.addEventListener('click',function(){if(step>1)show(step-1);});
+
+      function done(){
+        card.innerHTML='<button class="sm-close" type="button" aria-label="닫기">×</button><div style="text-align:center;padding:22px 6px"><div style="width:58px;height:58px;border-radius:50%;background:var(--primary-soft);color:var(--primary-dark);display:grid;place-items:center;margin:0 auto"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="20 6 9 17 4 12"/></svg></div><h3 class="sm-title" style="margin-top:14px">가입이 완료됐어요</h3><p class="sm-sub">이제 카드 등록만 마치면 1개월 무료 체험이 시작돼요.<br>담당자가 영업일 기준 1일 내 설치를 도와드려요.</p><div class="sm-foot" style="margin-top:18px">전화 상담 1833-8540</div></div>';
+        card.querySelector('.sm-close').addEventListener('click',close);
+      }
+
+      show(1);
+    }
+    function open(e){if(e)e.preventDefault();card.innerHTML=saved;bind();modal.removeAttribute('hidden');document.body.style.overflow='hidden';}
+    bind();
+    modal.addEventListener('click',function(e){if(e.target===modal)close();});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+    document.querySelectorAll('a.btn,a.fbtn,a.pm-btn').forEach(function(a){
+      var t=(a.textContent||'').replace(/\s+/g,' ').trim();
+      if(a.getAttribute('href')==='#contact' && t.indexOf('시작')>-1){a.addEventListener('click',open);}
+    });
+  })();
+
+  document.querySelectorAll('.acc-q').forEach(function(q){
+    q.addEventListener('click',function(){
+      var acc=q.parentElement, a=q.nextElementSibling, open=acc.classList.contains('open');
+      document.querySelectorAll('.acc').forEach(function(x){x.classList.remove('open');x.querySelector('.acc-a').style.maxHeight=null;});
+      if(!open){acc.classList.add('open');a.style.maxHeight=a.scrollHeight+'px';}
+    });
+  });
+  var burger=document.querySelector('.burger');
+  if(burger){burger.addEventListener('click',function(){var m=document.querySelector('.menu');if(m)m.classList.toggle('open');});}
+  document.querySelectorAll('.menu a').forEach(function(a){a.addEventListener('click',function(){var m=document.querySelector('.menu');if(m)m.classList.remove('open');});});
+
+  /* ---- Hybrid payment animated toggle ---- */
+  (function(){
+    var toggle=document.getElementById('payToggle');
+    if(!toggle)return;
+    var thumb=toggle.querySelector('.pt-thumb');
+    var finger=toggle.querySelector('.finger');
+    var opts=toggle.querySelectorAll('.pt-opt');
+    var status=document.getElementById('payStatus');
+    var cardPre=document.getElementById('cardPre');
+    var cardPost=document.getElementById('cardPost');
+    var scene=document.getElementById('scene3d');
+    var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var mode='pre', timer=null, auto=true;
+
+    function render(){
+      var post=mode==='post';
+      toggle.classList.toggle('post',post);
+      if(scene)scene.classList.toggle('post',post);
+      opts[0].classList.toggle('active',!post);
+      opts[1].classList.toggle('active',post);
+      cardPre.classList.toggle('on',!post); cardPre.classList.toggle('dim',post);
+      cardPost.classList.toggle('on',post); cardPost.classList.toggle('dim',!post);
+      status.innerHTML=post
+        ? '현재 <b>나갈 때 결제 (후불)</b>'
+        : '현재 <b>주문 시 결제 (선불)</b>';
+    }
+    function tap(){
+      thumb.classList.remove('tap'); void thumb.offsetWidth; thumb.classList.add('tap');
+      if(finger){finger.classList.add('press'); setTimeout(function(){finger.classList.remove('press');},500);}
+    }
+    function flip(){ mode=mode==='pre'?'post':'pre'; tap(); render(); }
+
+    opts.forEach(function(o){o.addEventListener('click',function(){
+      auto=false; if(timer){clearInterval(timer);timer=null;}
+      if(finger)finger.classList.remove('show');
+      toggle.classList.remove('hint');
+      mode=o.dataset.mode; tap(); render();
+    });});
+
+    function start(){
+      if(reduce||timer||!auto)return;
+      if(finger)finger.classList.add('show');
+      toggle.classList.add('hint');
+      timer=setInterval(flip,2600);
+    }
+    function stop(){ if(timer){clearInterval(timer);timer=null;} }
+
+    render();
+    if('IntersectionObserver'in window){
+      new IntersectionObserver(function(es){
+        es.forEach(function(e){ e.isIntersecting?start():stop(); });
+      },{threshold:.4}).observe(toggle);
+    } else { start(); }
+  })();
+</script>
+
+</body>
+</html>
