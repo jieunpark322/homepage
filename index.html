@@ -1510,6 +1510,34 @@
 </div>
 
 <script>
+  /* ----- 선불/후불 토글 (독립 실행) ----- */
+  (function(){
+    var toggle=document.getElementById('payToggle');
+    var scene=document.getElementById('scene3d');
+    var status=document.getElementById('payStatus');
+    var cardPre=document.getElementById('cardPre');
+    var cardPost=document.getElementById('cardPost');
+    if(!toggle)return;
+    function setMode(isPost){
+      toggle.classList.toggle('post',isPost);
+      if(scene)scene.classList.toggle('post',isPost);
+      if(status)status.innerHTML=isPost?'현재 <b>나갈 때 결제 (후불)</b>':'현재 <b>주문 시 결제 (선불)</b>';
+      if(cardPre){cardPre.classList.toggle('on',!isPost);cardPre.classList.toggle('dim',isPost);}
+      if(cardPost){cardPost.classList.toggle('on',isPost);cardPost.classList.toggle('dim',!isPost);}
+      toggle.querySelectorAll('.pt-opt').forEach(function(b){
+        b.classList.toggle('active',b.dataset.mode===(isPost?'post':'pre'));
+      });
+    }
+    toggle.querySelectorAll('.pt-opt').forEach(function(btn){
+      btn.addEventListener('click',function(e){
+        e.stopPropagation();
+        setMode(btn.dataset.mode==='post');
+      });
+    });
+  })();
+</script>
+
+<script>
   if('scrollRestoration' in history){history.scrollRestoration='manual';}
   window.addEventListener('load',function(){ if(!location.hash){window.scrollTo(0,0);} });
 
@@ -1547,23 +1575,4 @@
     var saved=card.innerHTML;
     function close(){modal.setAttribute('hidden','');document.body.style.overflow='';}
     function bind(){
-      var c=card.querySelector('.sm-close'); if(c)c.addEventListener('click',close);
-      var step=1, verified=false;
-      var titles={1:'본인인증',2:'이메일',3:'비밀번호',4:'약관 동의'};
-      var subs={1:'휴대폰 번호로 본인인증을 진행해 주세요.',2:'로그인에 사용할 이메일을 입력해 주세요.',3:'안전하게 사용할 비밀번호를 설정해 주세요.',4:'서비스 이용을 위한 약관에 동의해 주세요.'};
-      var $=function(id){return card.querySelector('#'+id);};
-      var smTitle=$('smTitle'), smSub=$('smSub'), next=$('suNext'), back=$('suBack');
-      var steps=card.querySelectorAll('.sm-step'), panes=card.querySelectorAll('.sm-pane');
-
-      function show(n){
-        step=n;
-        smTitle.textContent=titles[n]; smSub.textContent=subs[n];
-        panes.forEach(function(p){p.hidden=(+p.dataset.pane!==n);});
-        steps.forEach(function(s){var i=+s.dataset.s; s.classList.toggle('active',i===n); s.classList.toggle('done',i<n);});
-        back.hidden=(n===1);
-        next.textContent=(n===4)?'가입 완료':'다음';
-      }
-      function mark(el,bad){if(el)el.classList.toggle('err',!!bad);}
-
-      // STEP 1 본인인증
-   
+      var c=c
