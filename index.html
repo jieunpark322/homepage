@@ -1518,17 +1518,23 @@
     var toggle=document.getElementById('payToggle');
     var scene=document.getElementById('scene3d');
     var status=document.getElementById('payStatus');
+    var cardPre=document.getElementById('cardPre');
+    var cardPost=document.getElementById('cardPost');
     if(!toggle)return;
-    toggle.addEventListener('click',function(e){
-      var btn=e.target.closest('.pt-opt');
-      if(!btn)return;
-      var mode=btn.dataset.mode;
-      var isPost=(mode==='post');
+    function setMode(isPost){
       toggle.classList.toggle('post',isPost);
       if(scene)scene.classList.toggle('post',isPost);
       if(status)status.innerHTML=isPost?'현재 <b>나갈 때 결제 (후불)</b>':'현재 <b>주문 시 결제 (선불)</b>';
+      if(cardPre){cardPre.classList.toggle('on',!isPost);cardPre.classList.toggle('dim',isPost);}
+      if(cardPost){cardPost.classList.toggle('on',isPost);cardPost.classList.toggle('dim',!isPost);}
       toggle.querySelectorAll('.pt-opt').forEach(function(b){
-        b.classList.toggle('active',b.dataset.mode===mode);
+        b.classList.toggle('active',b.dataset.mode===(isPost?'post':'pre'));
+      });
+    }
+    toggle.querySelectorAll('.pt-opt').forEach(function(btn){
+      btn.addEventListener('click',function(e){
+        e.stopPropagation();
+        setMode(btn.dataset.mode==='post');
       });
     });
   })();
@@ -1560,7 +1566,4 @@
       function mark(el,bad){if(el)el.classList.toggle('err',!!bad);}
 
       // STEP 1 본인인증
-      var send=$('suSend'), verify=$('suVerify'), codeWrap=$('suCodeWrap'), codeHint=$('suCodeHint');
-      send.addEventListener('click',function(){
-        var ph=($('suPhone').value||'').replace(/[^0-9]/g,'');
-        if(ph.length<10){mark($('suPhone'),true);codeHint.hidden=false;codeHint.className='sm-hint bad';codeHint.textContent='휴대폰 번호를 정확히 입�
+   
