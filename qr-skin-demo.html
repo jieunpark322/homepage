@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QR 주문 스킨 · 실시간 미리보기 데모</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root{
+    /* 기본 목업(customer.html) 디자인 토큰 */
+    --ink:#191f28; --ink2:#4e5968; --ink3:#8b95a1; --ink4:#b0b8c1;
+    --line:#e5e8eb; --line2:#f1f3f5; --bg:#f2f4f6; --card:#fff;
+    --green:#64C8BE; --red:#e03131; --amber:#f59f00;
+    --brandUI:#5C8CDA;               /* 빌더 UI 강조색 */
+    --accent:#5C8CDA; --accent-soft:#eef4fd; --accent-ink:#fff;  /* 스킨 메인 컬러(가변) */
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--ink);
+    font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+    -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1180px; margin:0 auto; padding:48px 24px 72px;}
+  .eyebrow{display:inline-block; background:#e3e9ff; color:#3b5bdb; font-size:13px; font-weight:700;
+    padding:6px 14px; border-radius:999px;}
+  .hero{text-align:center; margin-bottom:40px;}
+  .hero h1{font-size:34px; line-height:1.32; margin:18px 0 14px; letter-spacing:-.5px;}
+  .hero p{color:var(--ink2); font-size:16px; line-height:1.6; margin:0;}
+
+  .layout{display:grid; grid-template-columns:minmax(0,1fr) 380px; gap:36px; align-items:start;}
+  @media(max-width:900px){.layout{grid-template-columns:1fr;} .phonewrap{order:-1;}}
+
+  .panel{background:var(--card); border:1px solid var(--line); border-radius:20px; padding:24px;}
+  .panel-title{display:flex; align-items:center; gap:8px; font-weight:800; font-size:15px; margin:0 0 18px;}
+  .panel-title .dot{width:20px;height:20px;border-radius:50%;background:var(--brandUI);
+    display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:12px;}
+
+  .presets{display:grid; grid-template-columns:1fr; gap:12px; margin-bottom:8px;}
+  .preset{border:1.5px solid var(--line); border-radius:14px; padding:13px 14px; cursor:pointer;
+    display:flex; gap:11px; align-items:center; transition:.15s; background:#fff;}
+  .preset:hover{border-color:#c5cee0; background:#fafbff;}
+  .preset.active{border-color:var(--brandUI); background:#f4f7ff; box-shadow:0 0 0 3px #e7eeff;}
+  .preset .emoji{width:38px;height:38px;border-radius:10px;flex:none;display:flex;
+    align-items:center;justify-content:center;font-size:20px;background:var(--bg);}
+  .preset b{display:block; font-size:14.5px;}
+  .preset span{display:block; font-size:11.5px; color:var(--ink3); margin-top:2px; line-height:1.3;}
+
+  .opt-group{margin-bottom:20px;}
+  .opt-label{font-size:12.5px; font-weight:700; color:var(--ink2); margin-bottom:9px;}
+  .swatches{display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
+  .swatch{width:30px;height:30px;border-radius:50%;cursor:pointer;border:2px solid #fff;
+    box-shadow:0 0 0 1.5px var(--line); transition:.12s;}
+  .swatch.active{box-shadow:0 0 0 2.5px var(--brandUI); transform:scale(1.08);}
+  .seg{display:grid; gap:8px;}
+  .seg.cols-2{grid-template-columns:1fr 1fr;}
+  .seg.cols-3{grid-template-columns:1fr 1fr 1fr;}
+  .seg button{border:1.5px solid var(--line); background:#fff; border-radius:11px; padding:13px 8px; cursor:pointer;
+    font-size:12.5px; font-weight:600; color:var(--ink2); transition:.13s;
+    display:flex; flex-direction:column; align-items:center; gap:7px; font-family:inherit;}
+  .seg button:hover{border-color:#c5cee0;}
+  .seg button.active{border-color:var(--brandUI); background:#f4f7ff; color:#1d4ed8;}
+  .seg button svg{width:34px;height:22px;}
+  .seg button .ic{stroke:#94a3b8;}
+  .seg button.active .ic{stroke:var(--brandUI);}
+
+  .combo-readout{background:var(--bg);border-radius:12px;padding:11px 13px;font-size:11.5px;
+    color:var(--ink2);line-height:1.7;}
+  .combo-readout b{color:var(--ink);}
+
+  /* ===== 폰 미리보기 ===== */
+  .phonewrap{position:sticky; top:24px; display:flex; flex-direction:column; align-items:center; gap:12px;}
+  .phone{width:340px; height:710px; background:#000; border-radius:46px; padding:11px;
+    box-shadow:0 30px 60px rgba(20,30,60,.28);}
+  .screen{width:100%;height:100%;background:var(--card);border-radius:36px;overflow:hidden;position:relative;
+    display:flex;flex-direction:column;}
+  .notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:120px;height:26px;
+    background:#000;border-radius:0 0 16px 16px;z-index:60;}
+  .statusbar{display:flex;justify-content:space-between;align-items:center;padding:11px 22px 5px;
+    font-size:12px;font-weight:700;color:#111;flex:none;background:var(--card);}
+  .scroll{flex:1; overflow-y:auto; position:relative; background:var(--bg); scrollbar-width:none;}
+  .scroll::-webkit-scrollbar{display:none;}
+  .cap{font-size:12px;color:var(--ink3);}
+
+  /* 커버 + 브랜드 헤더 */
+  .cover{aspect-ratio:16/9;position:relative;overflow:hidden;}
+  .cover .coverimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .brandinfo{padding:0 18px;position:relative;z-index:3;background:var(--card);}
+  /* 배너형(실제 기획 동일): 정보영역 투명 + 커버 위로 32px 끌어올림, 로고만 커버에 걸침 */
+  .brandinfo.banner{margin-top:-32px;background:transparent;}
+  .brandinfo.basic{padding-top:18px;}
+  .logo{width:72px;height:72px;border-radius:18px;background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.18);
+    display:flex;align-items:center;justify-content:center;font-size:34px;border:3px solid #fff;
+    overflow:hidden;position:relative;}
+  .logo .lemo{position:relative;z-index:0;}
+  .logo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;}
+  .brow{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-top:10px;}
+  .bstore{font-size:21px;font-weight:800;letter-spacing:-.02em;color:var(--ink);}
+  .histbtn{flex-shrink:0;display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:800;
+    color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent-soft);border-radius:20px;padding:7px 11px;}
+  .histbtn .hist-cnt{background:var(--accent);color:#fff;min-width:17px;height:17px;border-radius:9px;
+    display:inline-flex;align-items:center;justify-content:center;font-size:10.5px;padding:0 4px;}
+  .bintro{font-size:12.5px;color:var(--ink3);margin-top:9px;line-height:1.55;padding-bottom:14px;}
+
+  /* 네이버 영수증 리뷰 배너 — 전 매장 공통 */
+  .nrv-banner{display:flex;align-items:center;gap:9px;margin:0 14px;background:#fff;border:1px solid var(--line);
+    border-radius:10px;padding:7px 12px;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.04);}
+  .nrv-ico{width:21px;height:21px;border-radius:6px;background:#03C75A;color:#fff;font-weight:900;font-size:12.5px;
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .nrv-tx{flex:1;font-size:12.5px;font-weight:700;color:var(--ink);}
+  .nrv-arrow{font-size:15px;color:var(--ink4);}
+
+  /* 메인 탭 */
+  .maintabs{position:sticky;top:0;z-index:18;background:var(--card);display:flex;border-bottom:1px solid var(--line);margin-top:14px;}
+  .maintab{flex:1;padding:13px 0;font-size:14px;font-weight:700;color:var(--ink3);background:none;border:none;
+    border-bottom:3px solid transparent;text-align:center;font-family:inherit;}
+  .maintab.on{color:var(--ink);border-bottom-color:var(--ink);font-weight:800;}
+
+  /* 카테고리 — 가로 탭(칩) */
+  .cattabs-wrap{position:sticky;top:46px;z-index:15;background:var(--card);border-bottom:1px solid var(--line);}
+  .cattabs{display:flex;gap:7px;padding:11px 14px;overflow-x:auto;scrollbar-width:none;}
+  .cattabs::-webkit-scrollbar{display:none;}
+  .cattab-ic{flex-shrink:0;width:36px;height:36px;border-radius:50%;background:var(--bg);border:none;font-size:15px;
+    display:flex;align-items:center;justify-content:center;color:var(--ink2);}
+  .side .side-search{margin:4px auto 8px;}
+  .cattab{flex-shrink:0;font-size:13.5px;font-weight:700;color:var(--ink3);padding:8px 14px;border-radius:20px;
+    background:var(--bg);border:none;white-space:nowrap;font-family:inherit;}
+  .cattab.on{background:var(--accent);color:#fff;font-weight:800;}
+
+  /* 카테고리 — 세로 사이드 */
+  .body{display:flex;background:var(--card);}
+  .side{width:72px;flex:none;background:var(--bg);border-right:1px solid var(--line);padding:6px 0;}
+  .side .t{margin:2px 6px;padding:11px 3px;text-align:center;font-size:11.5px;font-weight:700;color:var(--ink3);
+    border-radius:8px;line-height:1.25;}
+  .side .t.on{color:#fff;background:var(--accent);font-weight:800;box-shadow:0 2px 6px rgba(0,0,0,.12);}
+  .menu-area{flex:1;min-width:0;}
+
+  .catsec-h{padding:16px 16px 6px;font-size:15.5px;font-weight:800;color:var(--ink);background:var(--card);}
+
+  /* 메뉴 카드 공통 */
+  .cards{background:var(--card);}
+  .mcard{display:flex;gap:13px;padding:14px 16px;border-bottom:1px solid var(--line2);align-items:center;background:var(--card);}
+  .mimg{width:90px;height:60px;border-radius:12px;flex-shrink:0;position:relative;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;font-size:30px;}
+  .mimg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;display:block;}
+  .mimg .emo{position:relative;z-index:0;}
+  .img-badges{position:absolute;top:5px;left:5px;z-index:3;display:flex;flex-direction:column;gap:3px;}
+  .img-badge{display:inline-flex;font-size:9px;font-weight:800;padding:2px 6px;border-radius:5px;color:#fff;line-height:1.5;}
+  .img-badge.hot{background:#e8590c;}
+  .img-badge.reco{background:#f59f00;}
+  .img-badge.new{background:#1971c2;}
+  .minfo{flex:1;min-width:0;}
+  .mname{font-size:15px;font-weight:800;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink);}
+  .mdesc{font-size:12px;color:var(--ink3);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .mprice{font-size:15px;font-weight:800;margin-top:5px;display:flex;align-items:baseline;gap:5px;flex-wrap:wrap;color:var(--ink);}
+  .mprice .ori{font-size:11.5px;color:var(--ink4);font-weight:500;text-decoration:line-through;}
+  .mprice .disc{color:var(--red);}
+  .mplus{flex-shrink:0;width:34px;height:34px;border-radius:50%;background:var(--accent-soft);color:var(--accent);
+    font-size:22px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+
+  /* 그리드형 */
+  .cards.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px 14px;}
+  .cards.grid.one{grid-template-columns:1fr;}
+  .cards.grid .mcard{display:block;padding:0;border:1px solid var(--line);border-radius:14px;overflow:hidden;}
+  .cards.grid .mimg{width:100%;height:auto;aspect-ratio:6/4;border-radius:0;font-size:40px;}
+  .cards.grid .minfo{padding:9px 11px 0;}
+  .cards.grid .mname{white-space:normal;}
+  .cards.grid .mdesc{display:none;}
+  .cards.grid .gadd{display:block;margin:9px 11px 12px;border:none;border-radius:9px;background:var(--accent);color:#fff;
+    font-size:12.5px;font-weight:800;padding:9px 0;text-align:center;font-family:inherit;width:calc(100% - 22px);}
+
+  /* 텍스트형 — 이미지는 우측에 6:4 */
+  .cards.text .mname{white-space:normal;font-size:15.5px;}
+  .cards.text .mdesc{white-space:normal;font-size:12.5px;}
+  .cards.text .mprice{flex-wrap:nowrap;font-size:16px;}
+  .cards.text .mimg{width:96px;height:64px;font-size:26px;}
+  /* 무이미지 메뉴: 썸네일 없이 텍스트(이름·설명·가격)가 영역을 채움 */
+  .mcard.noimg .minfo{flex:1;}
+  .cards.grid .mcard.noimg{padding:12px;}
+  .cards.grid .mcard.noimg .mname{white-space:normal;}
+  .cards.grid .mcard.noimg .mdesc{display:block;}
+
+  /* 주문하기 바 (플로팅 와이드 바, 실제 목업과 동일) */
+  .cartbar{position:absolute;left:50%;transform:translateX(-50%);bottom:14px;width:calc(100% - 28px);z-index:40;}
+  .cartbar-btn{width:100%;display:flex;align-items:center;gap:10px;background:var(--accent);color:var(--accent-ink);
+    border:none;border-radius:14px;padding:14px 16px;font-size:15px;font-weight:800;font-family:inherit;box-shadow:0 8px 22px rgba(0,0,0,.22),0 2px 6px rgba(0,0,0,.10);}
+  .cartbar-btn .cnt{background:rgba(255,255,255,.28);min-width:22px;height:22px;border-radius:11px;
+    display:flex;align-items:center;justify-content:center;font-size:12px;padding:0 6px;}
+  .cartbar-btn .cb-label{flex:1;text-align:left;padding-left:6px;}
+  .cartbar-btn .cb-total{margin-left:auto;}
+
+  /* 직원 호출 — 이자카야만, 주문 바 위 우측 */
+    /* 주문하기 바 뒤 메뉴가 비쳐 색이 겹치는 것 방지하는 하단 페이드 */
+  .floats-fade{position:absolute;left:0;right:0;bottom:0;height:112px;z-index:38;pointer-events:none;
+    background:linear-gradient(to top, var(--card) 60%, rgba(255,255,255,0));}
+  .staff-call{position:absolute;right:16px;bottom:74px;height:40px;padding:0 14px;border-radius:999px;background:#fff;
+    border:1px solid var(--line);box-shadow:0 6px 16px rgba(0,0,0,.16);z-index:39;display:flex;align-items:center;gap:6px;
+    font-size:12px;font-weight:800;color:var(--ink2);}
+
+  .footer-chips{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:44px;}
+  .fchip{background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 16px;font-size:13px;
+    font-weight:600;color:var(--ink2);display:flex;align-items:center;gap:7px;}
+  .fchip svg{width:14px;height:14px;color:#22c55e;}
+  /* 인터랙션: 토스트 · 탭 패널 · 누름 피드백 */
+  .toast{position:absolute;left:50%;bottom:84px;transform:translateX(-50%) translateY(6px);
+    background:rgba(25,31,40,.92);color:#fff;font-size:12px;font-weight:700;padding:9px 14px;border-radius:999px;
+    opacity:0;transition:.2s;z-index:50;pointer-events:none;white-space:nowrap;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  .panel-pad{padding:14px 16px;background:var(--card);min-height:220px;}
+  .rv-card{border-bottom:1px solid var(--line2);padding:12px 0;}
+  .rv-top{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--ink);}
+  .rv-star{color:var(--amber);font-size:12px;}
+  .rv-tx{font-size:13px;color:var(--ink2);margin-top:5px;line-height:1.5;}
+  .info-row{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line2);font-size:13.5px;}
+  .info-k{width:74px;color:var(--ink3);font-weight:700;flex:none;}
+  .info-v{color:var(--ink);flex:1;line-height:1.5;}
+  .cattab,.maintab,.cattab-ic,.sidecat,.mplus,.gadd,.cartbar-btn,.histbtn,.nrv-banner,.staff-call{cursor:pointer;transition:transform .08s,background .12s;}
+  .cattab:active,.maintab:active,.sidecat:active,.mplus:active,.gadd:active,.cartbar-btn:active,.histbtn:active,.nrv-banner:active,.staff-call:active{transform:scale(.95);}
+  /* 단일 스킨 미리보기 모드 (?skin=KEY) — 폰만 표시 */
+  body.single{background:transparent;}
+  body.single .hero,body.single .panel,body.single .footer-chips,body.single .cap{display:none!important;}
+  body.single .wrap{padding:8px;max-width:none;}
+  body.single .layout{display:flex;justify-content:center;}
+  body.single .phonewrap{position:static;top:auto;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <span class="eyebrow">QR 주문 스킨</span>
+    <h1>우리 매장만의 주문 페이지를 만들어보세요.</h1>
+    <p>가게 분위기에 어울리는 색상과 레이아웃을 직접 선택할 수 있어요.<br>
+       손님들에게 우리 가게만의 특별한 감성을 전달해 보세요.</p>
+  </div>
+
+  <div class="layout">
+
+    <div class="panel">
+      <div class="opt-label">샘플 스킨을 선택해 보세요</div>
+      <div class="presets" id="presets"></div>
+    </div>
+
+    <div class="phonewrap">
+      <div class="phone"><div class="screen">
+        <div class="notch"></div>
+        <div class="statusbar"><span>9:41</span><span style="display:inline-flex;align-items:center;gap:6px"><svg width="18" height="11" viewBox="0 0 18 11" fill="#111"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="6" rx="1"/><rect x="10" y="2.5" width="3" height="8.5" rx="1"/><rect x="15" y="0" width="3" height="11" rx="1"/></svg><svg width="16" height="12" viewBox="0 0 16 12" fill="#111"><path d="M8 2.4c2.5 0 4.8 1 6.5 2.6l-1.4 1.5C11.8 5.2 10 4.4 8 4.4S4.2 5.2 2.9 6.5L1.5 5C3.2 3.4 5.5 2.4 8 2.4z"/><path d="M8 6.1c1.4 0 2.7.6 3.7 1.5l-1.5 1.5C9.6 8.5 8.8 8.1 8 8.1s-1.6.4-2.2 1L4.3 7.6C5.3 6.7 6.6 6.1 8 6.1z"/><circle cx="8" cy="10.4" r="1.2"/></svg><svg width="26" height="13" viewBox="0 0 26 13" fill="none"><rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#111" stroke-opacity="0.35"/><rect x="2" y="2" width="17" height="9" rx="1.8" fill="#111"/><rect x="23.5" y="4" width="1.8" height="5" rx="0.9" fill="#111" fill-opacity="0.35"/></svg></span></div>
+        <div class="scroll" id="screen"></div>
+        <div id="floats"></div>
+      </div></div>
+      <div class="cap">실시간 미리보기 · 조작은 데모용입니다</div>
+    </div>
+
+  </div>
+
+  <div class="footer-chips">
+    <div class="fchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg> 색상 테마 선택</div>
+    <div class="fchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg> 리스트·그리드 레이아웃</div>
+    <div class="fchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg> 헤더·커버 구성</div>
+    <div class="fchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg> 카테고리 순서 편집</div>
+  </div>
+
+</div>
+
+<script>
+"use strict";
+
+var PALETTE = [
+  {key:'pink',   c:'#ec4899', soft:'#fce7f1', ink:'#fff'},
+  {key:'green',  c:'#10b981', soft:'#dcfce7', ink:'#fff'},
+  {key:'blue',   c:'#5C8CDA', soft:'#eef4fd', ink:'#fff'},
+  {key:'navy',   c:'#1f2a44', soft:'#e6e9f0', ink:'#fff'},
+  {key:'orange', c:'#f97316', soft:'#ffedd5', ink:'#fff'},
+  {key:'purple', c:'#8b5cf6', soft:'#ede9fe', ink:'#fff'},
+  {key:'red',    c:'#ef4444', soft:'#fee2e2', ink:'#fff'},
+  {key:'brown',  c:'#8a5a36', soft:'#f1e7df', ink:'#fff'}
+];
+
+/* 4개 업종 스킨 — 실제 옵션 조합 + 기본 목업 문구 규칙(원/인기·추천·NEW) */
+var SKINS = {
+  bunsik:{
+    emoji:'🍜', logo:'🍜', label:'분식', desc:'정겨운 분식집 · 활기찬 오렌지',
+    color:'orange', header:'basic', category:'tab', card:'grid', staffCall:false, gridCols:1,
+    store:{name:'영자네 분식', intro:'쫄깃한 떡볶이와 갓 튀긴 분식을 즐길 수 있는 동네 분식집이에요.'},
+    cats:['베스트','분식','김밥','튀김','세트','음료'],
+    menus:[
+      {nm:'국물떡볶이',ds:'쫀득한 밀떡 + 칼칼한 국물',pr:'4,000원',badge:'hot'},
+      {nm:'로제떡볶이',ds:'부드러운 크림 로제 소스',pr:'5,500원',badge:'new'},
+      {nm:'참치김밥',ds:'고소한 참치마요 듬뿍',pr:'3,500원'},
+      {nm:'모둠튀김',ds:'오징어·고구마·김말이',pr:'4,000원'},
+      {nm:'순대 한접시',ds:'쫄깃한 찰순대 + 내장',pr:'4,500원'},
+      {nm:'떡볶이 세트',ds:'떡볶이 + 튀김 + 음료',ori:'10,000원',pr:'8,500원',badge:'reco'}
+    ],
+    cart:{cnt:3, total:'12,500원'}
+  },
+  fastfood:{
+    emoji:'☕', logo:'☕', label:'카페', desc:'아늑한 카페 · 커버 이미지',
+    color:'brown', header:'banner', category:'tab', card:'list', staffCall:false, hideReview:true, hideHist:true,
+    store:{name:'소프트커피', intro:'매일 직접 로스팅한 원두로 내린 커피와 갓 구운 베이커리를 즐기는 동네 카페예요.'},
+    cats:['추천','커피','논커피','티·에이드','디저트','베이커리'],
+    menus:[
+      {nm:'아메리카노',ds:'에티오피아 싱글 오리진',ori:'4,500원',pr:'4,000원',badge:'hot'},
+      {nm:'카페라떼',ds:'부드러운 우유 거품',pr:'5,000원'},
+      {nm:'바닐라 라떼',ds:'마다가스카르 바닐라',pr:'5,500원',badge:'new'},
+      {nm:'자몽 에이드',ds:'생자몽 착즙 + 탄산',pr:'6,000원'},
+      {nm:'아인슈페너',ds:'진한 에스프레소 + 크림',pr:'6,500원',badge:'reco'},
+      {nm:'플레인 스콘',ds:'겉바속촉 수제 스콘',pr:'3,800원',noImg:true}
+    ],
+    cart:{cnt:2, total:'9,000원'}
+  },
+  izakaya:{
+    emoji:'🍶', logo:'🍶', label:'이자카야', desc:'차분한 딥네이비 · 텍스트 메뉴판',
+    color:'navy', header:'banner', category:'side', card:'text', staffCall:true, hideReview:true,
+    store:{name:'이자카야 모리', intro:'제철 안주와 사케·하이볼을 즐기는 아늑한 이자카야예요.'},
+    cats:['추천','안주','사시미','꼬치','튀김','주류'],
+    menus:[
+      {nm:'모둠 사시미',ds:'당일 입고 회 5종 모둠',pr:'28,000원',badge:'hot'},
+      {nm:'닭꼬치 모둠',ds:'숯불 닭꼬치 5종 6꼬치',pr:'12,000원'},
+      {nm:'연어 사시미',ds:'노르웨이산 생연어',pr:'18,000원'},
+      {nm:'가라아게',ds:'겉바속촉 일본식 닭튀김',pr:'9,000원'},
+      {nm:'하이볼',ds:'산토리 위스키 하이볼',pr:'6,000원',badge:'new',noImg:true},
+      {nm:'준마이 사케',ds:'쌀의 풍미 가득 정종 (300ml)',pr:'15,000원',noImg:true}
+    ],
+    cart:{cnt:3, total:'40,000원'}
+  },
+  truck:{
+    emoji:'🍔', logo:'🍔', label:'패스트푸드', desc:'빠른 패스트푸드 · 사진형 그리드',
+    color:'green', header:'basic', category:'tab', card:'grid', staffCall:false, hideHist:true,
+    store:{name:'버거팩토리', intro:'주문 즉시 구워내는 버거와 사이드를 빠르게 즐기는 패스트푸드점이에요.'},
+    cats:['추천','버거','치킨','사이드','음료'],
+    menus:[
+      {nm:'더블 치즈버거 세트',ds:'패티 2장 + 치즈 + 감자 + 콜라',pr:'8,900원',badge:'hot'},
+      {nm:'베이컨 버거',ds:'바삭 베이컨 + 스모키 소스',pr:'6,500원'},
+      {nm:'스파이시 치킨버거 세트',ds:'매콤 치킨 + 감자 + 음료',pr:'9,200원',badge:'new'},
+      {nm:'케이준 감자튀김',ds:'케이준 시즈닝 듬뿍',pr:'3,500원',noImg:true},
+      {nm:'치킨너겟 6조각',ds:'겉바속촉 순살너겟',ori:'4,800원',pr:'4,000원',badge:'reco'},
+      {nm:'콜라',ds:'시원한 탄산음료 (R)',pr:'2,000원',noImg:true}
+    ],
+    cart:{cnt:2, total:'18,400원'}
+  }
+};
+
+var FOOD_EMOJI=[['아메리카노','☕'],['라떼','☕'],['아인슈페너','☕'],['자몽','🥤'],['에이드','🥤'],['스콘','🥐'],['로제','🍝'],['떡볶이','🌶️'],['김밥','🍙'],['모둠튀김','🍤'],['순대','🥟'],['세트','🍢'],
+  ['치즈버거','🍔'],['베이컨','🥓'],['치킨버거','🍗'],['케이준','🍟'],['감자','🍟'],['너겟','🍗'],['콜라','🥤'],
+  ['사시미','🍣'],['연어','🍣'],['꼬치','🍢'],['가라아게','🍗'],['하이볼','🥃'],['사케','🍶'],
+  ['타코','🌮'],['버거','🍔'],['핫도그','🌭'],['츄러스','🍩'],['레모네이드','🍋'],['튀김','🍤']];
+var THUMB_GRAD=['linear-gradient(135deg,#ffe1bd,#ffb39e)','linear-gradient(135deg,#ffd6e0,#ffb3c6)',
+  'linear-gradient(135deg,#d7f0d2,#a8e6a1)','linear-gradient(135deg,#dfe4ee,#b9c2d6)',
+  'linear-gradient(135deg,#fff0c2,#ffd98a)','linear-gradient(135deg,#d6ecff,#a9d4ff)'];
+function foodEmoji(nm){ for(var i=0;i<FOOD_EMOJI.length;i++){ if(nm.indexOf(FOOD_EMOJI[i][0])>=0) return FOOD_EMOJI[i][1]; } return '🍽️'; }
+
+/* 실사 이미지 (Unsplash CDN) — 연결 시 로드, 실패 시 그라데이션+이모지 폴백 */
+function ux(id,w,h){ return 'https://images.unsplash.com/photo-'+id+'?auto=format&fit=crop&w='+w+'&h='+h+'&q=72'; }
+var FOOD_IMG=[['로제','1635363638580-c2809d049eee'],['떡볶이','1635363638580-c2809d049eee'],
+  ['김밥','1583224964978-2257b960c3d3'],['모둠튀김','1626804475297-41608ea09aeb'],
+  ['순대','1632789395770-20e6f63be806'],['세트','1635363638580-c2809d049eee'],
+  ['치즈버거','1568901346375-23c9450c58cd'],['베이컨','1553979459-d2229ba7433a'],
+  ['치킨버거','1606755962773-d324e0a13086'],['케이준','1573080496219-bb080dd4f877'],
+  ['감자','1573080496219-bb080dd4f877'],['너겟','1562967914-608f82629710'],['콜라','1554866585-cd94860890b7'],
+  ['사시미','1579871494447-9811cf80d66c'],['연어','1580476262798-bddd9f4b7369'],
+  ['꼬치','1606502973842-f64bc2785fe5'],['가라아게','1606851091851-e8c8c0fca5ba'],
+  ['하이볼','1514362545857-3bc16c4c7d1b'],['사케','1579954115545-a95591f28bfc'],
+  ['타코','1565299624946-b28f40a0ae38'],['버거','1571091718767-18b5b1457add'],
+  ['핫도그','1612392062798-2dbd6b4f9c1f'],['츄러스','1624471339379-3d3c5a5e4cda'],
+  ['레모네이드','1621263764928-df1444c5e859'],['튀김','1626804475297-41608ea09aeb']];
+function foodImgId(nm){ for(var i=0;i<FOOD_IMG.length;i++){ if(nm.indexOf(FOOD_IMG[i][0])>=0) return FOOD_IMG[i][1]; } return ''; }
+var BANNER_IMG={ bunsik:'1498654896293-37aacf113fd9', fastfood:'1571091718767-18b5b1457add',
+  izakaya:'1517248135467-4c7edcad34c4', truck:'1601050690597-df0568f70950' };
+/* 매장 로고용 실사(정사각) */
+var LOGO_IMG={ bunsik:'1635363638580-c2809d049eee', fastfood:'1441986300917-64674bd600d8',
+  izakaya:'1579871494447-9811cf80d66c', truck:'1601050690597-df0568f70950' };
+/* 메뉴명/업종 키워드로 실제 사진 반환(LoremFlickr). lock으로 항목별 고정 */
+function flickr(kw,lock){ return 'https://loremflickr.com/320/240/'+kw+'/all?lock='+lock; }
+function lockOf(t){ var h=7; for(var i=0;i<t.length;i++) h=(h*31+t.charCodeAt(i))%99991; return h; }
+var FOOD_KW=[['아메리카노','americano,coffee'],['라떼','latte,coffee'],['아인슈페너','coffee,cream'],['자몽','grapefruit,juice'],['에이드','lemonade,drink'],['스콘','scone,bakery'],['로제','tteokbokki,food'],['떡볶이','tteokbokki,food'],['김밥','gimbap,food'],['모둠튀김','tempura,food'],['순대','koreanfood,food'],
+  ['치즈버거','cheeseburger,food'],['베이컨','hamburger,food'],['치킨버거','burger,food'],['케이준','fries,food'],['감자','fries,food'],['너겟','nuggets,food'],['콜라','cola,drink'],
+  ['연어','salmon,sashimi'],['사시미','sashimi,food'],['꼬치','yakitori,food'],['가라아게','karaage,food'],['하이볼','highball,drink'],['사케','sake,drink'],
+  ['타코','tacos,food'],['버거','hamburger,food'],['핫도그','hotdog,food'],['츄러스','churros,food'],['레모네이드','lemonade,drink'],['튀김','tempura,food']];
+function foodKw(nm){ for(var i=0;i<FOOD_KW.length;i++){ if(nm.indexOf(FOOD_KW[i][0])>=0) return FOOD_KW[i][1]; } return 'food'; }
+var BANNER_KW={ bunsik:'restaurant', fastfood:'cafe', izakaya:'pub', truck:'diner' };
+var LOGO_KW={ bunsik:'tteokbokki,food', fastfood:'cafe', izakaya:'sashimi,food', truck:'storefront' };
+
+var BADGE_LABEL={hot:'인기', reco:'추천', new:'NEW'};
+var LABELS={basic:'기본형',banner:'배너형',tab:'가로 탭',side:'세로 사이드',list:'목록형',grid:'그리드형',text:'텍스트형'};
+
+var state=null, activePreset=null, curTab='menu';
+function curColor(){ for(var i=0;i<PALETTE.length;i++){ if(PALETTE[i].key===state.color) return PALETTE[i]; } return PALETTE[2]; }
+
+function buildControls(){
+  var presetsEl=document.getElementById('presets');
+  Object.keys(SKINS).forEach(function(k){
+    var s=SKINS[k];
+    var d=document.createElement('div');
+    d.className='preset'; d.setAttribute('data-k',k);
+    d.innerHTML='<div class="emoji">'+s.emoji+'</div><div><b>'+s.label+'</b><span>'+s.desc+'</span></div>';
+    d.onclick=function(){ applyPreset(k); };
+    presetsEl.appendChild(d);
+  });
+}
+function bindSeg(id,prop){
+  var btns=document.querySelectorAll('#'+id+' button');
+  for(var i=0;i<btns.length;i++){ (function(b){ b.onclick=function(){ state[prop]=b.getAttribute('data-v'); clearPreset(); render(); }; })(btns[i]); }
+}
+function clearPreset(){ activePreset=null; var ps=document.querySelectorAll('.preset'); for(var i=0;i<ps.length;i++) ps[i].classList.remove('active'); }
+function applyPreset(k){
+  activePreset=k; var s=SKINS[k];
+  state={ color:s.color, header:s.header, category:s.category, card:s.card, logo:s.logo,
+          store:s.store, cats:s.cats, menus:s.menus, cart:s.cart, staffCall:s.staffCall, hideReview:s.hideReview, hideHist:s.hideHist, gridCols:s.gridCols, bannerKw:BANNER_KW[k], logoKw:LOGO_KW[k] };
+  render();
+}
+function syncSeg(id,val){ var b=document.querySelectorAll('#'+id+' button'); for(var i=0;i<b.length;i++) b[i].classList.toggle('active', b[i].getAttribute('data-v')===val); }
+
+function render(){
+  curTab='menu';
+  var col=curColor(); var root=document.documentElement.style;
+  root.setProperty('--accent',col.c); root.setProperty('--accent-soft',col.soft); root.setProperty('--accent-ink',col.ink);
+  var ps=document.querySelectorAll('.preset'); for(var i=0;i<ps.length;i++) ps[i].classList.toggle('active', ps[i].getAttribute('data-k')===activePreset);
+  drawScreen();
+}
+
+function drawScreen(){
+  var s=state, col=curColor();
+  var logo='<div class="logo"><span class="lemo">'+s.logo+'</span>'+(s.logoKw?'<img src="'+flickr(s.logoKw,lockOf(s.store.name)+2)+'" alt="" onerror="this.remove()">':'')+'</div>';
+  var hist = s.hideHist ? '' : '<button class="histbtn">🧾 주문내역 <span class="hist-cnt">'+s.cart.cnt+'</span></button>';
+  var brow='<div class="brow"><div class="bstore">'+s.store.name+'</div>'+hist+'</div>';
+  var intro='<div class="bintro">'+s.store.intro+'</div>';
+  var header;
+  if(s.header==='banner'){
+    var ci=s.bannerKw?'<img class="coverimg" src="'+flickr(s.bannerKw,lockOf(s.store.name)+1)+'" onerror="this.remove()">':'';
+    header='<div class="cover" style="background:linear-gradient(135deg,'+col.c+',#11151f)">'+ci+'</div>'+
+           '<div class="brandinfo banner">'+logo+brow+intro+'</div>';
+  }else{
+    header='<div class="brandinfo basic">'+logo+brow+intro+'</div>';
+  }
+  var naver='<a class="nrv-banner"><span class="nrv-ico">N</span>'+
+            '<span class="nrv-tx">네이버 영수증 리뷰 남기기</span><span class="nrv-arrow">›</span></a>';
+  var mk=function(tab,label){return '<button class="maintab'+(curTab===tab?' on':'')+'" data-tab="'+tab+'">'+label+'</button>';};
+  var reviewTab = s.hideReview ? '' : mk('review','⭐ 리뷰');
+  var tabs='<div class="maintabs">'+mk('menu','🍽️ 메뉴')+reviewTab+mk('info','🏪 매장정보')+'</div>';
+  var body;
+  if(curTab==='review'){ body=reviewBody(s); }
+  else if(curTab==='info'){ body=infoBody(s); }
+  else{
+    var cardsHtml=buildCards(s);
+    var cardCls=s.card+(s.gridCols===1?' one':'');
+    if(s.category==='side'){
+      var side=s.cats.map(function(c,i){ return '<div class="t sidecat'+(i===0?' on':'')+'">'+c+'</div>'; }).join('');
+      body='<div class="body"><div class="side"><button class="cattab-ic side-search">🔍</button>'+side+'</div><div class="menu-area">'+
+           '<div class="catsec-h">'+s.cats[0]+'</div><div class="cards '+cardCls+'">'+cardsHtml+'</div></div></div>';
+    }else{
+      var pills=s.cats.map(function(c,i){ return '<button class="cattab'+(i===0?' on':'')+'">'+c+'</button>'; }).join('');
+      body='<div class="cattabs-wrap"><div class="cattabs"><button class="cattab-ic">🔍</button>'+pills+'</div></div>'+
+           '<div class="catsec-h">'+s.cats[0]+'</div><div class="cards '+cardCls+'">'+cardsHtml+'</div>';
+    }
+  }
+  var cart='<div class="cartbar"><button class="cartbar-btn"><span class="cnt">'+s.cart.cnt+'</span>'+
+           '<span class="cb-label">주문하기</span><span class="cb-total">'+s.cart.total+' ›</span></button></div>';
+  var staff=s.staffCall?'<div class="staff-call">🔔 직원 호출</div>':'';
+  var spacer='<div style="height:96px;background:var(--card)"></div>';
+  /* 메뉴 콘텐츠는 스크롤 영역, 주문하기·직원호출은 화면에 고정(스크롤 따라다님) */
+  document.getElementById('screen').innerHTML = header + naver + tabs + body + spacer;
+  var fade='<div class="floats-fade"></div>';
+  document.getElementById('floats').innerHTML = fade + staff + cart;
+  syncLive();
+}
+
+function thumb(m,i){
+  var id=foodImgId(m.nm);
+  var img='<img src="'+flickr(foodKw(m.nm),lockOf(m.nm))+'" alt="'+m.nm+'" loading="lazy" onerror="this.remove()">';
+  var bdg=m.badge?'<div class="img-badges"><span class="img-badge '+m.badge+'">'+BADGE_LABEL[m.badge]+'</span></div>':'';
+  return '<div class="mimg" style="background:'+THUMB_GRAD[i%THUMB_GRAD.length]+'"><span class="emo">'+foodEmoji(m.nm)+'</span>'+img+bdg+'</div>';
+}
+function priceHtml(m){
+  return '<div class="mprice">'+(m.ori?'<span class="ori">'+m.ori+'</span>':'')+
+         '<span'+(m.ori?' class="disc"':'')+'>'+m.pr+'</span></div>';
+}
+function buildCards(s){
+  return s.menus.map(function(m,i){
+    var pr=won(m.pr);
+    var info='<div class="minfo"><div class="mname">'+m.nm+'</div><div class="mdesc">'+m.ds+'</div>'+priceHtml(m)+'</div>';
+    if(s.card==='grid'){
+      if(m.noImg) return '<div class="mcard noimg">'+info+'<button class="gadd" data-pr="'+pr+'">담기</button></div>';
+      return '<div class="mcard">'+thumb(m,i)+info+'<button class="gadd" data-pr="'+pr+'">담기</button></div>';
+    }
+    if(s.card==='text'){
+      /* 텍스트형: 이미지 없이 텍스트(이름·설명·가격)로만 표시 */
+      return '<div class="mcard noimg">'+info+'</div>';
+    }
+    if(m.noImg) return '<div class="mcard noimg">'+info+'<div class="mplus" data-pr="'+pr+'">+</div></div>';
+    return '<div class="mcard">'+thumb(m,i)+info+'<div class="mplus" data-pr="'+pr+'">+</div></div>';
+  }).join('');
+}
+
+function won(v){return parseInt(String(v).replace(/[^0-9]/g,''),10)||0;}
+function fmt(n){return n.toLocaleString('ko-KR')+'원';}
+var live={cnt:0,total:0};
+function syncLive(){ live.cnt=state.cart.cnt; live.total=won(state.cart.total); }
+function updateCartUI(){
+  var c=document.querySelector('.cartbar .cnt'); if(c)c.textContent=live.cnt;
+  var t=document.querySelector('.cartbar .cb-total'); if(t)t.textContent=fmt(live.total)+' \u203a';
+  var h=document.querySelector('.hist-cnt'); if(h)h.textContent=live.cnt;
+}
+var _tt=null;
+function toast(msg){
+  var el=document.getElementById('toast');
+  if(!el){el=document.createElement('div');el.id='toast';document.querySelector('.screen').appendChild(el);}
+  el.textContent='\u2713 '+msg; el.className='toast show';
+  clearTimeout(_tt); _tt=setTimeout(function(){el.className='toast';},1400);
+}
+function setOn(list,el){ for(var i=0;i<list.length;i++) list[i].classList.remove('on'); el.classList.add('on'); }
+function reviewBody(s){
+  var rv=[['\uae40**','\u2605\u2605\u2605\u2605\u2605','\uc815\ub9d0 \ub9db\uc788\uac8c \uc798 \uba39\uc5c8\uc5b4\uc694. \ub610 \uc62c\uac8c\uc694!'],
+          ['\uc774**','\u2605\u2605\u2605\u2605\u2605','\uc591\ub3c4 \ub9ce\uace0 \uce5c\uc808\ud558\uc138\uc694 \ud83d\udc4d'],
+          ['\ubc15**','\u2605\u2605\u2605\u2605\u2606','\ubd84\uc704\uae30 \uc88b\uace0 \uc7ac\ubc29\ubb38 \uc758\uc0ac \uc788\uc5b4\uc694.']];
+  return '<div class="panel-pad"><div class="catsec-h" style="padding:4px 0 10px">\ub9ac\ubdf0 (\ub370\ubaa8)</div>'+
+    rv.map(function(r){return '<div class="rv-card"><div class="rv-top"><b>'+r[0]+'</b><span class="rv-star">'+r[1]+'</span></div><div class="rv-tx">'+r[2]+'</div></div>';}).join('')+'</div>';
+}
+function infoBody(s){
+  var rows=[['\uc18c\uac1c',s.store.intro],['\uc601\uc5c5\uc2dc\uac04','11:00 - 21:00 (\ub370\ubaa8)'],['\uc8fc\ubb38 \ubc29\uc2dd','QR \uc8fc\ubb38'],['\uc6d0\uc0b0\uc9c0','\uba54\ub274\ubcc4 \ud45c\uae30 (\ub370\ubaa8)']];
+  return '<div class="panel-pad">'+rows.map(function(r){return '<div class="info-row"><div class="info-k">'+r[0]+'</div><div class="info-v">'+r[1]+'</div></div>';}).join('')+'</div>';
+}
+function onScreenClick(e){
+  var cat=e.target.closest('.cattab,.sidecat');
+  if(cat){ var sibs=cat.parentElement.querySelectorAll('.cattab,.sidecat'); setOn(sibs,cat);
+    var h=document.querySelector('#screen .catsec-h'); if(h)h.textContent=cat.textContent; return; }
+  var mt=e.target.closest('.maintab');
+  if(mt){ curTab=mt.getAttribute('data-tab'); drawScreen(); return; }
+  var add=e.target.closest('.mplus,.gadd');
+  if(add){ live.cnt++; live.total+=won(add.getAttribute('data-pr')); updateCartUI(); toast('\uc7a5\ubc14\uad6c\ub2c8\uc5d0 \ub2f4\uc558\uc5b4\uc694'); return; }
+  if(e.target.closest('.histbtn')){ toast('\uc8fc\ubb38\ub0b4\uc5ed\uc744 \ud655\uc778\ud574\uc694 (\ub370\ubaa8)'); return; }
+  if(e.target.closest('.nrv-banner')){ toast('\ub124\uc774\ubc84 \uc601\uc218\uc99d \ub9ac\ubdf0 (\ub370\ubaa8)'); return; }
+}
+function onFloatsClick(e){
+  if(e.target.closest('.staff-call')){ toast('\uc9c1\uc6d0\uc744 \ud638\ucd9c\ud588\uc5b4\uc694 (\ub370\ubaa8)'); return; }
+  if(e.target.closest('.cartbar-btn')){ toast('\uc8fc\ubb38 \ub2e8\uacc4\ub85c \uc774\ub3d9\ud574\uc694 (\ub370\ubaa8)'); return; }
+}
+buildControls();
+document.getElementById('screen').addEventListener('click',onScreenClick);
+document.getElementById('floats').addEventListener('click',onFloatsClick);
+var __sp=new URLSearchParams(location.search).get('skin');
+if(__sp&&SKINS[__sp]){document.body.classList.add('single');applyPreset(__sp);}else{applyPreset('bunsik');}
+function __postH(){try{var w=document.querySelector('.wrap');parent.postMessage({qrSkinH:(w?w.offsetHeight:document.documentElement.scrollHeight)},'*');}catch(e){}}
+window.addEventListener('load',__postH);window.addEventListener('resize',__postH);setInterval(__postH,1200);
+</script>
+</body>
+</html>

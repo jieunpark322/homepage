@@ -913,8 +913,8 @@
   <div class="wrap">
     <div class="center">
       <span class="eyebrow">QR 주문 스킨</span>
-      <h2 class="title">손님에게 보여줄 화면,<br class="dbr">가게이 직접 디자인합니다.</h2>
-      <p class="lead">같은 메뉴라도 가게 분위기에 맞춰 색·레이아웃·배너·카테고리를 골라 적용. 손님이 보는 주문 페이지를 우리 가게만의 스킨으로 바꿀 수 있어요.</p>
+      <h2 class="title">우리 매장만의 주문 페이지를<br class="dbr">만들어보세요.</h2>
+      <p class="lead">가게 분위기에 어울리는 색상과 레이아웃을 직접 선택할 수 있어요. 손님들에게 우리 가게만의 특별한 감성을 전달해 보세요.</p>
     </div>
     <div class="skin-picker">
       <input class="sk-radio" type="radio" name="skinsel" id="skA" checked>
@@ -923,32 +923,16 @@
       <input class="sk-radio" type="radio" name="skinsel" id="skD">
       <div class="skin-opts">
         <p style="font-size:13px;font-weight:700;color:var(--muted);margin-bottom:2px">샘플 스킨을 선택해 보세요</p>
-        <label class="sk-opt" for="skA">
-          <span class="sk-radio-dot" aria-hidden="true"></span>
-          <img class="sk-thumb" src="skin-pink.png" alt="">
-          <span class="sk-meta"><b>비비드 핑크</b><small>이미지 중심 추천 화면</small></span>
-        </label>
-        <label class="sk-opt" for="skB">
-          <span class="sk-radio-dot" aria-hidden="true"></span>
-          <img class="sk-thumb" src="skin-teal.png" alt="">
-          <span class="sk-meta"><b>내추럴 민트</b><small>리뷰·신뢰 강조 화면</small></span>
-        </label>
-        <label class="sk-opt" for="skC">
-          <span class="sk-radio-dot" aria-hidden="true"></span>
-          <img class="sk-thumb" src="skin-black.png" alt="">
-          <span class="sk-meta"><b>모던 블랙</b><small>리스트형 · 깔끔한 식음 가게</small></span>
-        </label>
-        <label class="sk-opt" for="skD">
-          <span class="sk-radio-dot" aria-hidden="true"></span>
-          <img class="sk-thumb" src="skin-grid.png" alt="">
-          <span class="sk-meta"><b>민트 그리드</b><small>카테고리 사이드바 + 격자 메뉴</small></span>
-        </label>
+        <label class="sk-opt" for="skA"><span class="sk-radio-dot" aria-hidden="true"></span><span class="sk-thumb" style="background:linear-gradient(160deg,#f97316,#fb923c);border-radius:8px"></span><span class="sk-meta"><b>분식</b><small>정겨운 분식집 · 활기찬 오렌지</small></span></label>
+        <label class="sk-opt" for="skB"><span class="sk-radio-dot" aria-hidden="true"></span><span class="sk-thumb" style="background:linear-gradient(160deg,#8a5a36,#b07d4f);border-radius:8px"></span><span class="sk-meta"><b>카페</b><small>아늑한 카페 · 커버 이미지</small></span></label>
+        <label class="sk-opt" for="skC"><span class="sk-radio-dot" aria-hidden="true"></span><span class="sk-thumb" style="background:linear-gradient(160deg,#1f2a44,#3a4a6b);border-radius:8px"></span><span class="sk-meta"><b>이자카야</b><small>차분한 딥네이비 · 텍스트 메뉴판</small></span></label>
+        <label class="sk-opt" for="skD"><span class="sk-radio-dot" aria-hidden="true"></span><span class="sk-thumb" style="background:linear-gradient(160deg,#10b981,#34d399);border-radius:8px"></span><span class="sk-meta"><b>패스트푸드</b><small>빠른 패스트푸드 · 사진형 그리드</small></span></label>
       </div>
       <div class="skin-stage">
-        <img class="prev" data-k="A" src="skin-pink.png" alt="QR오더 손님 주문 화면 ·비비드 핑크 스킨">
-        <img class="prev" data-k="B" src="skin-teal.png" alt="QR오더 손님 주문 화면 ·내추럴 민트 스킨">
-        <img class="prev" data-k="C" src="skin-black.png" alt="QR오더 손님 주문 화면 ·모던 블랙 스킨">
-        <img class="prev" data-k="D" src="skin-grid.png" alt="QR오더 손님 주문 화면 ·민트 그리드 스킨">
+        <iframe class="prev" data-k="A" src="qr-skin-demo.html?skin=bunsik"   title="분식 스킨"     scrolling="no" loading="lazy" style="width:360px;max-width:92%;height:752px;border:0;filter:none"></iframe>
+        <iframe class="prev" data-k="B" src="qr-skin-demo.html?skin=fastfood" title="카페 스킨"     scrolling="no" loading="lazy" style="width:360px;max-width:92%;height:752px;border:0;filter:none"></iframe>
+        <iframe class="prev" data-k="C" src="qr-skin-demo.html?skin=izakaya"  title="이자카야 스킨" scrolling="no" loading="lazy" style="width:360px;max-width:92%;height:752px;border:0;filter:none"></iframe>
+        <iframe class="prev" data-k="D" src="qr-skin-demo.html?skin=truck"    title="패스트푸드 스킨" scrolling="no" loading="lazy" style="width:360px;max-width:92%;height:752px;border:0;filter:none"></iframe>
       </div>
     </div>
     <div class="skin-tags">
