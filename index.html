@@ -224,7 +224,8 @@
   .ref p{font-size:15px;color:#cdd9f0;line-height:1.65}
 
   /* ---------- Pricing ---------- */
-  .pricing{background:#fff}
+  .pricing{background:linear-gradient(180deg,#edf2fb 0%,#f6f9ff 55%,#fff 100%);position:relative}
+  .pricing::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--grad)}
   .price-wrap{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start;margin-top:48px}
   .price-card{background:var(--primary-soft2);border:1px solid var(--line);border-radius:var(--radius);padding:36px 32px}
   .price-card h3{font-size:20px;font-weight:800;margin-bottom:8px}
@@ -876,21 +877,21 @@
   <div class="wrap">
     <div class="center">
       <span class="eyebrow">운영 효율</span>
-      <h2 class="title">손님이 몰리는 피크타임,<br class="dbr">직원이 갑자기 빠진 날에도 매장은 매끄럽게 돌아갑니다.</h2>
-      <p class="lead">손님이 직접 폰으로 주문하니까요. 번거로운 대기 줄도, 쉴 새 없는 호출 소리도, 아찔한 주문 누락도 눈에 띄게 줄어듭니다.</p>
+      <h2 class="title">직원이 부족한 피크타임에도<br class="dbr">매장은 막힘없이 돌아갑니다.</h2>
+      <p class="lead">손님이 직접 폰으로 주문하니까 쉴 새 없는 테이블 호출도, 번거로운 대기 줄과 주문 누락도 눈에 띄게 줄어들어요.</p>
     </div>
     <div class="usp-cols">
       <div class="usp-col">
         <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg></div>
-        <h3>피크타임에도 밀리지 않는 주문</h3>
-        <p>바쁜 시간엔 한 사람이 모든 주문을 받기 어려워요. 손님이 각자 폰으로 동시에 주문하니, 줄서기·호출·주문 누락 없이 매장이 매끄럽게 돌아가요.</p>
-        <div class="tags"><span>동시 주문 처리</span><span>주문 누락 감소</span><span>호출 응대 부담 감소</span></div>
+        <h3>수십 테이블도 동시에, 밀림 없는 주문</h3>
+        <p>바쁜 시간, 손님들이 각자의 휴대폰으로 동시에 주문을 넣어요. 매장은 주문 누락이나 대기 없이 매끄럽게 운영됩니다.</p>
+        <div class="tags"><span>동시 주문 처리</span><span>주문 누락 X</span><span>호출 응대 부담 감소</span></div>
       </div>
       <div class="usp-col">
         <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
-        <h3>기존 POS, 바꾸지 않아도 됩니다</h3>
-        <p>쓰던 POS 장비 그대로 두세요. QR오더 전용 주문접수 프로그램만 설치하면 끝. 새 장비 구매도, 매장 공사도, POS 교체도 필요 없어요.</p>
-        <div class="tags"><span>장비 구매 X</span><span>공사 X</span><span>프로그램만 설치</span></div>
+        <h3>쓰던 포스기 그대로, 설치는 프로그램 하나로 끝</h3>
+        <p>비싼 새 장비를 사거나 번거로운 배선 공사를 할 필요가 없어요. 지금 매장에 있는 포스기에 전용 프로그램만 가볍게 설치하세요.</p>
+        <div class="tags"><span>장비 구매 X</span><span>공사 X</span><span>간편설치</span></div>
       </div>
     </div>
   </div>
@@ -1023,28 +1024,28 @@
         <div class="line"></div>
         <div class="dot">1</div>
         <span class="dur">1일</span>
-        <h4>도입 상담</h4>
-        <p>매장 환경(선불/후불)에 맞는 최적의 운영 방식을 컨설팅해요.</p>
+        <h4>맞춤 상담</h4>
+        <p>우리 매장에 딱 맞는 최적의 운영 방식을 함께 고민하고 컨설팅해 드려요.</p>
       </div>
       <div class="step">
         <div class="line"></div>
         <div class="dot">2</div>
         <span class="dur">2~3일</span>
         <h4>메뉴 세팅 &amp; QR 제작</h4>
-        <p>매장 로고와 분위기를 담은 커스텀 QR 및 안내물을 제작해요.</p>
+        <p>매장의 로고와 감성을 담아, 우리 매장만의 특별한 QR과 안내물을 제작해요.</p>
       </div>
       <div class="step">
         <div class="line"></div>
         <div class="dot">3</div>
         <span class="dur">1일</span>
-        <h4>설치 &amp; 현장 교육</h4>
-        <p>쓰던 POS 기기 그대로, 배선 공사 없이 원격으로 전용 프로그램만 설치해 드려요. 기존 POS 업체와의 마찰이나 복잡한 세팅 걱정 없이, 설치 후엔 누구나 이해하는 쉬운 매뉴얼로 현장 교육까지 진행해요.</p>
+        <h4>간편 설치 &amp; 맞춤 교육</h4>
+        <p>쓰시던 포스기 그대로, 별도 방문 없이 원격으로 프로그램만 쏙 설치해 드려요. 복잡한 세팅 걱정은 덜어드리고, 쉽게 따라 할 수 있도록 교육해 드려요.</p>
       </div>
       <div class="step">
         <div class="dot">4</div>
         <span class="dur">상시</span>
-        <h4>영업 시작 &amp; 운영 지원</h4>
-        <p>실전 돌입! 운영 중 문제가 생기면 원격으로 지원해 드려요.</p>
+        <h4>영업 시작 &amp; 밀착 지원</h4>
+        <p>든든하게 장사를 시작하세요! 매장 운영 중 생기는 문제는 원격으로 빠르게 해결해 드려요.</p>
       </div>
     </div>
   </div>
@@ -1148,7 +1149,7 @@
     <div class="center">
       <span class="eyebrow">투명하고 간단한 가격</span>
       <h2 class="title">매월 딱 정해진 요금. 그게 전부입니다.</h2>
-      <p class="lead">테이블이 늘어나도 복잡한 계산 없이 한 달 고정비용 하나면 충분해요. 1개월 무료, 카드 등록만으로 가볍게 시작하세요.</p>
+      <p class="lead">테이블이 늘어나도 추가 요금 걱정은 마세요. 매달 고정된 비용 하나로 모든 기능을 마음껏 쓰실 수 있어요.</p>
     </div>
 
     <div class="pmatrix">
@@ -1803,9 +1804,7 @@
   function tick(){steps.forEach(function(s,n){s.classList.toggle('on',n===i);});i=(i+1)%steps.length;}
   function start(){if(timer)return;i=0;tick();timer=setInterval(tick,1000);}
   function stop(){if(timer){clearInterval(timer);timer=null;}steps.forEach(function(s){s.classList.remove('on');});}
-  if('IntersectionObserver' in window){
-    new IntersectionObserver(function(es){es.forEach(function(e){e.isIntersecting?start():stop();});},{threshold:.3}).observe(track);
-  }else{start();}
+  start();
 })();
 </script>
 </body>
