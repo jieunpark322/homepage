@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QR 주문 스킨 · 실시간 미리보기 데모</title>
+<title>QR 주문 스킨 | 실시간 미리보기 데모</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <style>
   :root{
@@ -198,7 +198,7 @@
   .fchip{background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 16px;font-size:13px;
     font-weight:600;color:var(--ink2);display:flex;align-items:center;gap:7px;}
   .fchip svg{width:14px;height:14px;color:#22c55e;}
-  /* 인터랙션: 토스트 · 탭 패널 · 누름 피드백 */
+  /* 인터랙션: 토스트 | 탭 패널 | 누름 피드백 */
   .toast{position:absolute;left:50%;bottom:84px;transform:translateX(-50%) translateY(6px);
     background:rgba(25,31,40,.92);color:#fff;font-size:12px;font-weight:700;padding:9px 14px;border-radius:999px;
     opacity:0;transition:.2s;z-index:50;pointer-events:none;white-space:nowrap;}
@@ -214,7 +214,7 @@
   .cattab,.maintab,.cattab-ic,.sidecat,.mplus,.gadd,.cartbar-btn,.histbtn,.nrv-banner,.staff-call{cursor:pointer;transition:transform .08s,background .12s;}
   .cattab:active,.maintab:active,.sidecat:active,.mplus:active,.gadd:active,.cartbar-btn:active,.histbtn:active,.nrv-banner:active,.staff-call:active{transform:scale(.95);}
   /* 단일 스킨 미리보기 모드 (?skin=KEY) — 폰만 표시 */
-  body.single{background:transparent;}
+  body.single{background:transparent;zoom:1.2;}
   body.single .hero,body.single .panel,body.single .footer-chips,body.single .cap{display:none!important;}
   body.single .wrap{padding:8px;max-width:none;}
   body.single .layout{display:flex;justify-content:center;}
@@ -246,7 +246,7 @@
         <div class="scroll" id="screen"></div>
         <div id="floats"></div>
       </div></div>
-      <div class="cap">실시간 미리보기 · 조작은 데모용입니다</div>
+      <div class="cap">실시간 미리보기 | 조작은 데모용입니다</div>
     </div>
 
   </div>
@@ -277,7 +277,7 @@ var PALETTE = [
 /* 4개 업종 스킨 — 실제 옵션 조합 + 기본 목업 문구 규칙(원/인기·추천·NEW) */
 var SKINS = {
   bunsik:{
-    emoji:'🍜', logo:'🍜', label:'분식', desc:'정겨운 분식집 · 활기찬 오렌지',
+    emoji:'🍜', logo:'🍜', label:'분식', desc:'정겨운 분식집 | 활기찬 오렌지',
     color:'orange', header:'basic', category:'tab', card:'grid', staffCall:false, gridCols:1,
     store:{name:'영자네 분식', intro:'쫄깃한 떡볶이와 갓 튀긴 분식을 즐길 수 있는 동네 분식집이에요.'},
     cats:['베스트','분식','김밥','튀김','세트','음료'],
@@ -285,14 +285,14 @@ var SKINS = {
       {nm:'국물떡볶이',ds:'쫀득한 밀떡 + 칼칼한 국물',pr:'4,000원',badge:'hot'},
       {nm:'로제떡볶이',ds:'부드러운 크림 로제 소스',pr:'5,500원',badge:'new'},
       {nm:'참치김밥',ds:'고소한 참치마요 듬뿍',pr:'3,500원'},
-      {nm:'모둠튀김',ds:'오징어·고구마·김말이',pr:'4,000원'},
+      {nm:'모둠튀김',ds:'오징어, 고구마, 김말이',pr:'4,000원'},
       {nm:'순대 한접시',ds:'쫄깃한 찰순대 + 내장',pr:'4,500원'},
       {nm:'떡볶이 세트',ds:'떡볶이 + 튀김 + 음료',ori:'10,000원',pr:'8,500원',badge:'reco'}
     ],
     cart:{cnt:3, total:'12,500원'}
   },
   fastfood:{
-    emoji:'☕', logo:'☕', label:'카페', desc:'아늑한 카페 · 커버 이미지',
+    emoji:'☕', logo:'☕', label:'카페', desc:'아늑한 카페 | 커버 이미지',
     color:'brown', header:'banner', category:'tab', card:'list', staffCall:false, hideReview:true, hideHist:true,
     store:{name:'소프트커피', intro:'매일 직접 로스팅한 원두로 내린 커피와 갓 구운 베이커리를 즐기는 동네 카페예요.'},
     cats:['추천','커피','논커피','티·에이드','디저트','베이커리'],
@@ -307,9 +307,9 @@ var SKINS = {
     cart:{cnt:2, total:'9,000원'}
   },
   izakaya:{
-    emoji:'🍶', logo:'🍶', label:'이자카야', desc:'차분한 딥네이비 · 텍스트 메뉴판',
+    emoji:'🍶', logo:'🍶', label:'이자카야', desc:'차분한 딥네이비 | 텍스트 메뉴판',
     color:'navy', header:'banner', category:'side', card:'text', staffCall:true, hideReview:true,
-    store:{name:'이자카야 모리', intro:'제철 안주와 사케·하이볼을 즐기는 아늑한 이자카야예요.'},
+    store:{name:'이자카야 모리', intro:'제철 안주와 사케와 하이볼을 즐기는 아늑한 이자카야예요.'},
     cats:['추천','안주','사시미','꼬치','튀김','주류'],
     menus:[
       {nm:'모둠 사시미',ds:'당일 입고 회 5종 모둠',pr:'28,000원',badge:'hot'},
@@ -322,7 +322,7 @@ var SKINS = {
     cart:{cnt:3, total:'40,000원'}
   },
   truck:{
-    emoji:'🍔', logo:'🍔', label:'패스트푸드', desc:'빠른 패스트푸드 · 사진형 그리드',
+    emoji:'🍔', logo:'🍔', label:'패스트푸드', desc:'빠른 패스트푸드 | 사진형 그리드',
     color:'green', header:'basic', category:'tab', card:'grid', staffCall:false, hideHist:true,
     store:{name:'버거팩토리', intro:'주문 즉시 구워내는 버거와 사이드를 빠르게 즐기는 패스트푸드점이에요.'},
     cats:['추천','버거','치킨','사이드','음료'],

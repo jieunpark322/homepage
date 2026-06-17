@@ -366,7 +366,9 @@
   .skin-tags span{font-size:13.5px;font-weight:700;color:var(--primary-dark);background:#fff;border:1px solid var(--line);padding:8px 15px;border-radius:999px;display:flex;align-items:center;gap:7px}
   .skin-tags span svg{width:15px;height:15px;color:var(--primary-dark)}
   /* interactive skin picker */
-  .skin-picker{position:relative;display:grid;grid-template-columns:430px 1fr;gap:44px;margin-top:46px;align-items:center}
+  .skin-picker{position:relative;display:grid;grid-template-columns:400px 1fr;gap:44px;margin-top:46px;align-items:center}
+  #skin .lead{font-size:19px;max-width:760px}
+  #skin .center{margin-bottom:8px}
   .skin-picker .sk-radio{position:absolute;top:0;left:0;opacity:0;width:1px;height:1px;pointer-events:none}
   .skin-opts{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   .sk-opt{display:flex;flex-direction:column;align-items:flex-start;gap:11px;padding:18px;border:1.5px solid var(--line);border-radius:16px;background:#fff;cursor:pointer;transition:.18s;box-shadow:var(--shadow-sm)}
@@ -923,16 +925,16 @@
       <input class="sk-radio" type="radio" name="skinsel" id="skD">
       <div class="skin-opts">
         <p style="grid-column:1/-1;font-size:13.5px;font-weight:700;color:var(--muted);margin:0 0 2px">샘플 스킨을 선택해 보세요</p>
-        <label class="sk-opt" for="skB"><span class="sk-emoji" style="background:#f1e7df">☕</span><span class="sk-meta"><b>카페</b><small>아늑한 카페 · 커버 이미지</small></span></label>
-        <label class="sk-opt" for="skC"><span class="sk-emoji" style="background:#e6e9f0">🍶</span><span class="sk-meta"><b>이자카야</b><small>차분한 딥네이비 · 텍스트 메뉴판</small></span></label>
-        <label class="sk-opt" for="skA"><span class="sk-emoji" style="background:#ffedd5">🍜</span><span class="sk-meta"><b>분식</b><small>정겨운 분식집 · 활기찬 오렌지</small></span></label>
-        <label class="sk-opt" for="skD"><span class="sk-emoji" style="background:#dcfce7">🍔</span><span class="sk-meta"><b>패스트푸드</b><small>빠른 패스트푸드 · 사진형 그리드</small></span></label>
+        <label class="sk-opt" for="skB"><span class="sk-emoji" style="background:#f1e7df">☕</span><span class="sk-meta"><b>카페</b><small>아늑한 카페 | 커버 이미지</small></span></label>
+        <label class="sk-opt" for="skC"><span class="sk-emoji" style="background:#e6e9f0">🍶</span><span class="sk-meta"><b>이자카야</b><small>차분한 딥네이비 | 텍스트 메뉴판</small></span></label>
+        <label class="sk-opt" for="skA"><span class="sk-emoji" style="background:#ffedd5">🍜</span><span class="sk-meta"><b>분식</b><small>정겨운 분식집 | 활기찬 오렌지</small></span></label>
+        <label class="sk-opt" for="skD"><span class="sk-emoji" style="background:#dcfce7">🍔</span><span class="sk-meta"><b>패스트푸드</b><small>빠른 패스트푸드 | 사진형 그리드</small></span></label>
       </div>
       <div class="skin-stage">
-        <iframe class="prev" data-k="A" src="qr-skin-demo.html?skin=bunsik"   title="분식 스킨"     scrolling="no" loading="lazy" style="width:360px;max-width:92%;height:752px;border:0;filter:none"></iframe>
-        <iframe class="prev" data-k="B" src="qr-skin-demo.html?skin=fastfood" title="카페 스킨"     scrolling="no" loading="lazy" style="width:360px;max-width:92%;height:752px;border:0;filter:none"></iframe>
-        <iframe class="prev" data-k="C" src="qr-skin-demo.html?skin=izakaya"  title="이자카야 스킨" scrolling="no" loading="lazy" style="width:360px;max-width:92%;height:752px;border:0;filter:none"></iframe>
-        <iframe class="prev" data-k="D" src="qr-skin-demo.html?skin=truck"    title="패스트푸드 스킨" scrolling="no" loading="lazy" style="width:360px;max-width:92%;height:752px;border:0;filter:none"></iframe>
+        <iframe class="prev" data-k="A" src="qr-skin-demo.html?skin=bunsik"   title="분식 스킨"     scrolling="no" loading="lazy" style="width:480px;max-width:100%;height:900px;border:0;filter:none"></iframe>
+        <iframe class="prev" data-k="B" src="qr-skin-demo.html?skin=fastfood" title="카페 스킨"     scrolling="no" loading="lazy" style="width:480px;max-width:100%;height:900px;border:0;filter:none"></iframe>
+        <iframe class="prev" data-k="C" src="qr-skin-demo.html?skin=izakaya"  title="이자카야 스킨" scrolling="no" loading="lazy" style="width:480px;max-width:100%;height:900px;border:0;filter:none"></iframe>
+        <iframe class="prev" data-k="D" src="qr-skin-demo.html?skin=truck"    title="패스트푸드 스킨" scrolling="no" loading="lazy" style="width:480px;max-width:100%;height:900px;border:0;filter:none"></iframe>
       </div>
     </div>
     <div class="skin-tags">
