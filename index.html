@@ -366,16 +366,16 @@
   .skin-tags span{font-size:13.5px;font-weight:700;color:var(--primary-dark);background:#fff;border:1px solid var(--line);padding:8px 15px;border-radius:999px;display:flex;align-items:center;gap:7px}
   .skin-tags span svg{width:15px;height:15px;color:var(--primary-dark)}
   /* interactive skin picker */
-  .skin-picker{position:relative;display:grid;grid-template-columns:330px 1fr;gap:40px;margin-top:46px;align-items:center}
+  .skin-picker{position:relative;display:grid;grid-template-columns:430px 1fr;gap:44px;margin-top:46px;align-items:center}
   .skin-picker .sk-radio{position:absolute;top:0;left:0;opacity:0;width:1px;height:1px;pointer-events:none}
-  .skin-opts{display:flex;flex-direction:column;gap:14px}
-  .sk-opt{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1.5px solid var(--line);border-radius:14px;background:#fff;cursor:pointer;transition:.18s;box-shadow:var(--shadow-sm)}
+  .skin-opts{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .sk-opt{display:flex;flex-direction:column;align-items:flex-start;gap:11px;padding:18px;border:1.5px solid var(--line);border-radius:16px;background:#fff;cursor:pointer;transition:.18s;box-shadow:var(--shadow-sm)}
   .sk-opt:hover{border-color:var(--primary)}
   .sk-radio-dot{width:20px;height:20px;border-radius:50%;border:2px solid #C7CDD8;flex-shrink:0;position:relative;transition:.18s}
   .sk-radio-dot::after{content:'';position:absolute;inset:3px;border-radius:50%;background:var(--primary-strong);transform:scale(0);transition:.18s}
-  .sk-opt .sk-thumb{width:44px;height:64px;object-fit:cover;object-position:top;flex-shrink:0;filter:drop-shadow(0 2px 4px rgba(14,22,38,.18))}
-  .sk-meta b{font-size:15px;font-weight:800;color:var(--ink);display:block}
-  .sk-meta small{font-size:12.5px;color:var(--muted)}
+  .sk-opt .sk-emoji{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
+  .sk-meta b{font-size:17px;font-weight:800;color:var(--ink);display:block}
+  .sk-meta small{font-size:13.5px;color:var(--muted);display:block;margin-top:3px;line-height:1.4}
   .skin-stage{display:flex;justify-content:center}
   .skin-stage .prev{display:none;width:300px;max-width:88%;height:auto;filter:drop-shadow(0 26px 44px rgba(14,22,38,.34))}
   #skA:checked ~ .skin-stage .prev[data-k="A"],
@@ -922,11 +922,11 @@
       <input class="sk-radio" type="radio" name="skinsel" id="skC">
       <input class="sk-radio" type="radio" name="skinsel" id="skD">
       <div class="skin-opts">
-        <p style="font-size:13px;font-weight:700;color:var(--muted);margin-bottom:2px">샘플 스킨을 선택해 보세요</p>
-        <label class="sk-opt" for="skB"><span class="sk-radio-dot" aria-hidden="true"></span><span class="sk-thumb" style="background:linear-gradient(160deg,#8a5a36,#b07d4f);border-radius:8px"></span><span class="sk-meta"><b>카페</b><small>아늑한 카페 · 커버 이미지</small></span></label>
-        <label class="sk-opt" for="skC"><span class="sk-radio-dot" aria-hidden="true"></span><span class="sk-thumb" style="background:linear-gradient(160deg,#1f2a44,#3a4a6b);border-radius:8px"></span><span class="sk-meta"><b>이자카야</b><small>차분한 딥네이비 · 텍스트 메뉴판</small></span></label>
-        <label class="sk-opt" for="skA"><span class="sk-radio-dot" aria-hidden="true"></span><span class="sk-thumb" style="background:linear-gradient(160deg,#f97316,#fb923c);border-radius:8px"></span><span class="sk-meta"><b>분식</b><small>정겨운 분식집 · 활기찬 오렌지</small></span></label>
-        <label class="sk-opt" for="skD"><span class="sk-radio-dot" aria-hidden="true"></span><span class="sk-thumb" style="background:linear-gradient(160deg,#10b981,#34d399);border-radius:8px"></span><span class="sk-meta"><b>패스트푸드</b><small>빠른 패스트푸드 · 사진형 그리드</small></span></label>
+        <p style="grid-column:1/-1;font-size:13.5px;font-weight:700;color:var(--muted);margin:0 0 2px">샘플 스킨을 선택해 보세요</p>
+        <label class="sk-opt" for="skB"><span class="sk-emoji" style="background:#f1e7df">☕</span><span class="sk-meta"><b>카페</b><small>아늑한 카페 · 커버 이미지</small></span></label>
+        <label class="sk-opt" for="skC"><span class="sk-emoji" style="background:#e6e9f0">🍶</span><span class="sk-meta"><b>이자카야</b><small>차분한 딥네이비 · 텍스트 메뉴판</small></span></label>
+        <label class="sk-opt" for="skA"><span class="sk-emoji" style="background:#ffedd5">🍜</span><span class="sk-meta"><b>분식</b><small>정겨운 분식집 · 활기찬 오렌지</small></span></label>
+        <label class="sk-opt" for="skD"><span class="sk-emoji" style="background:#dcfce7">🍔</span><span class="sk-meta"><b>패스트푸드</b><small>빠른 패스트푸드 · 사진형 그리드</small></span></label>
       </div>
       <div class="skin-stage">
         <iframe class="prev" data-k="A" src="qr-skin-demo.html?skin=bunsik"   title="분식 스킨"     scrolling="no" loading="lazy" style="width:360px;max-width:92%;height:752px;border:0;filter:none"></iframe>
