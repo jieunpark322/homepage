@@ -93,7 +93,7 @@
   /* ---------- Hero ---------- */
   .hero{
     background:linear-gradient(180deg,var(--primary-soft2) 0%,#fff 100%);
-    padding:84px 0 92px;overflow:hidden;
+    padding:84px 0 70px;overflow:hidden;
   }
   .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
   .hero-head{margin-bottom:38px}
@@ -120,6 +120,13 @@
   .hero-illust::after{display:none}
   .hero-illust-img{display:flex;justify-content:center;align-items:center}
   .hero-3d{width:100%;max-width:480px;height:auto;display:block}
+  .hero-stats{display:grid;grid-template-columns:repeat(4,1fr);margin-top:60px;border-top:1px solid var(--line);padding-top:30px}
+  .hero-stats .hstat{text-align:center;padding:0 18px;border-left:1px solid var(--line)}
+  .hero-stats .hstat:first-child{border-left:0}
+  .hero-stats .num{font-size:clamp(26px,3.2vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1;color:var(--primary-strong)}
+  .hero-stats .num small{font-size:.5em;font-weight:800;margin-left:2px;color:var(--ink-2)}
+  .hero-stats .lb{font-size:14px;color:var(--muted);margin-top:10px;font-weight:600}
+  @media(max-width:680px){.hero-stats{grid-template-columns:repeat(2,1fr);row-gap:26px;margin-top:44px}.hero-stats .hstat{border-left:0}}
   .hero-photo svg.hero-scan{width:100%;height:100%;display:block}
   .hero-scan .scanline{animation:scanmove 2.4s ease-in-out infinite}
   @keyframes scanmove{0%,100%{transform:translateY(0)}50%{transform:translateY(70px)}}
@@ -356,7 +363,7 @@
   .cmp-head .cmp-h.ours{background:var(--grad);color:#fff;border-left-color:var(--primary-strong)}
 
   /* ---------- Skin customization ---------- */
-  .skin-section{background:var(--primary-soft2)}
+  .skin-section{background:#fff}
   .skins{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:46px;justify-items:center}
   .skin{margin:0;text-align:center}
   .skin figcaption{margin-top:16px;font-size:15px;font-weight:800;color:var(--ink)}
@@ -759,16 +766,12 @@
       </div>
     </div>
     </div>
-  </div>
-</section>
-
-<!-- ===== Stats band ===== -->
-<section class="stats" aria-label="주요 지표">
-  <div class="wrap">
-    <div class="stat"><div class="num">0<small>원</small></div><div class="lb">기기 구매 비용</div></div>
-    <div class="stat"><div class="num">650<small>만원↓</small></div><div class="lb">타사 대비 36개월 절감</div></div>
-    <div class="stat"><div class="num">13<small>개국</small></div><div class="lb">메뉴 자동 번역</div></div>
-    <div class="stat"><div class="num">D+3</div><div class="lb">영업일 기준 자동 정산</div></div>
+    <div class="hero-stats" aria-label="주요 지표">
+      <div class="hstat"><div class="num">0<small>원</small></div><div class="lb">기기 구매 비용</div></div>
+      <div class="hstat"><div class="num">650<small>만원↓</small></div><div class="lb">타사 대비 36개월 절감</div></div>
+      <div class="hstat"><div class="num">13<small>개국</small></div><div class="lb">메뉴 자동 번역</div></div>
+      <div class="hstat"><div class="num">D+3</div><div class="lb">영업일 기준 자동 정산</div></div>
+    </div>
   </div>
 </section>
 
@@ -842,7 +845,7 @@
               <div class="setsub" id="payStatus">현재 <b>주문 시 결제 (선불)</b></div>
             </div>
             <div class="pay-toggle" id="payToggle" role="group" aria-label="결제 방식 전환">
-              <span class="pt-hint" aria-hidden="true">직접 눌러서 확인해 보세요 👇</span>
+              <span class="pt-hint" aria-hidden="true">직접 눌러서 확인해 보세요</span>
               <span class="pt-thumb" aria-hidden="true"></span>
               <button type="button" class="pt-opt active" data-mode="pre">선불</button>
               <button type="button" class="pt-opt" data-mode="post">후불</button>
