@@ -198,6 +198,13 @@
   .step .dur{font-size:13px;font-weight:800;color:var(--primary-dark);background:var(--primary-soft);display:inline-block;padding:4px 12px;border-radius:999px;margin-bottom:10px}
   .step h4{font-size:18px;font-weight:800;margin-bottom:9px;letter-spacing:-.01em}
   .step p{font-size:14.5px;color:var(--ink-2);line-height:1.6}
+  .step .dot{transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s}
+  .step.on .dot{transform:scale(1.13);box-shadow:0 18px 34px rgba(47,98,230,.5),0 0 0 11px rgba(47,98,230,.14)}
+  .step .line{transition:background .5s}
+  .step.on .line{background:linear-gradient(90deg,rgba(47,98,230,.95),rgba(47,98,230,.5))}
+  .step .dur{transition:background .3s,color .3s}
+  .step.on .dur{background:var(--primary);color:#fff}
+  @media(prefers-reduced-motion:reduce){.step.on .dot{transform:none}}
 
   /* ---------- References ---------- */
   .refs{background:var(--primary-darker);color:#fff}
@@ -734,16 +741,15 @@
   <div class="wrap">
     <div class="hero-head">
       <span class="eyebrow">기기 부담 없는 스마트 QR오더</span>
-      <h1 style="font-size:clamp(15px,4.6vw,44px);line-height:1.45">
-        <span class="hline">도입하면 마냥 편해질 줄 알았던 태블릿 오더</span>
-        <span class="hline">매일 충전하고 닦고, 잦은 잔고장까지 겹쳐</span>
-        <span class="hline"><span class="hl">오히려 일이 더 늘어나진</span> 않으셨나요?</span>
+      <p class="hero-kicker" style="font-size:clamp(15px,2.3vw,19px);color:var(--ink-2);font-weight:600;margin:0 0 16px">편해지려고 둔 태블릿, 충전하고 닦느라 더 바쁘지 않으신가요?</p>
+      <h1 style="font-size:clamp(15px,4.6vw,44px);line-height:1.32">
+        <span class="hline">기기 없이 <span class="hl">스티커 하나로</span>,</span>
+        <span class="hline">주문부터 결제까지 알아서</span>
       </h1>
     </div>
     <div class="hero-grid">
     <div>
-      <p class="sub">화려한 기능보다 중요한 것은 <b>사장님의 일거리를 덜어드리고<br>손님의 주문을 더욱 편안하게 돕는 것</b>입니다.</p>
-      <p class="sub">기기 설치 위치 고민, 배선 작업, 도입의 번거로움 없이,<br>바쁜 매장의 주문과 결제 업무를 완벽하게 덜어드리는<br>스마트한 QR오더와 함께해 보세요.</p>
+      <p class="sub">복잡한 배선 공사나 잔고장 걱정은 이제 내려놓으세요. 사장님의 일거리는 줄여드리고 손님의 주문은 더 쾌적해지는 스마트 QR오더를 시작해 보세요.</p>
       <div class="cta-row">
         <a href="https://jieunpark322.github.io/qrorder-mockup/customer.html" class="btn btn-primary btn-lg" style="background:#6DC6AC;box-shadow:0 10px 24px rgba(109,198,172,.45)" onclick="var w=420,h=860,l=(screen.width-w)/2,t=(screen.height-h)/2;window.open(this.href,'qrorderCustomerDemo','width='+w+',height='+h+',left='+l+',top='+t+',resizable=yes,scrollbars=yes');return false;">가상 체험하기</a>
       </div>
@@ -813,7 +819,7 @@
     </div>
 
     <div style="margin-top:48px;background:var(--primary-soft2);border:1px solid var(--line);border-radius:var(--radius);padding:34px 32px">
-      <div style="font-size:clamp(22px,2.8vw,28px);font-weight:500;color:var(--ink);letter-spacing:-.01em;line-height:1.45">점심 피크타임의 결제 대기 줄은 없애고,<br>저녁에는 직원을 부르지 않는 편안한 주문으로 추가 매출의 기회를 넓혀보세요.</div>
+      <div style="font-size:clamp(16px,1.9vw,20px);font-weight:500;color:var(--ink);letter-spacing:-.01em;line-height:1.55">점심 피크타임의 결제 대기 줄은 없애고,<br>저녁에는 직원을 부르지 않는 편안한 주문으로 추가 매출의 기회를 넓혀보세요.</div>
 
       <div class="hybrid-3d">
       <div class="scene3d" id="scene3d" role="img" aria-label="선불은 자리에서 바로 결제, 후불은 식사 후 카운터에서 결제하는 모습">
@@ -1787,5 +1793,20 @@
   })();
 </script>
 
+<script>
+(function(){
+  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  var steps=document.querySelectorAll('.process .step');
+  var track=document.querySelector('.process .steps');
+  if(!steps.length||!track)return;
+  var i=0,timer=null;
+  function tick(){steps.forEach(function(s,n){s.classList.toggle('on',n===i);});i=(i+1)%steps.length;}
+  function start(){if(timer)return;i=0;tick();timer=setInterval(tick,1000);}
+  function stop(){if(timer){clearInterval(timer);timer=null;}steps.forEach(function(s){s.classList.remove('on');});}
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){es.forEach(function(e){e.isIntersecting?start():stop();});},{threshold:.3}).observe(track);
+  }else{start();}
+})();
+</script>
 </body>
 </html>
