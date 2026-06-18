@@ -395,6 +395,19 @@
   .skin-tags{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:38px}
   .skin-tags span{font-size:13.5px;font-weight:700;color:var(--primary-dark);background:#fff;border:1px solid var(--line);padding:8px 15px;border-radius:999px;display:flex;align-items:center;gap:7px}
   .skin-tags span svg{width:15px;height:15px;color:var(--primary-dark)}
+  /* QR 주문 스티커(카드) 쇼케이스 */
+  .qrcards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:30px}
+  .qrc{border-radius:22px;padding:26px 20px 20px;color:#fff;display:flex;flex-direction:column;align-items:center;text-align:center;box-shadow:0 14px 30px rgba(14,22,38,.16)}
+  .qrc-head{font-size:17px;font-weight:800;line-height:1.32}
+  .qrc-logo{width:62px;height:62px;border-radius:50%;background:rgba(255,255,255,.18);display:grid;place-items:center;font-size:27px;font-weight:800;margin:16px 0 18px}
+  .qrc-store{font-size:13.5px;font-weight:700;margin:-8px 0 16px;opacity:.95}
+  .qrc-tile{width:64%;max-width:172px;aspect-ratio:1;background:#fff;border-radius:16px;display:grid;place-items:center;padding:14px}
+  .qrc .qr{width:100%;height:100%;background:#101C38;-webkit-mask:url(qr-card.svg) center/contain no-repeat;mask:url(qr-card.svg) center/contain no-repeat}
+  .qrc-tbllb{font-size:11px;letter-spacing:.2em;font-weight:700;opacity:.85;margin-top:18px}
+  .qrc-tblno{font-size:24px;font-weight:800;margin-top:2px;letter-spacing:-.01em}
+  .qrc-foot{font-size:11px;font-weight:700;opacity:.72;margin-top:16px}
+  @media(max-width:900px){.qrcards{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.qrcards{grid-template-columns:1fr}}
   /* interactive skin picker */
   .skin-picker{position:relative;display:grid;grid-template-columns:400px 1fr;gap:44px;margin-top:46px;align-items:center}
   #skin .lead{font-size:19px;max-width:760px}
@@ -985,6 +998,67 @@
       <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg> 리스트·그리드 레이아웃</span>
       <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg> 배너·프로모션 구성</span>
       <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg> 카테고리 순서 편집</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg> QR 주문 스티커(카드) 디자인</span>
+    </div>
+    <div class="center" style="margin-top:60px">
+      <h2 class="title" style="font-size:clamp(22px,3vw,32px)">내 매장만의 <span class="hl" style="color:var(--primary-strong)">QR 주문 스티커</span>를 고르세요</h2>
+      <p class="lead">다양한 시드 디자인에 매월 1회 무료 교체까지. 매장명·로고·테이블 번호 모두 내 매장 자산이에요.</p>
+    </div>
+    <div class="qrcards">
+      <div class="qrc" style="background:#e8442f">
+        <div class="qrc-head">맛있는 메뉴<br>QR주문하기</div>
+        <div class="qrc-logo">홍</div>
+        <div class="qrc-store">홍대 분식</div>
+        <div class="qrc-tile"><span class="qr"></span></div>
+        <div class="qrc-tbllb">TABLE</div>
+        <div class="qrc-tblno">12</div>
+        <div class="qrc-foot">powered by QR오더</div>
+      </div>
+      <div class="qrc" style="background:#16463a">
+        <div class="qrc-head">맛있는 메뉴<br>QR주문하기</div>
+        <div class="qrc-logo">그</div>
+        <div class="qrc-store">그린리프 샐러드</div>
+        <div class="qrc-tile"><span class="qr"></span></div>
+        <div class="qrc-tbllb">TABLE</div>
+        <div class="qrc-tblno">9</div>
+        <div class="qrc-foot">powered by QR오더</div>
+      </div>
+      <div class="qrc" style="background:#0e1b3a">
+        <div class="qrc-head">맛있는 메뉴<br>QR주문하기</div>
+        <div class="qrc-logo">차</div>
+        <div class="qrc-store">차이커피</div>
+        <div class="qrc-tile"><span class="qr"></span></div>
+        <div class="qrc-tbllb">TABLE</div>
+        <div class="qrc-tblno">7</div>
+        <div class="qrc-foot">powered by QR오더</div>
+      </div>
+      <div class="qrc" style="background:#5b5ef0">
+        <div class="qrc-head">맛있는 메뉴<br>QR주문하기</div>
+        <div class="qrc-logo">리</div>
+        <div class="qrc-store">리버스 베이커리</div>
+        <div class="qrc-tile"><span class="qr"></span></div>
+        <div class="qrc-tbllb">TABLE</div>
+        <div class="qrc-tblno">A1</div>
+        <div class="qrc-foot">powered by QR오더</div>
+      </div>
+      <div class="qrc" style="background:#d97a16">
+        <div class="qrc-head">맛있는 메뉴<br>QR주문하기</div>
+        <div class="qrc-logo">오</div>
+        <div class="qrc-store">비스트로 오크</div>
+        <div class="qrc-tile"><span class="qr"></span></div>
+        <div class="qrc-tbllb">TABLE</div>
+        <div class="qrc-tblno">03</div>
+        <div class="qrc-foot">powered by QR오더</div>
+      </div>
+      <div class="qrc" style="background:#6d28d9">
+        <div class="qrc-head">맛있는 메뉴<br>QR주문하기</div>
+        <div class="qrc-logo">스</div>
+        <div class="qrc-store">스튜디오 카페</div>
+        <div class="qrc-tile"><span class="qr"></span></div>
+        <div class="qrc-tbllb">TABLE</div>
+        <div class="qrc-tblno">21</div>
+        <div class="qrc-foot">powered by QR오더</div>
+      </div>
     </div>
   </div>
 </section>
@@ -1072,42 +1146,37 @@
     </div>
     <div class="refgrid">
       <div class="ref">
-        <div class="ref-img"><img src="img_foodcourt.png" alt="서울역 커넥트플레이스 푸드코트 전경" loading="lazy"></div>
+        <div class="ref-img"><img src="img_foodcourt.png" alt="푸드코트 도입 매장" loading="lazy"></div>
         <div class="ref-body">
           <div class="cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg> 푸드코트</div>
-          <h4>서울역 커넥트플레이스</h4>
           <p>대형 푸드코트 안정 운영</p>
         </div>
       </div>
       <div class="ref">
-        <div class="ref-img"><img src="img_restarea.png" alt="보성 녹차휴게소 외관" loading="lazy"></div>
+        <div class="ref-img"><img src="img_restarea.png" alt="고속도로 휴게소 도입 매장" loading="lazy"></div>
         <div class="ref-body">
           <div class="cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18"/><path d="M5 12V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v5"/><path d="M5 12v6"/><path d="M19 12v6"/><circle cx="8" cy="18" r="1.5"/><circle cx="16" cy="18" r="1.5"/></svg> 고속도로 휴게소</div>
-          <h4>보성 녹차휴게소</h4>
           <p>대기 시간 감소</p>
         </div>
       </div>
       <div class="ref">
-        <div class="ref-img"><img src="img_foodstore.png" alt="썬더버드 매장 내부" loading="lazy"></div>
+        <div class="ref-img"><img src="img_foodstore.png" alt="일반 음식점 도입 매장" loading="lazy"></div>
         <div class="ref-body">
           <div class="cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 3v7a2 2 0 0 0 2 2v9M8 3v18M8 3v7M16 3c-2 0-3 2-3 5s1 4 3 4v9"/></svg> 일반 음식점</div>
-          <h4>썬더버드</h4>
           <p>다국어 주문 자동화</p>
         </div>
       </div>
       <div class="ref">
-        <div class="ref-img"><img src="img_cafe.png" alt="차이커피 음료" loading="lazy"></div>
+        <div class="ref-img"><img src="img_cafe.png" alt="카페 도입 매장" loading="lazy"></div>
         <div class="ref-body">
           <div class="cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg> 카페</div>
-          <h4>차이커피</h4>
           <p>응대 부담 감소</p>
         </div>
       </div>
       <div class="ref">
-        <div class="ref-img"><img src="https://storage.googleapis.com/cr-resource/image/84c710210c853ac3f09f01375ff86113/soyohannam/650/c660467dc321f68a93d0ae756bd42d49.png?_1780449178" alt="소요한남 하이엔드 레지던스" loading="lazy"></div>
+        <div class="ref-img"><img src="https://storage.googleapis.com/cr-resource/image/84c710210c853ac3f09f01375ff86113/soyohannam/650/c660467dc321f68a93d0ae756bd42d49.png?_1780449178" alt="컨시어지 서비스 도입 매장" loading="lazy"></div>
         <div class="ref-body">
           <div class="cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/><path d="M9 7h2M9 11h2M9 15h2M13 7h2M13 11h2M13 15h2"/></svg> 컨시어지 서비스</div>
-          <h4>소요한남</h4>
           <p>프리미엄 컨시어지 주문</p>
         </div>
       </div>
