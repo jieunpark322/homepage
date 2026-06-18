@@ -236,7 +236,7 @@
   .ref-img img{width:100%;height:100%;object-fit:cover;display:block}
   .ref-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(39,80,143,0) 40%,rgba(23,45,82,.7) 100%)}
   .ref-body{padding:24px 26px}
-  .ref .cat{font-size:13px;font-weight:800;color:#9dbcf0;letter-spacing:.03em;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .ref .cat{font-size:15.5px;font-weight:800;color:#9dbcf0;letter-spacing:.02em;margin-bottom:14px;display:flex;align-items:center;gap:8px}
   .ref .cat svg{width:18px;height:18px}
   .ref h4{font-size:21px;font-weight:800;margin-bottom:12px}
   .ref p{font-size:15px;color:#cdd9f0;line-height:1.65}
@@ -395,20 +395,20 @@
   .skin-tags{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:38px}
   .skin-tags span{font-size:13.5px;font-weight:700;color:var(--primary-dark);background:#fff;border:1px solid var(--line);padding:8px 15px;border-radius:999px;display:flex;align-items:center;gap:7px}
   .skin-tags span svg{width:15px;height:15px;color:var(--primary-dark)}
-  /* QR 주문 스티커(카드) 쇼케이스 */
-  .qrcards{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-top:30px}
-  .qrc{border-radius:18px;padding:18px 12px 16px;color:#fff;display:flex;flex-direction:column;align-items:center;text-align:center;box-shadow:0 10px 24px rgba(14,22,38,.16)}
-  .qrc-name{font-size:14px;font-weight:800;letter-spacing:-.01em}
-  .qrc-head{font-size:10.5px;font-weight:700;opacity:.9;white-space:nowrap;margin-top:3px}
-  .qrc-logo{width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.18);display:grid;place-items:center;font-size:21px;font-weight:800;margin:26px 0 14px}
-  .qrc-store{font-size:11.5px;font-weight:700;margin:0 0 12px;opacity:.95}
-  .qrc-tile{width:86%;max-width:122px;aspect-ratio:1;background:#fff;border-radius:12px;display:grid;place-items:center;padding:9px}
+  /* QR 주문 스티커(카드) 쇼케이스 — 신용카드 비율 */
+  .qrcards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:30px}
+  .qrc{aspect-ratio:1.586/1;border-radius:16px;padding:18px;color:#fff;display:flex;align-items:stretch;gap:16px;box-shadow:0 12px 28px rgba(14,22,38,.16)}
+  .qrc-tile{height:100%;aspect-ratio:1;background:#fff;border-radius:12px;display:grid;place-items:center;padding:10px;flex:none}
   .qrc .qr{width:100%;height:100%;background:#101C38;-webkit-mask:url(qr-card.svg) center/contain no-repeat;mask:url(qr-card.svg) center/contain no-repeat}
-  .qrc-tbllb{font-size:9.5px;letter-spacing:.18em;font-weight:700;opacity:.85;margin-top:12px}
-  .qrc-tblno{font-size:18px;font-weight:800;margin-top:1px;letter-spacing:-.01em}
-  .qrc-foot{font-size:9px;font-weight:700;opacity:.72;margin-top:11px}
-  @media(max-width:1100px){.qrcards{grid-template-columns:repeat(3,1fr)}}
-  @media(max-width:680px){.qrcards{grid-template-columns:repeat(2,1fr)}}
+  .qrc-info{flex:1;min-width:0;display:flex;flex-direction:column;text-align:left}
+  .qrc-logo{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.2);display:grid;place-items:center;font-size:19px;font-weight:800;overflow:hidden}
+  .qrc-logo img{width:100%;height:100%;object-fit:cover}
+  .qrc-name{font-size:16px;font-weight:800;letter-spacing:-.02em;margin-top:11px;line-height:1.25}
+  .qrc-tbl{margin-top:auto}
+  .qrc-tbllb{font-size:10px;letter-spacing:.16em;font-weight:700;opacity:.85;display:block}
+  .qrc-tblno{font-size:20px;font-weight:800;letter-spacing:-.01em}
+  @media(max-width:900px){.qrcards{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.qrcards{grid-template-columns:1fr}}
   /* interactive skin picker */
   .skin-picker{position:relative;display:grid;grid-template-columns:400px 1fr;gap:44px;margin-top:46px;align-items:center}
   #skin .lead{font-size:19px;max-width:760px}
@@ -971,7 +971,7 @@
 <section class="skin-section" id="skin">
   <div class="wrap">
     <div class="center">
-      <span class="eyebrow">QR 주문 스킨</span>
+      <span class="eyebrow">QR오더 메뉴판 스킨</span>
       <h2 class="title">우리 매장만의 주문 페이지를<br class="dbr">만들어보세요.</h2>
       <p class="lead">매장 분위기에 어울리는 색상과 레이아웃을 직접 선택할 수 있어요.<br>손님들에게 우리 매장만의 특별한 감성을 전달해 보세요.</p>
     </div>
@@ -1002,64 +1002,58 @@
       <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg> QR 주문 스티커(카드) 디자인</span>
     </div>
     <div class="center" style="margin-top:64px">
-      <span class="eyebrow">QR 주문 스티커(카드)</span>
+      <span class="eyebrow">QR오더 스티커(카드)</span>
       <h2 class="title">테이블 위 작은 디테일로<br class="dbr">매장의 특별함을 더해보세요.</h2>
       <p class="lead">우리 매장 분위기에 어울리는 다양한 QR 카드 디자인을 직접 선택할 수 있어요.</p>
     </div>
     <div class="qrcards">
       <div class="qrc" style="background:#e8442f">
-        <div class="qrc-name">매장명</div>
-        <div class="qrc-head">맛있는 메뉴 QR주문하기</div>
-        <div class="qrc-logo">홍</div>
         <div class="qrc-tile"><span class="qr"></span></div>
-        <div class="qrc-tbllb">TABLE</div>
-        <div class="qrc-tblno">12</div>
-        <div class="qrc-foot">powered by QR오더</div>
+        <div class="qrc-info">
+          <div class="qrc-logo">🍜</div>
+          <div class="qrc-name">골목분식</div>
+          <div class="qrc-tbl"><span class="qrc-tbllb">TABLE</span><span class="qrc-tblno">12</span></div>
+        </div>
       </div>
       <div class="qrc" style="background:#16463a">
-        <div class="qrc-name">매장명</div>
-        <div class="qrc-head">맛있는 메뉴 QR주문하기</div>
-        <div class="qrc-logo">그</div>
         <div class="qrc-tile"><span class="qr"></span></div>
-        <div class="qrc-tbllb">TABLE</div>
-        <div class="qrc-tblno">9</div>
-        <div class="qrc-foot">powered by QR오더</div>
+        <div class="qrc-info">
+          <div class="qrc-logo">🥗</div>
+          <div class="qrc-name">초록상회</div>
+          <div class="qrc-tbl"><span class="qrc-tbllb">TABLE</span><span class="qrc-tblno">9</span></div>
+        </div>
       </div>
       <div class="qrc" style="background:#0e1b3a">
-        <div class="qrc-name">매장명</div>
-        <div class="qrc-head">맛있는 메뉴 QR주문하기</div>
-        <div class="qrc-logo">차</div>
         <div class="qrc-tile"><span class="qr"></span></div>
-        <div class="qrc-tbllb">TABLE</div>
-        <div class="qrc-tblno">7</div>
-        <div class="qrc-foot">powered by QR오더</div>
+        <div class="qrc-info">
+          <div class="qrc-logo"><img src="img_cafe.png" alt=""></div>
+          <div class="qrc-name">모닝빈 카페</div>
+          <div class="qrc-tbl"><span class="qrc-tbllb">TABLE</span><span class="qrc-tblno">7</span></div>
+        </div>
       </div>
       <div class="qrc" style="background:#5b5ef0">
-        <div class="qrc-name">매장명</div>
-        <div class="qrc-head">맛있는 메뉴 QR주문하기</div>
-        <div class="qrc-logo">리</div>
         <div class="qrc-tile"><span class="qr"></span></div>
-        <div class="qrc-tbllb">TABLE</div>
-        <div class="qrc-tblno">A1</div>
-        <div class="qrc-foot">powered by QR오더</div>
+        <div class="qrc-info">
+          <div class="qrc-logo"><span style="font-size:15px">B&G</span></div>
+          <div class="qrc-name">베이크하우스</div>
+          <div class="qrc-tbl"><span class="qrc-tbllb">TABLE</span><span class="qrc-tblno">A1</span></div>
+        </div>
       </div>
       <div class="qrc" style="background:#d97a16">
-        <div class="qrc-name">매장명</div>
-        <div class="qrc-head">맛있는 메뉴 QR주문하기</div>
-        <div class="qrc-logo">오</div>
         <div class="qrc-tile"><span class="qr"></span></div>
-        <div class="qrc-tbllb">TABLE</div>
-        <div class="qrc-tblno">03</div>
-        <div class="qrc-foot">powered by QR오더</div>
+        <div class="qrc-info">
+          <div class="qrc-logo">🍶</div>
+          <div class="qrc-name">오크 이자카야</div>
+          <div class="qrc-tbl"><span class="qrc-tbllb">TABLE</span><span class="qrc-tblno">03</span></div>
+        </div>
       </div>
       <div class="qrc" style="background:#6d28d9">
-        <div class="qrc-name">매장명</div>
-        <div class="qrc-head">맛있는 메뉴 QR주문하기</div>
-        <div class="qrc-logo">스</div>
         <div class="qrc-tile"><span class="qr"></span></div>
-        <div class="qrc-tbllb">TABLE</div>
-        <div class="qrc-tblno">21</div>
-        <div class="qrc-foot">powered by QR오더</div>
+        <div class="qrc-info">
+          <div class="qrc-logo">🍔</div>
+          <div class="qrc-name">미드나잇 버거</div>
+          <div class="qrc-tbl"><span class="qrc-tbllb">TABLE</span><span class="qrc-tblno">21</span></div>
+        </div>
       </div>
     </div>
   </div>
