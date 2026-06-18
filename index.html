@@ -395,20 +395,18 @@
   .skin-tags{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:38px}
   .skin-tags span{font-size:13.5px;font-weight:700;color:var(--primary-dark);background:#fff;border:1px solid var(--line);padding:8px 15px;border-radius:999px;display:flex;align-items:center;gap:7px}
   .skin-tags span svg{width:15px;height:15px;color:var(--primary-dark)}
-  /* QR 주문 스티커(카드) 쇼케이스 — 신용카드 비율 */
-  .qrcards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:30px}
-  .qrc{aspect-ratio:1.586/1;border-radius:16px;padding:18px;color:#fff;display:flex;align-items:stretch;gap:16px;box-shadow:0 12px 28px rgba(14,22,38,.16)}
-  .qrc-tile{height:100%;aspect-ratio:1;background:#fff;border-radius:12px;display:grid;place-items:center;padding:10px;flex:none}
-  .qrc .qr{width:100%;height:100%;background:#101C38;-webkit-mask:url(qr-card.svg) center/contain no-repeat;mask:url(qr-card.svg) center/contain no-repeat}
-  .qrc-info{flex:1;min-width:0;display:flex;flex-direction:column;text-align:left}
-  .qrc-logo{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.2);display:grid;place-items:center;font-size:19px;font-weight:800;overflow:hidden}
+  /* QR오더 스티커(카드) 쇼케이스 — 세로 카드 6열 */
+  .qrcards{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-top:30px}
+  .qrc{border-radius:16px;padding:18px 12px 16px;color:#fff;display:flex;flex-direction:column;align-items:center;text-align:center;box-shadow:0 10px 24px rgba(14,22,38,.16)}
+  .qrc-logo{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.2);display:grid;place-items:center;font-size:20px;font-weight:800;overflow:hidden;margin-top:4px}
   .qrc-logo img{width:100%;height:100%;object-fit:cover}
-  .qrc-name{font-size:16px;font-weight:800;letter-spacing:-.02em;margin-top:11px;line-height:1.25}
-  .qrc-tbl{margin-top:auto}
-  .qrc-tbllb{font-size:10px;letter-spacing:.16em;font-weight:700;opacity:.85;display:block}
-  .qrc-tblno{font-size:20px;font-weight:800;letter-spacing:-.01em}
-  @media(max-width:900px){.qrcards{grid-template-columns:repeat(2,1fr)}}
-  @media(max-width:560px){.qrcards{grid-template-columns:1fr}}
+  .qrc-name{font-size:14px;font-weight:800;letter-spacing:-.02em;margin:9px 0 12px;line-height:1.2}
+  .qrc-tile{width:90%;max-width:128px;aspect-ratio:1;background:#fff;border-radius:12px;display:grid;place-items:center;padding:9px}
+  .qrc .qr{width:100%;height:100%;background:#101C38;-webkit-mask:url(qr-card.svg) center/contain no-repeat;mask:url(qr-card.svg) center/contain no-repeat}
+  .qrc-tbllb{font-size:9.5px;letter-spacing:.16em;font-weight:700;opacity:.85;margin-top:12px}
+  .qrc-tblno{font-size:18px;font-weight:800;letter-spacing:-.01em}
+  @media(max-width:1100px){.qrcards{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:680px){.qrcards{grid-template-columns:repeat(2,1fr)}}
   /* interactive skin picker */
   .skin-picker{position:relative;display:grid;grid-template-columns:400px 1fr;gap:44px;margin-top:46px;align-items:center}
   #skin .lead{font-size:19px;max-width:760px}
@@ -1008,52 +1006,46 @@
     </div>
     <div class="qrcards">
       <div class="qrc" style="background:#e8442f">
+        <div class="qrc-logo">🍜</div>
+        <div class="qrc-name">골목분식</div>
         <div class="qrc-tile"><span class="qr"></span></div>
-        <div class="qrc-info">
-          <div class="qrc-logo">🍜</div>
-          <div class="qrc-name">골목분식</div>
-          <div class="qrc-tbl"><span class="qrc-tbllb">TABLE</span><span class="qrc-tblno">12</span></div>
-        </div>
+        <div class="qrc-tbllb">TABLE</div>
+        <div class="qrc-tblno">12</div>
       </div>
       <div class="qrc" style="background:#16463a">
+        <div class="qrc-logo">🥗</div>
+        <div class="qrc-name">초록상회</div>
         <div class="qrc-tile"><span class="qr"></span></div>
-        <div class="qrc-info">
-          <div class="qrc-logo">🥗</div>
-          <div class="qrc-name">초록상회</div>
-          <div class="qrc-tbl"><span class="qrc-tbllb">TABLE</span><span class="qrc-tblno">9</span></div>
-        </div>
+        <div class="qrc-tbllb">TABLE</div>
+        <div class="qrc-tblno">9</div>
       </div>
       <div class="qrc" style="background:#0e1b3a">
+        <div class="qrc-logo"><img src="img_cafe.png" alt=""></div>
+        <div class="qrc-name">모닝빈 카페</div>
         <div class="qrc-tile"><span class="qr"></span></div>
-        <div class="qrc-info">
-          <div class="qrc-logo"><img src="img_cafe.png" alt=""></div>
-          <div class="qrc-name">모닝빈 카페</div>
-          <div class="qrc-tbl"><span class="qrc-tbllb">TABLE</span><span class="qrc-tblno">7</span></div>
-        </div>
+        <div class="qrc-tbllb">TABLE</div>
+        <div class="qrc-tblno">7</div>
       </div>
       <div class="qrc" style="background:#5b5ef0">
+        <div class="qrc-logo">🥐</div>
+        <div class="qrc-name">베이크하우스</div>
         <div class="qrc-tile"><span class="qr"></span></div>
-        <div class="qrc-info">
-          <div class="qrc-logo"><span style="font-size:15px">B&G</span></div>
-          <div class="qrc-name">베이크하우스</div>
-          <div class="qrc-tbl"><span class="qrc-tbllb">TABLE</span><span class="qrc-tblno">A1</span></div>
-        </div>
+        <div class="qrc-tbllb">TABLE</div>
+        <div class="qrc-tblno">A1</div>
       </div>
       <div class="qrc" style="background:#d97a16">
+        <div class="qrc-logo">🍶</div>
+        <div class="qrc-name">오크 이자카야</div>
         <div class="qrc-tile"><span class="qr"></span></div>
-        <div class="qrc-info">
-          <div class="qrc-logo">🍶</div>
-          <div class="qrc-name">오크 이자카야</div>
-          <div class="qrc-tbl"><span class="qrc-tbllb">TABLE</span><span class="qrc-tblno">03</span></div>
-        </div>
+        <div class="qrc-tbllb">TABLE</div>
+        <div class="qrc-tblno">03</div>
       </div>
       <div class="qrc" style="background:#6d28d9">
+        <div class="qrc-logo">🍔</div>
+        <div class="qrc-name">미드나잇 버거</div>
         <div class="qrc-tile"><span class="qr"></span></div>
-        <div class="qrc-info">
-          <div class="qrc-logo">🍔</div>
-          <div class="qrc-name">미드나잇 버거</div>
-          <div class="qrc-tbl"><span class="qrc-tbllb">TABLE</span><span class="qrc-tblno">21</span></div>
-        </div>
+        <div class="qrc-tbllb">TABLE</div>
+        <div class="qrc-tblno">21</div>
       </div>
     </div>
   </div>
