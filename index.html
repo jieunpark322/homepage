@@ -92,9 +92,13 @@
 
   /* ---------- Hero ---------- */
   .hero{
-    background:linear-gradient(180deg,var(--primary-soft2) 0%,#fff 100%);
+    position:relative;
+    background:#eef3fb url("hero-bg.png") right center/cover no-repeat;
     padding:84px 0 70px;overflow:hidden;
   }
+  .hero::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#ffffff 0%,rgba(255,255,255,.95) 40%,rgba(255,255,255,.6) 60%,rgba(255,255,255,.12) 82%,rgba(255,255,255,0) 100%);z-index:0}
+  .hero .wrap{position:relative;z-index:1}
+  @media(max-width:760px){.hero{background-position:center}.hero::before{background:rgba(255,255,255,.9)}}
   .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
   .hero-head{margin-bottom:38px}
   .hero h1{font-size:clamp(30px,4.4vw,50px);font-weight:800;line-height:1.25;letter-spacing:-.03em}
@@ -120,7 +124,7 @@
   .hero-illust::after{display:none}
   .hero-illust-img{display:flex;justify-content:center;align-items:center}
   .hero-3d{width:100%;max-width:480px;height:auto;display:block}
-  .hero-stats{display:grid;grid-template-columns:repeat(4,1fr);margin-top:60px;border-top:1px solid var(--line);padding-top:30px}
+  .hero-stats{display:grid;grid-template-columns:repeat(4,1fr);max-width:660px;margin-top:60px;border-top:1px solid var(--line);padding-top:30px}
   .hero-stats .hstat{text-align:center;padding:0 18px;border-left:1px solid var(--line)}
   .hero-stats .hstat:first-child{border-left:0}
   .hero-stats .num{font-size:clamp(26px,3.2vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1;color:var(--primary-strong)}
@@ -782,11 +786,6 @@
       <p class="sub">복잡한 배선 공사나 잔고장 걱정은 이제 내려놓으세요.<br>사장님의 일거리는 줄여드리고 손님의 주문은 더 쾌적해지는 스마트한 매장 주문 관리 솔루션,<br>QR오더를 시작해 보세요.</p>
       <div class="cta-row">
         <a href="https://jieunpark322.github.io/qrorder-mockup/customer.html" class="btn btn-primary btn-lg" style="background:#6DC6AC;box-shadow:0 10px 24px rgba(109,198,172,.45)" onclick="var w=420,h=860,l=(screen.width-w)/2,t=(screen.height-h)/2;window.open(this.href,'qrorderCustomerDemo','width='+w+',height='+h+',left='+l+',top='+t+',resizable=yes,scrollbars=yes');return false;">가상 체험하기</a>
-      </div>
-    </div>
-    <div class="hero-visual">
-      <div class="hero-illust-img">
-        <img class="hero-3d" src="hero-3d.png" alt="QR오더 스마트 주문·결제 일러스트">
       </div>
     </div>
     </div>
